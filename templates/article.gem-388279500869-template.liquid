@@ -1,0 +1,377 @@
+{% comment %}
+	GEMPAGE BUILDER (https://apps.shopify.com/gempage)
+
+	You SHOULD NOT modify source code in this page because
+	It is automatically generated from GEMPAGE BUILDER
+	Try to edit page with the live editor.
+{% endcomment %}
+<!--GEM_HEADER-->
+<link data-instant-track rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" class="gf-style" />
+<link data-instant-track rel="stylesheet" type="text/css" href="https://d1um8515vdn9kb.cloudfront.net/files/vendor.css?refresh=1" class="gf-style" />
+<link data-instant-track rel="stylesheet" type="text/css" href="{{ 'gem-article-388279500869.css' | asset_url }}" class="gf_page_style">
+<!--GEM_HEADER_END-->
+{% if article.image and section.settings.banner_enabled %}
+  <header class="banner center page_banner dark-overlay-{{section.settings.image_darken}}">
+    <img  src="{{ article.image | img_url: '100x' }}"
+          alt="{% if article.image.alt != blank %}{{ article.image.alt }}{% else %}{{ article.title | escape }}{% endif %}"
+          data-src="{{ article.image | img_url: '1400x', format: 'pjpg' }}"
+          class="lazyload {{ settings.image_loading_style }}"
+          sizes="100vw"
+          srcset="{{ article.image | img_url: '480x', format: 'pjpg' }} 480w,
+                  {{ article.image | img_url: '765x', format: 'pjpg' }} 765w,
+                  {{ article.image | img_url: '1400x', format: 'pjpg' }} 1400w,
+                  {{ article.image | img_url: '2048x', format: 'pjpg' }} 2048w"
+           />
+    <div class="caption">
+      <h1 class="headline">{{ article.title }}</h1>
+    </div>
+  </header>
+{% endif %}<a name="pagecontent" id="pagecontent"></a><div class="container main content">
+{% paginate article.comments by 100 %}  
+  {% if section.blocks.size > 0 %}
+    {% assign sidebar = true %}
+  {% else %}
+    {% assign sidebar = false %}
+  {% endif %}  <div class="twelve columns {% if sidebar == false %}offset-by-two{% endif %}">
+    <div class="section clearfix">
+      <div class="clearfix breadcrumb">
+        {% if section.settings.blog_breadcrumb %}
+          <div class="breadcrumb_text left" itemscope itemtype="http://schema.org/BreadcrumbList">
+            <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem"><a href="{{ shop.url }}" title="{{ shop.name | escape }}" itemprop="item"><span itemprop="name">{{ 'general.breadcrumbs.home' | t }}</span></a></span>
+            &nbsp;<span class="icon-slash">/</span>
+            <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem"><a href="{{ blog.url }}" title="{{ blog.title | escape }}" itemprop="item"><span itemprop="name">{{ blog.title }}</span></a></span>
+          </div>
+        {% endif %}
+        {% if section.settings.blog_pagination %}
+          <div class="article-pagination right">
+            {% if blog.next_article %}
+              {{ 'blogs.article.previous_article_html' | t | link_to: blog.next_article }}
+            {% endif %}
+            {% if blog.previous_article and blog.next_article %}
+              &nbsp;<span class="icon-slash">/</span>
+            {% endif %}
+            {% if blog.previous_article %}
+              {{ 'blogs.article.next_article_html' | t | link_to: blog.previous_article }}
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>      {% unless article.image and section.settings.banner_enabled %}
+        <h1 class="align_left article_title">
+          {{ article.title }}
+        </h1>
+        <div class="feature_divider"></div>
+      {% endunless %}        <p class="blog_meta">
+          {% if section.settings.blog_author %}
+            <span>{{ 'blogs.article.by_author' | t: author: article.author }}</span>
+          {% endif %}          {% if section.settings.blog_date %}
+            <span>{{ article.published_at | date: format: "month_day_year" }}</span>
+          {% endif %}          {% if section.settings.blog_tags %}
+            <div class="blog_meta tags">
+              {% for tag in article.tags %}
+                <span><a href="{{ shop.url}}/blogs/{{ blog.handle }}/tagged/{{ tag | handleize }}" title="{{ blog.title }} {{ 'blogs.general.tagged' | t }} {{ tag | escape }}">{{ tag }}</a></span>
+              {% endfor %}
+            </div>
+          {% endif %}          {% if section.settings.blog_comment_count %}
+            {% if settings.disqus_enabled %}
+              <span>
+                <a href="{{ article.url }}#disqus_thread" data-disqus-identifier="{{ article.id }}" class="disqus-comment-count">{{ 'blogs.counts.comments_with_count' | t: count: 0 }}</a>
+              </span>
+            {% elsif article.comments_enabled? and article.comments_count > 0 %}
+              <span>
+                <a href="{{ article.url }}#comments">{{ 'blogs.counts.comments_with_count' | t: count: article.comments_count }}</a>
+              </span>
+            {% endif %}
+          {% endif %}
+        </p>        <div class="article_content clearfix">
+          {% if article.image and section.settings.banner_enabled == false %}
+            <p>
+              <img  src="{{ article.image | img_url: '100x' }}"
+                    alt="{% if article.image.alt != blank %}{{ article.image.alt }}{% else %}{{ article.title | escape }}{% endif %}"
+                    data-src="{{ article.image | img_url: '2048x', format: 'pjpg' }}"
+                    class="lazyload {{ settings.image_loading_style }}"
+                    style="max-width: {{- article.image.width -}}px"
+                    data-sizes="auto"
+                    data-srcset=" {{ article.image | img_url: '480x', format: 'pjpg' }} 480w,
+                                  {{ article.image | img_url: '765x', format: 'pjpg' }} 765w,
+                                  {{ article.image | img_url: '1400x', format: 'pjpg' }} 1400w,
+                                  {{ article.image | img_url: '2048x', format: 'pjpg' }} 2048w"
+                     />
+            </p>
+          {% endif %}          <!--Gem_Page_Main_Editor--><div class="clearfix"></div><div class="gryffeditor">
+<div class="gryffeditor">
+<div data-label="Text Block"> <div class="elm text-edit"><p><strong>Siguiente parada: Burundi. Un café con sabor a superación.</strong></p>
+<p>Aterrizamos en Burundi, país del este africano, de donde seleccionamos un exquisito café variedad bourbon rojo para tostarlo y envasarlo en Chile y llevarlo a tu mesa. Como todo el café que ofrece Señor K, tiene una gran historia y un rostro humano.</p>
+<p style="text-align: center;"><img alt="Cafe de burundi" src="//cdn.shopify.com/s/files/1/2466/7899/files/cafe_de_burundi_large.png?v=1593536519" style="float: none;"></p>
+<p><em>                                           Burundi Nemba que Señor K trae para ti</em></p>
+<p>El café, alrededor del mundo, tiene muchas historias y leyendas, desde el mismo descubrimiento en <a href="https://cafesenork.com/blogs/origenes/etiopia-el-origen-del-cafe-en-el-mundo">Etiopía</a>, las prohibiciones y autorizaciones de su consumo por parte de autoridades religiosas en varios países, historias de revoluciones que fueron mentalizadas desde cafeterías, <a href="https://cafesenork.com/blogs/news/un-cafe-con-musica-porfavor">músicos</a> que hicieron tributos a este elixir, etc. El café en Burundi también tiene una historia, esta es de superación y esfuerzo.  </p>
+<p>Se trata de uno de los países más pobres económicamente. Según datos del <a href="http://report.hdr.undp.org/es/">Programa de las Naciones Unidas para el Desarrollo (PNUD)</a>, Burundi está entre los 10 países con un Índice de Desarrollo Humano más bajo del mundo. Tiene una extensión de alrededor de 28 mil kilómetros cuadrados (Chile tiene 756 mil kilómetros cuadrados) y su población es de 12 millones de habitantes aproximadamente (en Chile la población estimada es de alrededor de 19 millones de habitantes en 2019). Esta breve comparación nos da un pantallazo de lo superpoblado que es el territorio burundés.</p>
+<p> <img src="//cdn.shopify.com/s/files/1/2466/7899/files/Cafe_de_burundi_large.jpg?v=1593698086" alt="Café de grano Burundi" style="display: block; margin-left: auto; margin-right: auto;"></p>
+<p>Si bien la economía burundesa está muy afectada, uno de sus principales productos de exportación es el café. La calidad de su café se debe a la riqueza del suelo y de las condiciones climáticas. Las zonas cafeteras del Burundi están a una altitud sobre los 1000 msnm, lo cual permite que, durante la maduración del café, este adquiera sabores complejos: dulzor de miel, acidez con notas cítricas, especiado a canela, entre otros descriptores dependiendo de la región.</p>
+<p style="text-align: center;"><strong>¿Cuáles son las regiones cafeteras de Burundi?</strong></p>
+<p>Las principales regiones que producen café son 5 y cada una tiene su particularidad.</p>
+<table width="591">
+<tbody>
+<tr>
+<td width="148">
+<p><strong>Provincia</strong></p>
+</td>
+<td width="148">
+<p><strong>Regiones</strong></p>
+</td>
+<td width="120">
+<p><strong>Altitud (msnm)</strong></p>
+</td>
+<td width="175">
+<p><strong>Puntaje /características</strong></p>
+</td>
+</tr>
+<tr>
+<td width="148">
+<p>Buyenzi</p>
+</td>
+<td width="148">
+<p>Kayanza</p>
+<p>Ngozi</p>
+</td>
+<td width="120">
+<p>1700 – 2000</p>
+</td>
+<td width="175">
+<p style="font-weight: 400;"><span>91 puntos Cup of Excellence</span></p>
+<p style="font-weight: 400;"><span>88 puntos Cup of Excelence</span></p>
+</td>
+</tr>
+<tr>
+<td width="148">
+<p>Gitega</p>
+</td>
+<td width="148">
+<p>Kirimiro</p>
+</td>
+<td width="120">
+<p>1100 - 2000</p>
+</td>
+<td width="175">
+<p><span>Cup of Excellence winning coffee</span></p>
+</td>
+</tr>
+<tr>
+<td width="148">
+<p>Bubanza</p>
+</td>
+<td width="148">
+<p>Mumirwa</p>
+</td>
+<td width="120">
+<p>1800 promedio</p>
+</td>
+<td width="175">
+<p> <span>Notas a berries.</span></p>
+</td>
+</tr>
+<tr>
+<td width="148">
+<p>Muyinga</p>
+</td>
+<td width="148">
+<p>Bweru</p>
+</td>
+<td width="120">
+<p>1800 promedio</p>
+</td>
+<td width="175">
+<p> <span>Notas dulces y cítricas</span></p>
+</td>
+</tr>
+<tr>
+<td width="148">
+<p>Kirundo</p>
+</td>
+<td width="148">
+<p>Bugesera</p>
+</td>
+<td width="120">
+<p>1400 - 1700</p>
+</td>
+<td width="175">
+<p>86,62</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p> </p>
+<p>En Kayanza, de donde proviene el bourbon rojo que lo ponemos a tu elección, habitan 487 mil personas. Esta población por mucho tiempo tuvo la fama de no ser productiva. Sin embargo, esta mala fama cambió a raíz de la instalación de la estación de lavado Nemba en 1991. ¿Por qué tenían esta fama y qué ocurrió para lograr este cambio?</p>
+<p>La población, principalmente rural, tenía mucho trabajo que hacer al cosechar el café y trasladarlo por largas distancias, recorriendo varias colinas hasta poder llegar al beneficio. Esto hacía que su producción sea baja. Desde la construcción de la estación de lavado, la actividad cafetera en la zona se vio muy beneficiada. Cambiaron el tiempo que ocupaban en el traslado, en mayor dedicación hacia la cosecha.</p>
+<p style="text-align: left;"><img alt="Cosecha de café" src="//cdn.shopify.com/s/files/1/2466/7899/files/Cafe_burundi_grande.jpg?v=1593698147" style="display: block; margin-left: auto; margin-right: auto; float: none;"></p>
+<p>Actualmente, en Nemba se recolecta la producción de 2600 productores locales. Estas familias, distribuidas a lo largo de 15 colinas, procesan alrededor de 400 toneladas durante la temporada de cosecha. Al tener más tiempo para dedicar a la <a href="https://cafesenork.com/blogs/cafe/sabes-lo-que-hay-detras-de-tu-taza-de-cafe">cosecha y post cosecha</a>, el café de esta región incrementó exponencialmente su calidad al punto de considerarse ahora como uno de los mejores cafés del país. En 2015, el café de esta región obtuvo un puntaje de 91, es decir, es considerado como un café excepcional.</p>
+<p>Las buenas prácticas y la dedicación de los experimentados caficultores ha trascendido las fronteras, trayéndonos un café de excelente calidad hacia el resto de continentes. Una acción como fue la construcción de la estación de lavado, permitió generar un cambio muy positivo. Esto es algo que se puede replicar en varios puntos del país para potenciar aún más la producción del grano y la economía pueda dinamizarse más.</p>
+<p>En esta época de confinamiento, no viene mal leer estas líneas e imaginar un viaje hacia estos exóticos destinos por los que nos lleva el café. Ya hemos hecho paradas en <a href="https://cafesenork.com/blogs/news/conoce-todo-sobre-el-cafe-de-indonesia">Indonesia</a>, <a href="https://cafesenork.com/blogs/origenes/cafe-de-el-salvador">El Salvador</a> y <a href="https://cafesenork.com/blogs/cafe-especial/cafe-biodinamico">Perú</a>, los siguientes destinos pueden ser: <a href="https://cafesenork.com/collections/colombia-grano">Guatemala, México, Brasil, India, Colombia</a>… Tú pones la imaginación, nosotros ponemos el café. Deléitate con los sabores del mundo cafetero.</p></div></div>
+</div><div id="divContentBk"></div>
+</div><div id="divContentBk"></div><!--End_Gem_Page_Main_Editor-->
+          
+          <div class="ct">
+            <p class="t2">Sigamos disfrutando del mundo del café,  escoge tu formato preferido, cápsulas o grano y descubre tu nuevo origen.</p>
+            <div class="ct2">
+            <a class="cbutton action_button" href="https://cafesenork.com/collections/capsulas-nespresso-alternativas"> Capsulas </a> <a class="cbutton action_button" href="https://cafesenork.com/collections/cafe-grano"> Grano </a>
+          	  </div>
+          </div>
+        </div>
+    <style>.ct{margin: 50px auto; } .t2{text-align:center;} .ct2{margin: 0 auto; text-align:center;} .cbutton{margin: 0 20px;}</style>
+        <div class="author_share_wrap">
+          {% if section.settings.blog_author %}
+            <div class="blog_author">
+              <img src="//1.gravatar.com/avatar/{{ article.user.email | md5 }}?s=160&r=G" alt="{{ article.author }}" />
+              <div class="author_bio">
+                <h6>{{ article.author }}</h6>
+                <p>{{ article.user.bio }}</p>
+              </div>
+            </div>
+          {% endif %}          {% if section.settings.display_social_buttons %}
+            <div class="blog_share meta">
+              {% include "social-buttons" with "article" %}
+            </div>
+          {% endif %}
+        </div><!--end author_share_wrap-->        <div class="clear" id="comments"></div>
+        <br class="clear" />        {% if settings.disqus_enabled %}
+          <div id="disqus_thread"></div>
+          <script>
+              var disqus_config = function () {
+                  this.page.url = "{{ canonical_url }}";
+                  this.page.identifier = "{{ article.id }}";
+              };
+              (function() {
+                  var d = document, s = d.createElement('script');
+                  s.src = '//{{ settings.disqus_shortname }}.disqus.com/embed.js';
+                  s.setAttribute('data-timestamp', +new Date());
+                  (d.head || d.body).appendChild(s);
+              })();
+          </script>
+          <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+        {% elsif blog.comments_enabled? %}
+          {% if article.comments_count > 0 %}
+            <h4>{{ 'blogs.comments.response_count' | t: count: article.comments.size }}</h4>            {% for comment in article.comments %}
+              <div id="comment-{{ comment.id }}" class="comment clearfix">
+                <div class="gravatar two columns alpha center" data-email="{{ comment.email }}">
+                  <img src="//1.gravatar.com/avatar/{{ comment.email | md5 }}?s=160&r=G" alt="{{ comment.author }}" />
+                </div>
+                <div class="comment-body eight columns omega">
+                  <h6>{{ comment.author }}</h6>
+                  <p class="meta">
+                    <span class="label">{{ comment.created_at | date: format: "month_day_year" }}</span>
+                  </p>                  {{ comment.content }}
+                </div>
+              </div>
+            {% endfor %}
+          {% endif %}          {% if comment and comment.created_at %}
+            {% if article.comments_count == 0 %}
+              <h4>{{ 'blogs.comments.response_count' | t: count: article.comments.size }}</h4>
+            {% endif %}
+            <div id="comment-{{ comment.id }}" class="comment clearfix">
+              <div class="gravatar two columns alpha center" data-email="{{ comment.email }}">
+                <img src="//1.gravatar.com/avatar/{{ comment.email | md5 }}?s=160&r=G" alt="{{ comment.author }}" />
+              </div>
+              <div class="comment-body eight columns omega">
+                <h6>{{ comment.author }}</h6>
+                <p class="meta">
+                  <span class="label">{{ comment.created_at | date: format: "month_day_year" }}</span>
+                </p>                {{ comment.content }}
+              </div>
+            </div>
+          {% endif %}          {% include 'pagination' with sidebar %}          <div class="clear" id="new-comment"></div>
+          <h4>{{ 'blogs.comments.title' | t }}</h4>          {% if blog.moderated? %}
+            <p><em>{{ 'blogs.comments.moderated' | t }}</em></p>
+          {% endif %}          {% form article %}
+            {% if form.posted_successfully? %}
+              {% if blog.moderated? %}
+                <p class="quote align_left">{{ 'blogs.comments.success_moderated' | t }}</p>
+              {% else %}
+                <p class="quote align_left">{{ 'blogs.comments.success' | t }}</p>
+              {% endif %}
+            {% endif %}            {% if form.errors %}
+              <p class="quote align_left">{{ 'general.forms.post_error' | t }}</p>
+            {% endif %}            <div class="six columns alpha">
+              <label for="comment_author">{{ 'blogs.comments.name' | t }} <span class="red">*</span></label>
+              <input type="text" id="comment_author" name="comment[author]" value="{{ form.author }}" required="required" />
+            </div>            <div class="six columns omega">
+              <label for="comment_email">{{ 'blogs.comments.email' | t }} <span class="red">*</span></label>
+              <input type="text" id="comment_email" name="comment[email]" value="{{ form.email }}" required="required" />
+            </div>            <label for="comment_body">{{ 'blogs.comments.comment' | t }} <span class="red">*</span></label>
+            <textarea id="comment_body" name="comment[body]" rows="5" required="required">{{ form.body }}</textarea>            <input type="submit" value="{{ 'blogs.comments.post' | t }}" id="comment-submit" class="action_button" />
+          {% endform %}
+        {% endif %}
+    </div>    {% if section.settings.blog_additional_posts and blog.articles_count > 1 %}
+      <div class="section clearfix">
+        <hr />
+        <h3>{{ 'blogs.article.additional_articles' | t: title: blog.title }}</h3>        {% assign article_found = false %}
+        {% for a in blog.articles limit: 4 %}
+          {% assign skip_article = false %}
+          {% if article_found == false and forloop.last %}
+            {% assign skip_article = true %}
+          {% endif %}
+          {% if article.id == a.id %}
+            {% assign article_found = true %}
+            {% assign skip_article = true %}
+          {% endif %}
+          {% unless skip_article %}
+            <div class="four columns {% cycle 'alpha', ' ', 'omega' %} article">
+              {% if a.image %}
+                <a href="{{ a.url }}" title="{{ a.title | escape }}">
+                  <img  src="{{ a.image | img_url: '100x' }}"
+                        alt="{% if a.image.alt != blank %}{{ a.image.alt }}{% else %}{{ a.title | escape }}{% endif %}"
+                        data-src="{{ a.image | img_url: '1200x', format: 'pjpg' }}"
+                        class="lazyload {{ settings.image_loading_style }}"
+                        sizes="auto"
+                        srcset="{{ a.image | img_url: '480x', format: 'pjpg' }} 480w,
+                                {{ a.image | img_url: '600x', format: 'pjpg' }} 600w,
+                                {{ a.image | img_url: '800x', format: 'pjpg' }} 800w,
+                                {{ a.image | img_url: '1200x', format: 'pjpg' }} 1200w"
+                         />
+                </a>
+              {% endif %}              <h5 class="sub_title">
+                <a href="{{ a.url }}" title="{{ a.title | escape }}">{{ a.title }}</a>
+              </h5>
+              <p class="blog_meta">
+                {% if section.settings.blog_author %}
+                  <span>{{ 'blogs.article.by_author' | t: author: a.author }}</span>
+                {% endif %}                {% if section.settings.blog_date %}
+                  <span>{{ a.published_at | date: format: "month_day_year" }}</span>
+                {% endif %}                {% if settings.disqus_enabled %}
+                  <span>
+                    <a href="{{ a.url }}#disqus_thread" data-disqus-identifier="{{ a.id }}" class="disqus-comment-count">{{ 'blogs.counts.comments_with_count' | t: count: 0 }}</a>
+                  </span>
+                {% elsif a.comments_enabled? and a.comments_count > 0 %}
+                  <span>
+                    <a href="{{ a.url }}#comments">{{ 'blogs.counts.comments_with_count' | t: count: a.comments_count }}</a>
+                  </span>
+                {% endif %}
+              </p>
+              {% if section.settings.blog_tags %}
+                <div class="blog_meta tags">
+                  {% for tag in a.tags %}
+                    <span><a href="{{ shop.url}}/blogs/{{ blog.handle }}/tagged/{{ tag | handleize }}" title="{{ blog.title | escape }} {{ 'blogs.general.tagged' | t }} {{ tag | escape }}">{{ tag }}</a></span>
+                  {% endfor %}
+                </div>
+              {% endif %}              {% if a.excerpt != blank %}
+                <div class="excerpt">{{ a.excerpt }}</div>
+              {% endif %}
+              {% if section.settings.read_more_link %}
+                <a href="{{ a.url }}" title="{{ a.title | escape }}" class="{% if settings.read_more_style == 'button' %}action_button continue-button{% else %}{% endif %}">{{ 'blogs.general.continue_reading_html' | t }}</a>
+              {% endif %}
+            </div>
+          {% endunless %}
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>  {% include "blog-sidebar", blog_handle: blog.handle %}
+{% endpaginate %}
+</div>
+<!--GEM_FOOTER-->
+{% capture GEM_FOOTER_SCRIPT %}
+<script data-instant-track type="text/javascript">
+	var pageLibs = [		'{{ 'gem-article-388279500869.js' | asset_url }}',	];
+</script>
+<script data-instant-track type="text/javascript">
+	var GEMVENDOR = GEMVENDOR || (function(){		var _js = {};		return {			init: function(Args) {				_js = Args;			},			getLibs: function() {				return _js;			}		};	}());	GEMVENDOR.init(pageLibs);</script>
+<script data-instant-track type="text/javascript" src="https://d1um8515vdn9kb.cloudfront.net/files/gempagev2.js?v=1.0" class="gf-script" defer></script>
+{% endcapture %}
+<!--GEM_FOOTER_END-->

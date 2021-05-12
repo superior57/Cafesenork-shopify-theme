@@ -1,0 +1,179 @@
+{%- comment-%}
+	Author: Layouthub
+	Email:support@layouthub.com
+	Description: The snippet help integrate Third party review app with Layouthub
+	Note: You SHOULD NOT modify source code in this page because It is automatically generated from LayoutHub.If your app want to integrate with Layouthub Please contact us via email: support@layouthub.com
+{%- endcomment-%}
+{%- assign review_platform = 'product-reviews' -%}
+{% comment %}
+	single: for Rating in Single product
+	rating: For Rating in collection page ...
+	form: Show form review
+{% endcomment %}
+{%- if shop.metafields.layouthub and shop.metafields.layouthub.app_review -%}
+	{%- assign review_platform = shop.metafields.layouthub.app_review -%}
+{%- endif -%}
+{%- case review_platform -%}
+	{%- when 'none' -%}
+	{%- when 'ali-reviews' -%}
+			{%- if review_type == 'rating' -%}
+				<div product-id="{{ product.id }}" class="arv-collection arv-collection--{{ product.id }}"></div>
+			{%- elsif review_type == 'single' -%}
+				<div product-id="{{ product.id }}" class="alr-display-review-badge"></div>
+			{% elsif review_type == 'form' %}
+				<div id="shopify-ali-review" product-id="{{ product.id }}"> {{- shop.metafields.review_collector.review_code -}}</div>
+			{%- else -%}
+				<div product-id="{{ product.id }}" class="arv-collection arv-collection--{{ product.id }}"></div>
+			{%- endif -%}
+	 {%- when 'judgeme' -%}
+			{%- if review_type == 'rating' -%}
+				{%- render 'judgeme_widgets', widget_type: 'judgeme_preview_badge', jm_style: '', concierge_install: true ,  product: product-%}
+			{%- elsif review_type == 'single' -%}
+				{% render 'judgeme_widgets', widget_type: 'judgeme_preview_badge', jm_style: '', concierge_install: true,  product: product -%}
+			{% elsif review_type == 'form' %}
+				{%- render 'judgeme_widgets', widget_type: 'judgeme_review_widget', concierge_install: true, product: product -%}
+			{%- else -%}
+				{%- render 'judgeme_widgets', widget_type: 'judgeme_preview_badge', jm_style: '', concierge_install: true,  product: product -%}
+			{%- endif -%}
+	 {%- when 'product-reviews-addon' -%}
+	 		{%- if review_type == 'rating' -%}
+				<span class=" stamped-product-reviews-badge" data-product-sku="{{ product.handle }}" data-id="{{ product.id }}" style="display:block;">{{- product.metafields.stamped.badge -}}</span>
+			{%- elsif review_type == 'single' -%}
+				<span class="stamped-product-reviews-badge stamped-main-badge" data-id="{{ product.id }}" data-product-sku="{{ product.handle }}" style="display: inline-block;">{{- product.metafields.stamped.badge -}}</span>
+			{%- elsif review_type == 'form' -%}
+				<div id="stamped-main-widget" 
+					data-widget-style="standard"
+					data-product-id="{{ product.id }}" 
+					data-name="{{ product.title | escape }}" 
+					data-url="{{ shop.url }}{{ product.url }}" 
+					data-image-url="{{ product.featured_image | product_img_url: "large" |replace: '?', '%3F' | replace: '&','%26'}}" 
+					data-description="{{ product.description | escape }}" 
+					data-product-sku="{{product.handle}}"> 
+					{{- product.metafields.stamped.reviews -}} 
+				</div>
+			{%- else -%}
+				<span class=" stamped-product-reviews-badge" data-product-sku="{{ product.handle }}" data-id="{{ product.id }}" style="display:block;">{{- product.metafields.stamped.badge -}}</span>
+			{%- endif -%}
+	{%- when 'areviews-aliexpress'-%}
+		{%- if review_type == 'rating' -%}
+			<div class="areviews_product_item areviews_stars{{ product.id }}"  data-product-id="{{ product.id }}"></div>
+		{%- elsif review_type == 'single' -%}
+			<div class="areviews_header_stars"></div>
+		{%- elsif review_type == 'form' -%}
+			<div class="page-full">{%- render 'aliexpress_reviews',  product: product-%}</div>
+		{%- else -%}
+			<div class="areviews_product_item areviews_stars{{ product.id }}"  data-product-id="{{ product.id }}"></div>
+		{%- endif -%}
+	{%- when 'loox' -%}
+		{%- if review_type == 'form' -%}
+			<div id="looxReviews" data-product-id="{{product.id}}" >{{- product.metafields.loox.reviews -}}</div>
+		{%- else -%}
+			<a href="#looxReviews"><div class="loox-rating" data-id="{{ product.id }}" data-rating="{{ product.metafields.loox.avg_rating }}" data-raters="{{ product.metafields.loox.num_reviews }}"></div></a>
+		{%- endif -%}
+	{%- when 'ryviu'-%}
+			{%- if review_type == 'rating' -%}
+				<div class="ryviu-collection">
+					<ryviu-widget-total collection=1 
+					     reviews_data="{{product.metafields.ryviu.product_reviews_info  | escape  }}" 
+					     product_id="{{product.id}}" handle="{{product.handle}}">
+					</ryviu-widget-total>
+				</div>  
+			{%- elsif review_type == 'single' -%}
+				<div class="review-widget">
+					<ryviu-widget-total
+					    reviews_data="{{product.metafields.ryviu.product_reviews_info  | escape  }}" 
+					    product_id="{{product.id}}" handle="{{product.handle}}">
+					</ryviu-widget-total>
+				</div>
+			{%- elsif review_type == 'form' -%}
+				<!-- RYVIU APP :: WIDGET -->
+				<div class="lt-block-reviews"> 
+					<ryviu-widget  
+					    handle="{{product.handle}}"
+					    title_product="{{product.title}}"
+					    total_meta="{{ product.metafields.ryviu.r_count }}"
+						image_product="{{ product.featured_image.src | img_url: '800x' }}"></ryviu-widget>
+				</div>
+				<!-- / RYVIU APP -->
+			{%- else -%}
+				<div class="ryviu-collection">
+					<ryviu-widget-total collection=1 
+					     reviews_data="{{product.metafields.ryviu.product_reviews_info  | escape  }}" 
+					     product_id="{{product.id}}" handle="{{product.handle}}">
+					</ryviu-widget-total>
+				</div>  
+			{%- endif -%}
+	{%- when 'yotpo-social-reviews'-%}
+		{%- if review_type == 'form' -%}
+			<div class="yotpo yotpo-main-widget" data-product-id="{{ product.id }}" data-name="{{ product.title | escape }}" data-url="{{ shop.url }}{{ product.url }}" data-image-url="{{ product.featured_image | product_img_url: "large" |replace: '?', '%3F' | replace: '&','%26'}}" data-description="{{ product.description | escape }}"></div>
+		{% else %}
+			<div class="yotpo bottomLine" style="display:inline-block" data-product-id="{{ product.id }}"> </div>
+		{% endif %}
+	{%- when 'aliexpress-reviews-importer'-%}
+		{%- if review_type == 'form' -%}
+			<div id="shopbooster-ali" product-id="{{ product.id }}" ></div>
+		{%- elsif review_type == 'single'-%}
+			<div id="shop_booster_rate_6" product-id="{{ product.id }}"></div>
+		{%- else -%}
+			<div class="shop-booster-content shop-booster-col-rat" id="shop-booster-pid-d-{{ product.id }}" ></div>
+		{%- endif -%}
+	{%- when 'rivyo-product-review'-%}
+		{%- if review_type == 'form' -%}
+			<div id="wc_review_section" class="wc_review_main_content" data-url="{{ shop.url }}" data-handle="{{ product.handle }}" data-product_id="{{ product.id }}" data-limit="0"></div>
+		{%- else -%}
+			<div class="wc_product_review_badge" data-handle="{{ product.handle }}" data-product_id="{{ product.id }}"></div>
+        {%- endif -%}
+    {%- when 'growave'-%}
+        {%- if review_type == 'single' -%}
+            {% capture the_snippet_review_avg %}{% render 'ssw-widget-avg-rate-profile' %}{% endcapture %}
+            {% unless the_snippet_review_avg contains 'Liquid error' %}
+            {{ the_snippet_review_avg }}
+            {% endunless %}    
+        {%- elsif review_type == 'form' -%}
+            {% capture the_snippet_reviews %}{% render 'socialshopwave-widget-recommends' with 1 %}{% endcapture %}
+            {% unless the_snippet_reviews contains 'Liquid error' %}
+            {{ the_snippet_reviews }}
+            {% endunless %}    
+        {%- else -%}
+            {% capture the_snippet_review_avg %}{% render 'ssw-widget-avg-rate-listing', product: product %}{% endcapture %}
+            {% unless the_snippet_review_avg contains 'Liquid error' %}
+            {{ the_snippet_review_avg }}
+            {% endunless %}    
+        {%- endif -%}
+    {% when 'smart-aliexpress-reviews'%}
+        {%- if review_type == 'single' -%}
+            <a href="#scm-reviews-importer">
+                <div id="scm-product-detail-rate" class="scm-reviews-rate" data-rate-version2= {{ product.metafields.scm_review_importer.reviewsData.reviewCountInfo | json}}>
+                </div>
+            </a>
+        {% elsif review_type == 'form'%}
+            {% render "reviews-importer" %}
+        {% else%}
+            <div class="scm-reviews-rate" data-rate-version2= {{ product.metafields.scm_review_importer.reviewsData.reviewCountInfo | json}}>
+            </div>
+        {% endif %}
+    {%- when 'photo-reviews'-%}
+        {%- if review_type == 'single' -%}
+            <div id='opinew-stars-plugin-product'>{% render 'opinew_review_stars_product' product:product %}</div>
+        {% elsif review_type == 'form'%}
+            <div style="clear:both;"></div>
+            <div id="opinew-reviews-product-page-code" class="">
+                <span id="opinew-plugin" data-server-address="https://www.opinew.com" data-opw-prodreviews="{{ product.metafields.opinew_metafields['product_plugin'] }}" data-opinew-shop-id="{{ shop.id }}" data-shop-url="{{shop.domain}}" data-platform-product-id="{{product.id}}">
+                <span id="opinew_product_plugin_app"></span>
+                </span>
+            </div>
+        {% else%}
+            <div class='opinew-stars-plugin-product-list'>{% render 'opinew_review_stars_lists' product:product %}</div>
+        {% endif %}
+	{%- else -%}
+		{%- if review_type == 'rating' -%}
+			<span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+		{%- elsif review_type == 'single' -%}
+			<span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+		{%- elsif review_type == 'form' -%}
+			<div id="shopify-product-reviews" data-id="{{product.id}}">{{- product.metafields.spr.reviews -}}</div>
+		{%- else -%}
+			<span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+		{%- endif -%}
+
+{%- endcase -%}

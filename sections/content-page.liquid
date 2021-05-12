@@ -1,0 +1,41 @@
+{% comment %}
+** Content - homepage partial **
+- Draggable section
+{% endcomment %}
+
+<div class="homepage_content featured_content clearfix">
+  <div class="container">
+    <div class="sixteen columns">
+      <div class="section clearfix">
+        {% if section.settings.content_page != blank %}
+          {% include 'page-multi-column', content: pages[section.settings.content_page].content %}
+        {% else %}
+          <p class="center">
+            {{ 'homepage.onboarding.no_content' | t }}
+          </p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+
+{
+  "name": "Page",
+  "class": "page-section",
+  "settings": [
+    {
+      "type": "page",
+      "id": "content_page",
+      "label": "Content page"
+    }
+  ],
+  "presets": [{
+    "name": "Page",
+    "category": "Text",
+    "settings": {
+    }
+  }]
+}
+{% endschema %}

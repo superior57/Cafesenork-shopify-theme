@@ -1,0 +1,65 @@
+<div style="border-radius: 10px;" class="remodal size-chart-remodal" data-remodal-id="size-chart{{product_id}}" data-remodal-options="hashTracking: false">
+<a data-remodal-action="close" class="remodal-close"></a>
+
+  <div class="size-chart-wrap">
+
+    <img src="https://cdn.shopify.com/s/files/1/2466/7899/files/logos-finales_200x.png?10429488431267004877" alt="{{ shop.name | escape }}" />
+    
+    <h1 class="product_name">Arriendo / Comodato {{ product.title }}</h1>
+    <span class="money">{{ product.price | money }}</span>
+    
+    <h5>Déjanos tus datos y te contactaremos en breve</h5>
+    <div class="feature_divider"></div>
+
+    {% form 'contact' %}
+    	 <input type="text" id="producto" name="contact[producto]" placeholder="{{ product.title }}" value="{{ product.title }}">
+         <div style="width: 90%; display:inline-block;">
+          <label for="contactFormNombre">Nombre <span class="red">*</span></label>
+          <input type="text" id="contactNombre" name="contact[nombre]" placeholder="Nombre" autocorrect="off" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}" required="required">
+         </div>
+         <div style="width: 90%;display:inline-block;">
+          <label for="contactFormEmail">Correo Electrónico <span class="red">*</span></label>
+          <input type="email" id="contactFormEmail" name="contact[email]" placeholder="Correo Electrónico " autocorrect="off" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}" required="required">
+         </div>
+      	 <div style="width: 90%;display:inline-block;">
+          <label for="contactFormTelefono">Teléfono <span class="red">*</span></label>
+          <input type="text" id="contactFormTelefono" name="contact[telefono]" placeholder="Teléfono" autocorrect="off" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}" required="required">
+         </div>
+    	 <div style="width: 90%;display:inline-block;">
+          <label for="contactFormNombretE">Nombre Empresa <span class="red">*</span></label>
+          <input type="text" id="contactFormNombreE" name="contact[nombre-empresa]" placeholder="Nombre Empresa" autocorrect="off" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}" required="required">
+         </div>
+         <div style="width: 90%; display:inline-block;">
+          <label for="contactFormNotas">Notas</label>
+          <input type="text" id="contactFormNotas" name="contact[notas]" placeholder="Notas">
+         </div>
+
+
+  		<input id="QVOe" type="submit" class="submit action_button add_to_cart ten" value="Enviar" />
+  		</div>
+      {% endform %}
+    
+
+
+<style>
+  #producto{
+    display:none; 
+  }
+  input[type="text"],input[type="text"]:active, input[type="text"]:focus,input[type="email"],input[type="email"]:active, input[type="email"]:focus, select{
+    border: 1px solid {{ settings.btn_color }}!important; 
+  }
+  .center{
+	margin-bottom: 0 !important;
+	padding-bottom: 0 !important;
+  }
+</style>
+<script>
+  
+$(document).ready(function () {
+    if(window.location.href.indexOf("?contact_posted=true") > -1 ) {
+      window.location.replace('https://cafesenork.com/pages/gracias');
+    }
+});
+  
+  
+</script>

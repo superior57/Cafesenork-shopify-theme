@@ -1,0 +1,17 @@
+<script>(function(t,e){window.lion=e;var n,i=t.getElementsByTagName("script")[0];n=t.createElement("script"),n.type="text/javascript",n.async=!0,n.src="//dg1f2pfrgjxdq.cloudfront.net/libs/ll.sdk-1.1.js",i.parentNode.insertBefore(n,i),e.init=function(n){function i(t,e){var n=e.split(".");2===n.length&&(t=t[n[0]],e=n[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}var r,o=t.getElementsByTagName("script")[0];r=t.createElement("script"),r.type="text/javascript",r.async=!0,r.src="//platform.loyaltylion.com/sdk/configuration/"+n+".js",o.parentNode.insertBefore(r,o),e.ui=e.ui||[];for(var a="_push configure track_pageview identify_customer auth_customer identify_product on off setCartState ui.refresh program_data".split(" "),c=0;a.length>c;c++)i(e,a[c]);e._token=n}})(document,window.lion||[]);
+lion.init('fa7a845b6753fb33301d3cf9a34d80a5');
+lion.configure({ platform: 'shopify' });
+{% if customer != nil %}
+  {% assign now = 'now' | date: "%Y-%m-%dT%H:%M:%S%z" %}
+  lion.identify_customer({
+    id: "{{ customer.id }}",
+    email: "{{ customer.email }}",
+    name: "{{ customer.name }}",
+    recharge_hash: "{{ customer.metafields.subscriptions.customer_string | if: customer.metafields.subscriptions.customer_string }}"
+  });
+  lion.auth_customer({
+    date: "{{ now }}",
+    auth_token: "{{ customer.id | append: now | append: customer.email | append: '389a41b5b97a2d8311d9a4483f3caeaa' | sha1 }}"
+  });
+{% endif %}
+</script>

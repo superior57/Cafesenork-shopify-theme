@@ -1,0 +1,11 @@
+<!--Code injected by VW Custom Product Tabs--><div class="vw-app-integration-tab" id="vw-app-integration-tab-2022" style="display:none;"><a href="#looxReviews">
+<div class="loox-rating" data-id="{{ product.id }}" data-raters="{{ product.metafields.loox.num_reviews }}" data-rating="{{ product.metafields.loox.avg_rating }}">
+</div>
+</a></div><link href="https://dvjimc2bmh7lo.cloudfront.net/assets/bundle.css?t=1619550588" rel="stylesheet" type="text/css"/><div id="vw-custom-product-tag-container"><script id="vw-custom-product-tag" type="application/json">{"product_description": "{{ product.description | strip_newlines | escape }}", "collection_ids": "{% for collection in product.collections %}{{ collection.id }},{% endfor %}", "theme": "{\"style\":\"link\",\"desktopType\":\"tabs\",\"mobileType\":\"accordion\",\"iconType\":\"arrow\",\"iconDefaultColor\":{\"r\":150,\"g\":150,\"b\":150,\"a\":1},\"iconActiveColor\":{\"r\":103,\"g\":103,\"b\":103,\"a\":1},\"defaultColor\":{\"r\":121,\"g\":121,\"b\":121,\"a\":1},\"defaultBgColor\":{\"r\":236,\"g\":236,\"b\":236,\"a\":0},\"defaultFontWeight\":\"normal\",\"activeColor\":{\"r\":43,\"g\":43,\"b\":43,\"a\":1},\"activeBgColor\":{\"r\":255,\"g\":255,\"b\":255,\"a\":0},\"activeFontWeight\":\"bold\",\"strokeColor\":{\"r\":230,\"g\":230,\"b\":230,\"a\":0},\"bgColor\":{\"r\":255,\"g\":255,\"b\":255,\"a\":0},\"textColor\":{\"r\":43,\"g\":43,\"b\":43,\"a\":1},\"accordionDefaultCollapsed\":true,\"accordionAllowMultipleExpand\":true,\"accordionDefaultExpandAll\":false}", "published": true, "tabs": []}</script></div>{% section 'vw-product-tabs-1' %}{% section 'vw-product-tabs-2' %}{% section 'vw-product-tabs-3' %}{% section 'vw-product-tabs-4' %}<!--End of Code-->
+          {% include 'ba-po-params' %}
+        
+{% comment %}
+  The contents of the product.recently-viewed.liquid template can be found in /sections/product-recently-viewed-template.liquid
+{% endcomment %}
+
+{% section 'product-recently-viewed-template' %}

@@ -1,0 +1,348 @@
+{% if featured %}
+  {% assign collection = collections[featured_collection] %}
+{% endif %}
+
+
+
+    <!-- Side bar customzation -->
+<style>
+  table,tr,td,th,tbody{
+    text-align:center;
+  }
+  table#tipo_table
+  {
+    width:280px; 
+  }
+  
+  table tr,td
+  {
+    border: none !important;
+  }
+  
+  img
+  {
+    width:100px; 
+    cursor:pointer;
+  }
+  
+  .tipo-img
+  {
+    width: 90px !important; 
+  }
+  
+  .intensidad-img
+  {
+    width: 90px !important; 
+  }
+  
+  .intensidad-img:hover
+  {
+    width: 90px !important; 
+    border:3px solid #2196F3;
+  }
+  
+  .tipo-img.img-checked, .origen-img.img-checked, .certificados-img.img-checked, .tostado-img.img-checked, .proceso-img.img-checked
+  {
+    border: 3px solid #2cd63c;
+    box-shadow: 5px 10px 18px #888888;
+  }
+  
+  .intensidad-img.img-checked
+  {
+    border: 3px solid #2cd63c;
+    box-shadow: 5px 10px 18px #888888;
+  }
+  
+  .notas-img.img-checked
+  {
+    border: 3px solid #2cd63c;
+    box-shadow: 5px 10px 18px #888888;
+  }
+  
+  
+  
+  td img:hover
+  {
+    border:2px solid #2196F3;
+    
+  }
+  .img-checked
+  {
+    border:3px solid #646464;
+  }
+  .tr-divider{
+     height: 30px; 
+  }
+  .table-div
+  {
+    overflow-x: auto; 
+  }
+  .scroll-top-margin
+  {
+    margin-top:20px;  
+  }
+  label
+  {
+    cursor:pointer; 
+  }
+  
+  .th-title
+  {
+     background-color: #262626;color: white;text-align: center;font-size: 20px;height: 35px;width:40%; border-bottom: 1px solid #838383;
+  }
+  .th-margin
+  {
+  	border-left: none;border-right: none;border-top: none;border-bottom: 1px solid #838383;background: white;width:60%;
+  }
+  
+  .clear-filter
+  {
+    text-align:center;
+    margin-bottom:30px;
+  }
+  
+  .clear-filter-title
+  {
+    color: #373737 !important;
+    font-size: 1rem; 
+  }
+  
+  .clear-filter-title:hover
+  {
+    color: #B2A18A !important;
+  }
+  
+  .breadcrumb-collection
+  {
+ 	display:none;
+  }
+  .toggle-all--true{
+    display:none;
+  }
+  
+  .carousel-cell{
+     width:300px; 
+  }
+  
+  .clear-filter-title{
+     cursor: pointer;
+  }
+  .flickity-prev-next-button
+  {
+    background: transparent !important; 
+  }
+  .sidebar-container
+  {
+    margin-right: 45px;
+    margin-left: -25px;
+  }
+  
+  .mobile-show
+  {
+    display:none !important;
+  }
+  .mobile-hide
+  {
+     display:initial !important;
+  }
+  
+  @media (max-width: 480px)
+  { 
+    .mobile-show
+    {
+      display:initial !important;
+    }
+    .mobile-hide
+    {
+      display:none !important;
+    }
+    td img:hover {
+      border: none;
+    }
+    .sidebar-container
+    {
+      margin-right: 0px;
+      margin-left: 0px;
+    }
+    .flickity-viewport
+    {
+      height:115px !important; 
+    }
+    .collection_description{
+      display:none; 
+    }
+    
+  }
+  
+</style>
+
+<div class="sidebar four columns sidebar-container">
+<!--- DeskTop version -->
+  <div class="sidbar mobile-hide" style="margin-top:10px;"> 
+  
+    <div class="category_section no-capsul">
+      <div class="header-content">
+        <table style="border:none; width:280px;">
+          <thead>
+            <tr>
+              <th class="th-title">CATEGORIA</th>
+              <th class="th-margin"></th>
+            <tr>
+          </thead>
+        </table>
+      </div>
+      <div id="category_content" class="table-div" style="border:none;width:280px; !important; overflow:hidden;">
+        <table>  
+          <tr>
+            <td><img src="{{ 'category-cafeteras.gif' | asset_url }}" data-type="category" data ="cafeteras" class="origen-img"></td>
+            <td><img src="{{ 'category-molinillos.png' | asset_url }}" data-type="category" data ="molinillos" class="origen-img"></td>
+          </tr>            
+          <tr>
+            <td><img src="{{ 'category-teteras.png' | asset_url }}" data-type="category" data ="teteras" class="origen-img"></td>
+            <td><img src="{{ 'category-filtros.png' | asset_url }}" data-type="category" data ="filtros" class="origen-img"></td>
+          </tr>
+          <tr>
+            <td><img src="{{ 'category-tazas.png' | asset_url }}" data-type="category" data ="tazas" class="origen-img"></td>
+            <td><img src="{{ 'category-servers.png' | asset_url }}" data-type="category" data ="servers" class="origen-img"></td>
+          </tr>
+          <tr>            
+            <td><img src="{{ 'category-espumadores-de-leche.png' | asset_url }}" data-type="category" data ="espumadoresdeleche" class="origen-img"></td>
+            <td><img src="{{ 'category-balanzas.png' | asset_url }}" data-type="category" data ="balanzas" class="origen-img"></td>
+            
+          </tr>
+          
+        </table>      
+
+      </div>
+    </div>  
+    
+  
+        
+  <div class="merca_section">
+      <div class="header-content">
+        <table style="border:none; width:280px;">
+          <thead>
+            <tr>
+              <th class="th-title">MARCA</th>
+              <th class="th-margin"></th>
+            <tr>
+          </thead>
+        </table>
+      </div>
+      <div id="merca_content" class="table-div" style="border:none;width:280px; !important; overflow:hidden;">
+        <table>  
+          <tr>
+            <td><img src="{{ 'merca-hario.png' | asset_url }}" data-type="merca" data ="hario" class="origen-img"></td>
+            <td><img src="{{ 'merca-chemex.png' | asset_url }}" data-type="merca" data ="chemex" class="origen-img"></td>
+          </tr>            
+          <tr>
+            <td><img src="{{ 'merca-timemore.png' | asset_url }}" data-type="merca" data ="timemore" class="origen-img"></td>
+            <td><img src="{{ 'merca-kalita.png' | asset_url }}" data-type="merca" data ="kalita" class="origen-img"></td>
+          </tr>
+          <tr>
+            <td><img src="{{ 'merca-felicita.png' | asset_url }}" data-type="merca" data ="felicita" class="origen-img"></td>
+            <td><img src="{{ 'merca-aeropress.png' | asset_url }}" data-type="merca" data ="aeropress" class="origen-img"></td>
+          </tr>
+          
+        </table>      
+
+      </div>
+    </div>  
+    
+    <div class="clear-filter">
+    <a class="clear-filter-title">Quitar filtros</a>
+  </div>
+ </div>
+</div>
+  
+  <!---  Mobile Version -->
+  <div class="sidbar mobile-show" style="margin-top:10px;">  
+  
+
+	<div class="category_section no-capsul">
+      <div class="header-content">
+        <table style="border:none; width:280px;">
+          <thead>
+            <tr>
+              <th class="th-title">CATEGORIA</th>
+              <th class="th-margin"></th>
+            <tr>
+          </thead>
+        </table>
+      </div>
+      <div id="category_content" class="table-div" style="border:none;width:280px; !important; overflow:hidden;">
+        <div class="country-carousel">
+          <div class="carousel-cell">
+            <table>  
+              <tr>
+                <td><img src="{{ 'category-cafeteras.gif' | asset_url }}" data-type="category" data ="cafeteras" class="origen-img"></td>
+                <td><img src="{{ 'category-molinillos.png' | asset_url }}" data-type="category" data ="molinillos" class="origen-img"></td>
+                <td><img src="{{ 'category-teteras.png' | asset_url }}" data-type="category" data ="teteras" class="origen-img"></td>
+              </tr> 
+            </table>
+          </div>
+          <div class="carousel-cell">
+            <table>  
+              <tr>
+                <td><img src="{{ 'category-filtros.png' | asset_url }}" data-type="category" data ="filtros" class="origen-img"></td>
+              	<td><img src="{{ 'category-tazas.png' | asset_url }}" data-type="category" data ="tazas" class="origen-img"></td>
+            	<td><img src="{{ 'category-servers.png' | asset_url }}" data-type="category" data ="servers" class="origen-img"></td>
+              </tr> 
+            </table>
+          </div>
+          <div class="carousel-cell">
+            <table>  
+              <tr>
+                <td><img src="{{ 'category-espumadores-de-leche.png' | asset_url }}" data-type="category" data ="espumadoresdeleche" class="origen-img"></td>
+            	<td><img src="{{ 'category-balanzas.png' | asset_url }}" data-type="category" data ="balanzas" class="origen-img"></td>
+              </tr> 
+            </table>
+          </div>
+        </div>  
+
+      </div>
+    </div>  
+
+    <div class="merca_section">
+      <div class="header-content">
+        <table style="border:none; width:280px;">
+          <thead>
+            <tr>
+              <th class="th-title">MARCA</th>
+              <th class="th-margin"></th>
+            <tr>
+          </thead>
+        </table>
+      </div>
+      <div id="merca_content" class="table-div" style="border:none;width:280px; !important; overflow:hidden;">
+        <div class="country-carousel">
+          <div class="carousel-cell">
+            <table>  
+              <tr>
+                <td><img src="{{ 'merca-hario.png' | asset_url }}" data-type="merca" data ="hario" class="origen-img"></td>
+                <td><img src="{{ 'merca-chemex.png' | asset_url }}" data-type="merca" data ="chemex" class="origen-img"></td>
+                <td><img src="{{ 'merca-timemore.png' | asset_url }}" data-type="merca" data ="timemore" class="origen-img"></td>
+              </tr>  
+            </table>   
+          </div>
+          <div class="carousel-cell">
+            <table>  
+              <tr>
+                <td><img src="{{ 'merca-kalita.png' | asset_url }}" data-type="merca" data ="kalita" class="origen-img"></td>
+                <td><img src="{{ 'merca-felicita.png' | asset_url }}" data-type="merca" data ="felicita" class="origen-img"></td>
+                <td><img src="{{ 'merca-aeropress.png' | asset_url }}" data-type="merca" data ="aeropress" class="origen-img"></td>
+              </tr>
+            </table>   
+          </div>
+        </div>
+
+      </div>
+    </div>  
+    
+  
+  <div class="clear-filter">
+    <a class="clear-filter-title">Quitar filtros</a>
+  </div>
+
+
+</div>

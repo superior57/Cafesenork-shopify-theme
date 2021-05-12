@@ -1,0 +1,25 @@
+{% render 'spurit_uac_meta_snippet' %}
+
+<style>
+    form[action^="/search"] {
+        display: none;
+    }
+    h1 {
+        display: none;
+    }
+</style>
+
+{% comment %}
+  The contents of the search.liquid template can be found in /sections/search-template.liquid
+{% endcomment %}
+
+{% section 'search-template' %}
+
+
+<script>
+  var h1s = document.querySelectorAll('h1');
+  for (var i = 0, l = h1s.length; i < l; i++) {
+    h1s[i].innerHTML = {{ page_h1 | json }};
+    h1s[i].style.display = 'block';
+  }
+</script>

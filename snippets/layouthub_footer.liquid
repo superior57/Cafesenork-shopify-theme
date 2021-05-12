@@ -1,0 +1,30 @@
+<!--Content in content_for_footer -->
+{% comment %}
+This snippet auto generate by LayoutHub. Please DO NOT modify it 
+{%- endcomment -%}
+
+{%- unless request.path contains 'apps/layouthub' -%}
+	
+	{%- if shop.metafields.layouthub -%}
+		{%- if shop.metafields.layouthub.scripts -%}
+			{% capture jquery %} {{ "layouthub-jquery.min.js" | asset_url | script_tag }} {% endcapture %}
+			{% assign jquery_string = '<!--LAYOUTHUB_JQUERY-->' %}
+				{{- shop.metafields.layouthub.scripts | replace: jquery_string, jquery  -}}
+		{%- endif -%}
+		{%- if shop.metafields.layouthub.freeshippingbar-%}
+			{% section 'layouthub_shipping_bar' %}
+		{%- endif -%}
+		{%- if shop.metafields.layouthub.cookie_bar-%}
+			{% section 'layouthub_cookie_bar' %}
+		{%- endif -%}
+		{%- if shop.metafields.layouthub.sale_notification-%}
+			{% section 'layouthub_sale_notification' %}
+		{%- endif -%}
+		{%- if shop.metafields.layouthub.cart_related-%}
+			{% section 'layouthub_cart_related' %}
+		{%- endif -%}
+		{%- if shop.metafields.layouthub.popup_banner-%}
+			{% section 'layouthub_popup_banner' %}
+		{%- endif -%}
+	{%- endif -%}
+{%- endunless -%}

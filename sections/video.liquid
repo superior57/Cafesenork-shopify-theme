@@ -1,0 +1,332 @@
+{% comment %}
+** Video - homepage partial **
+- Draggable section
+{% endcomment %}
+
+{% assign default = '1400x' %}
+{% assign size1 = '480x' %}
+{% assign size2 = '765x' %}
+{% assign size3 = '900x' %}
+{% assign size4 = '1000x' %}
+{% assign size5 = '1100x' %}
+{% assign size6 = '1300x' %}
+{% assign size7 = '1500x' %}
+{% assign size8 = '1700x' %}
+{% assign size9 = '1900x' %}
+{% assign size10 = '2000x' %}
+
+<section  class="homepage-video darken-video-{{ section.settings.video_dark_overlay }}  placeholder-image--{% if section.settings.image %}true{% else %}false{% endif %}"
+      data-video-id="video-{{section.id}}"
+      data-autoplay="{{ section.settings.autoplay }}"
+      data-autoloop="{{ section.settings.autoloop }}"
+      data-display-text-over-video="{{ section.settings.display_text_over_video }}"
+      data-poster-image="{% if section.settings.image %}{{ section.settings.image | img_url: '1500x' }}{% else %}false{% endif %}"
+      data-video-src="{{ section.settings.video.id }}"
+      data-aspect-ratio="{{ section.settings.aspect_ratio }}"
+      data-provider="{{ section.settings.source }}"
+      data-video-mp4="{{ section.settings.mp4 }}"
+      data-video-ogv="{{ section.settings.ogv }}"
+>
+  <div class="homepage-video--media">
+    {% if section.settings.image %}
+      <img  src="{{ section.settings.image | img_url: '100x', format: 'pjpg' }}"
+            alt="{% if section.settings.image.alt != blank %}{{ section.settings.image.alt | escape }}{% else %}{{ section.settings.title | escape }}{% endif %}"
+            class="lazyload {{ settings.image_loading_style }} homepage-video__image"
+            data-play-video
+            sizes="100vw"
+            data-src="{{ section.settings.image | img_url: default, format: 'pjpg' }}"
+            srcset="
+            {{ section.settings.image | img_url: default, format: 'pjpg' }} {{default | replace: 'x', 'w'}},
+            {{ section.settings.image | img_url: size1, format: 'pjpg' }} {{size1 | replace: 'x', 'w'}},
+            {{ section.settings.image | img_url: size2, format: 'pjpg' }} {{size2 | replace: 'x', 'w'}},
+            {{ section.settings.image | img_url: size3, format: 'pjpg' }} {{size3 | replace: 'x', 'w'}},
+            {{ section.settings.image | img_url: size4, format: 'pjpg' }} {{size4 | replace: 'x', 'w'}},
+            {{ section.settings.image | img_url: size5, format: 'pjpg' }} {{size5 | replace: 'x', 'w'}},
+            {{ section.settings.image | img_url: size6, format: 'pjpg' }} {{size6 | replace: 'x', 'w'}},
+            {{ section.settings.image | img_url: size7, format: 'pjpg' }} {{size7 | replace: 'x', 'w'}},
+            {{ section.settings.image | img_url: size8, format: 'pjpg' }} {{size8 | replace: 'x', 'w'}},
+            {{ section.settings.image | img_url: size9, format: 'pjpg' }} {{size9 | replace: 'x', 'w'}},
+            {{ section.settings.image | img_url: size10, format: 'pjpg' }} {{size10 | replace: 'x', 'w'}}"
+             />
+    {% else %}
+      <div class="homepage-video__placeholder" data-play-video>
+        {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg placeholder-svg--video' }}
+      </div>
+    {% endif %}
+    {% unless section.settings.pretext == blank and section.settings.title == blank and section.settings.subtitle == blank and section.settings.button1_label == blank and section.settings.button2_label == blank %}
+      <div class="position-{{ section.settings.text_position }} caption js-caption text-on-video text-on-video--{{ section.settings.display_text_over_video }}">
+        <div class="caption-content
+                    caption-background-{{section.settings.caption_background}}
+                    caption-transparency-{{ section.settings.caption_background_transparency }}
+                    align-{{section.settings.text_align}}">
+          {% if section.settings.pretext != blank %}
+            <div class="pretext">
+              {{ section.settings.pretext }}
+            </div>
+          {% endif %}
+          {% if section.settings.title != blank %}
+            <h1 class="headline">
+              {{ section.settings.title }}
+            </h1>
+          {% endif %}
+          {% if section.settings.subtitle != blank %}
+            <div class="subtitle">
+              {{ section.settings.subtitle }}
+            </div>
+          {% endif %}
+          {% if section.settings.button1_label != blank %}
+            <a {% if section.settings.button1_link != blank %}href="{{ section.settings.button1_link }}"{% else %}data-play-video-button{% endif %} class="action_button first_button highlight-{{ section.settings.button1_highlight }} {% if section.settings.button1_link == blank %}video__play-button{% endif %}">
+              {{ section.settings.button1_label }}
+            </a>
+          {% endif %}
+          {% if section.settings.button2_label != blank %}
+            <a {% if section.settings.button2_link != blank %}href="{{ section.settings.button2_link }}"{% else %}data-play-video{% endif %} class="action_button second_button highlight-{{ section.settings.button2_highlight }} {% if section.settings.button2_link == blank %}video__play-button{% endif %}">
+              {{ section.settings.button2_label }}
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    {% endunless %}
+  </div>
+</section>
+
+{% unless section.settings.pretext == blank and section.settings.title == blank and section.settings.subtitle == blank and section.settings.button1_label == blank and section.settings.button2_label == blank %}
+  <section class="position-{{ section.settings.text_position }} caption js-caption text-on-video outside-homepage-video">
+    <div class="caption-content align-{{ section.settings.text_align }}">
+      {% if section.settings.pretext != blank %}
+        <div class="pretext">
+          {{ section.settings.pretext }}
+        </div>
+      {% endif %}
+      {% if section.settings.title != blank %}
+        <h1 class="headline">
+          {{ section.settings.title }}
+        </h1>
+      {% endif %}
+      {% if section.settings.subtitle != blank %}
+        <div class="subtitle">
+          {{ section.settings.subtitle }}
+        </div>
+      {% endif %}
+      {% if section.settings.button1_label != blank and section.settings.button1_link != blank %}
+        <a href="{{ section.settings.button1_link }}" class="action_button first_button highlight-{{ section.settings.button1_highlight }}">
+          {{ section.settings.button1_label }}
+        </a>
+      {% endif %}
+      {% if section.settings.button2_label != blank and section.settings.button2_link != blank %}
+        <a href="{{ section.settings.button2_link }}" class="action_button first_button highlight-{{ section.settings.button2_highlight }}">
+          {{ section.settings.button2_label }}
+        </a>
+      {% endif %}
+    </div>
+  </section>
+{% endunless %}
+
+<style>
+  {% if section.settings.autoplay %}
+    .homepage-video__placeholder {
+      visibility: hidden;
+    }
+  {% endif %}
+</style>
+
+{% schema %}
+{
+  "name": "Featured video",
+  "class": "video-section under-menu",
+  "settings": [
+    {
+      "type": "select",
+      "id": "source",
+      "label": "Video source",
+      "options": [
+        {
+          "value": "youtube",
+          "label": "YouTube"
+        },
+        {
+          "value": "vimeo",
+          "label": "Vimeo"
+        },
+        {
+          "value": "html5",
+          "label": "HTML5"
+        }
+      ],
+      "default": "youtube"
+    },
+    {
+      "type": "select",
+      "id": "aspect_ratio",
+      "label": "Aspect ratio",
+      "options": [
+        {
+          "value": "16:9",
+          "label": "16:9"
+        },
+        {
+          "value": "4:3",
+          "label": "4:3"
+        }
+      ],
+      "default": "16:9"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Autoplay video",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "autoloop",
+      "label": "Autoloop video",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "video_dark_overlay",
+      "label": "Darken video"
+    },
+    {
+      "type": "video_url",
+      "id": "video",
+      "label": "YouTube or Vimeo video URL",
+      "accept": ["youtube", "vimeo"],
+      "default": "https://www.youtube.com/watch?v=_9VUPq3SxOc"
+    },
+    {
+      "type": "text",
+      "id": "mp4",
+      "label": "HTML5 MP4 File URL"
+    },
+    {
+      "type": "text",
+      "id": "ogv",
+      "label": "HTML5 OGV File URL (optional)"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+   {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "1600 x 900px recommended"
+    },
+    {
+      "type": "checkbox",
+      "id": "display_text_over_video",
+      "label": "Show text when video is playing",
+      "default": false
+    },
+    {
+      "type": "richtext",
+      "id": "pretext",
+      "label": "Preheading"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading"
+    },
+    {
+      "type": "richtext",
+      "id": "subtitle",
+      "label": "Subheading"
+    },
+    {
+      "type": "select",
+      "id": "text_position",
+      "label": "Text position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "checkbox",
+      "id": "caption_background",
+      "label": "Display solid text background"
+    },
+    {
+      "type": "checkbox",
+      "id": "caption_background_transparency",
+      "label": "Enable background transparency"
+    },
+    {
+      "type": "text",
+      "id": "button1_label",
+      "label": "First button label"
+    },
+    {
+      "type": "url",
+      "id": "button1_link",
+      "label": "First button link"
+    },
+    {
+      "type": "checkbox",
+      "id": "button1_highlight",
+      "label": "Highlight first button"
+    },
+    {
+      "type": "text",
+      "id": "button2_label",
+      "label": "Second button label"
+    },
+    {
+      "type": "url",
+      "id": "button2_link",
+      "label": "Second button link"
+    },
+    {
+      "type": "checkbox",
+      "id": "button2_highlight",
+      "label": "Highlight second button"
+    }
+  ],
+  "presets": [{
+    "name": "Featured video",
+    "category": "Video",
+    "settings": {
+      "autoplay": true,
+      "video": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+      "source": "youtube",
+      "button1_label": "Play Video"
+    }
+  }]
+}
+
+{% endschema %}

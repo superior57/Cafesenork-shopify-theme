@@ -1,0 +1,125 @@
+{% comment %}
+** Newsletter - homepage partial **
+- Draggable section
+{% endcomment %}
+
+<div class="newsletter_section
+            {% if section.settings.display_first_name and section.settings.display_last_name %}newsletter-both-names--true {% else %}newsletter-both-names--false {% endif %}
+            {% if section.settings.image != nil %}newsletter-bgr-true{% endif %}
+            text-align--{{section.settings.newsletter_section_text_align}}
+            lazyload
+            {{ settings.image_loading_style }}"
+      {% if section.settings.image != nil %}style="background-image: url(https:{{ section.settings.image | img_url: '1600x'}})"{% endif %}>
+  <div class="container">
+    <div class="{% if section.settings.newsletter_section_text_align == "center" %}offset-by-three{% elsif section.settings.newsletter_section_text_align == "right" %} offset-by-six{% endif %} ten columns section_form">
+      {% if section.settings.newsletter_title != blank %}
+        <h2 class="title">{{ section.settings.newsletter_title }}</h2>
+      {% endif %}
+      {% if section.settings.newsletter_text != blank %}
+        <div class="newsletter-text">{{ section.settings.newsletter_text }}</div>
+      {% endif %}
+    <div class="newsletter">
+      <span class="message"></span>
+      {% if settings.mailchimp_link != blank %}
+        <form action="{{ settings.mailchimp_link }}" method="post" name="mc-embedded-subscribe-form" id="contact_form" target="_blank">
+          {% if section.settings.display_first_name %}
+            <input type="text" value="" class="firstName" name="FNAME" placeholder="{{ 'general.newsletter_form.subscriber_first_name' | t }}">
+          {% endif %}
+          {% if section.settings.display_last_name %}
+            <input type="text" value="" name="LNAME" placeholder="{{ 'general.newsletter_form.subscriber_last_name' | t }}">
+          {% endif %}
+          <input type="email" value="" name="EMAIL" class="contact_email" placeholder="{{ 'general.newsletter_form.placeholder' | t }}">
+          <input type="submit" value="{{ 'general.newsletter_form.submit' | t }}" class="action_button sign_up" name="subscribe" />
+        </form>
+      {% else %}
+        {% form 'customer' %}
+          {% if form.posted_successfully? %}
+            <p><em>{{ 'general.newsletter_form.success_text' | t }}</em></p>
+          {% elsif form.errors %}
+            {% for field in form.errors %}
+              <p><em>{{ field }} - {{ form.errors.messages[field] }}</em></p>
+            {% endfor %}
+          {% endif %}
+
+          <input type="hidden" name="contact[tags]" value="prospect,newsletter"/>
+          {% if section.settings.display_first_name %}
+            <input type="text" class="firstName" name="contact[first_name]" placeholder="{{ 'general.newsletter_form.subscriber_first_name' | t }}" />
+          {% endif %}
+          {% if section.settings.display_last_name %}
+            <input type="text" name="contact[last_name]" placeholder="{{ 'general.newsletter_form.subscriber_last_name' | t }}" />
+          {% endif %}
+
+          <input type="hidden" name="challenge" value="false" />
+          <input type="email" class="contact_email" name="contact[email]" required placeholder="{{ 'general.newsletter_form.placeholder' | t }}" />
+          <input type='submit' class="action_button sign_up" value="{{ 'general.newsletter_form.submit' | t }}" />
+        {% endform %}
+      {% endif %}
+     </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+
+{
+  "name": "Newsletter",
+  "class": "newsletter-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "newsletter_title",
+      "label": "Heading",
+      "default": "Subscribe"
+    },
+    {
+      "type": "richtext",
+      "id": "newsletter_text",
+      "label": "Subheading",
+      "default": "<p>Sign up to get the latest on sales, new releases and more …</p>"
+    },
+    {
+      "type": "checkbox",
+      "id": "display_first_name",
+      "label": "Display first name"
+    },
+    {
+      "type": "checkbox",
+      "id": "display_last_name",
+      "label": "Display last name"
+    },
+    {
+      "type": "select",
+      "id": "newsletter_section_text_align",
+      "label": "Text alignment",
+      "options": [
+         {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+     ],
+      "default": "center"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Upload banner background image",
+      "info":"1600 x 300px recommended"
+    }
+  ],
+  "presets": [{
+    "name": "Newsletter",
+    "category": "Social",
+    "settings": {
+    }
+  }]
+}
+
+{% endschema %}

@@ -1,0 +1,55 @@
+<!--Code injected by VW Custom Product Tabs--><div class="vw-app-integration-tab" id="vw-app-integration-tab-2022" style="display:none;"><a href="#looxReviews">
+<div class="loox-rating" data-id="{{ product.id }}" data-raters="{{ product.metafields.loox.num_reviews }}" data-rating="{{ product.metafields.loox.avg_rating }}">
+</div>
+</a></div><link href="https://dvjimc2bmh7lo.cloudfront.net/assets/bundle.css?t=1619550585" rel="stylesheet" type="text/css"/><div id="vw-custom-product-tag-container"><script id="vw-custom-product-tag" type="application/json">{"product_description": "{{ product.description | strip_newlines | escape }}", "collection_ids": "{% for collection in product.collections %}{{ collection.id }},{% endfor %}", "theme": "{\"style\":\"link\",\"desktopType\":\"tabs\",\"mobileType\":\"accordion\",\"iconType\":\"arrow\",\"iconDefaultColor\":{\"r\":150,\"g\":150,\"b\":150,\"a\":1},\"iconActiveColor\":{\"r\":103,\"g\":103,\"b\":103,\"a\":1},\"defaultColor\":{\"r\":121,\"g\":121,\"b\":121,\"a\":1},\"defaultBgColor\":{\"r\":236,\"g\":236,\"b\":236,\"a\":0},\"defaultFontWeight\":\"normal\",\"activeColor\":{\"r\":43,\"g\":43,\"b\":43,\"a\":1},\"activeBgColor\":{\"r\":255,\"g\":255,\"b\":255,\"a\":0},\"activeFontWeight\":\"bold\",\"strokeColor\":{\"r\":230,\"g\":230,\"b\":230,\"a\":0},\"bgColor\":{\"r\":255,\"g\":255,\"b\":255,\"a\":0},\"textColor\":{\"r\":43,\"g\":43,\"b\":43,\"a\":1},\"accordionDefaultCollapsed\":true,\"accordionAllowMultipleExpand\":true,\"accordionDefaultExpandAll\":false}", "published": true, "tabs": []}</script></div>{% section 'vw-product-tabs-1' %}{% section 'vw-product-tabs-2' %}{% section 'vw-product-tabs-3' %}{% section 'vw-product-tabs-4' %}<!--End of Code-->
+<script text="text/javascript">
+  var _learnq = _learnq || [];
+
+  var item = {
+    Name: {{ product.title|json }},
+    ProductID: {{ product.id|json }},
+    Categories: {{ product.collections|map:'title'|json }},
+    ImageURL: "https:{{ product.featured_image.src|img_url:'grande' }}",
+    URL: "{{ shop.secure_url }}{{ product.url }}",
+    Brand: {{ product.vendor|json }},
+    Price: {{ product.price|money|json }},
+    CompareAtPrice: {{ product.compare_at_price_max|money|json }}
+  };
+
+  _learnq.push(['track', 'Viewed Product', item]);
+  _learnq.push(['trackViewedItem', {
+    Title: item.Name,
+    ItemId: item.ProductID,
+    Categories: item.Categories,
+    ImageUrl: item.ImageURL,
+    Url: item.URL,
+    Metadata: {
+      Brand: item.Brand,
+      Price: item.Price,
+      CompareAtPrice: item.CompareAtPrice
+    }
+  }]);
+</script>
+		<!-- Snippet for Simple Preorder app -->
+		{% include 'simple-preorder-bootstrap' %}
+
+
+
+
+          {% include 'ba-po-params' %}
+        
+{% comment %}
+  The contents of the product.liquid template can be found in /sections/product-template.liquid
+{% endcomment %}
+
+{% section 'product-grain-template' %}
+
+<div class="yotpo yotpo-main-widget" 
+ data-product-id="{{ product.id }}"
+ data-price="{{ variant.price | money_without_currency }}"
+ data-currency="{{ shop.currency }}" 
+ data-name="{{ product.title | escape }}" 
+ data-url="{{ shop.url }}{{ product.url }}" 
+ data-image-url="{{ product.featured_image | product_img_url: "large" |replace: '?', '%3F' | replace: '&','%26'}}" 
+</div>
+<!--Start Stamped.io Auto Installation--><div id="stamped-main-widget" class="stamped-main-widget" data-widget-style="standard" data-product-id="{{ product.id }}" data-name="{{ product.title | escape }}" data-url="{{ shop.url }}{{ product.url }}" data-image-url="{{ product.featured_image | product_img_url: "large" |replace: '?', '%3F' | replace: '&','%26'}}" data-description="{{ product.description | escape }}" data-product-sku="{{product.handle}}" data-product-type="{{product.type}}">{{ product.metafields.stamped.reviews }}</div><!--End Stamped.io Auto Installation-->

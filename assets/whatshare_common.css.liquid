@@ -1,0 +1,47 @@
+@media only screen and (min-width:1281px) {
+      .whatshare-mobile {
+          display:none !important;
+      }
+      .whatshare-desktop {
+          display:block !important;
+      }
+  }
+
+@media only screen and (max-width: 1280px) {
+    .whatshare-mobile {
+        display:block !important;
+    }
+    .whatshare-desktop {
+        display: none !important;
+    }
+}
+
+.whatshare-mobile, .whatshare-desktop {
+  background-color: {{ settings.whatshare_bg_color }};
+  box-sizing: initial;
+  color: {{ settings.whatshare_text_color }};
+  display: {{ settings.whatshare_display }};
+  font-family: {{ settings.whatshare_font_family }};
+  font-weight: {{ settings.whatshare_font_weight }};
+  padding: {{ settings.whatshare_padding }};
+  margin: {{ settings.whatshare_margin }};
+  border-radius: {{ settings.whatshare_border_rd }};
+  text-align: {{ settings.whatshare_text_align }};
+  text-decoration: {{ settings.whatshare_text_decoration }};
+  font-size: {{ settings.whatshare_text_size }};
+  width: {{ settings.whatshare_width }};
+  height: {{ settings.whatshare_height }};
+  position: {{ settings.whatshare_position }};
+  top: {{ settings.whatshare_position_top }};
+  left: {{ settings.whatshare_position_left }};
+  float: {{ settings.whatshare_float }};
+}
+.whatshare-mobile img, .whatshare-desktop img {
+    height: {{ settings.whatshare_image_height }};
+    max-height: {{ settings.whatshare_image_max_height }};
+    width:  {{ settings.whatshare_image_width }};
+    max-width:  {{ settings.whatshare_image_max_width }};
+    vertical-align:  {{ settings.whatshare_image_vertical_align }};
+}
+
+{{ settings.whatshare_custom_css }} 

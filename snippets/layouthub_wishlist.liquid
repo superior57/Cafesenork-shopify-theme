@@ -1,0 +1,43 @@
+{%- comment-%}
+	Author: Layouthub
+	Email:support@layouthub.com
+	Description: The snippet help integrate Third party wishlist app with Layouthub
+	Note: You SHOULD NOT modify source code in this page because It is automatically generated from LayoutHub.If your app want to integrate with Layouthub Please contact us via email: support@layouthub.com
+{%- endcomment-%}
+{%- assign wishlist_platform = 'layouthub-wishlist' -%}
+ {%- if shop.metafields.layouthub and shop.metafields.layouthub.app_wishlist -%}
+	{%- assign wishlist_platform = shop.metafields.layouthub.app_wishlist -%}
+{%- endif -%}
+{%- case wishlist_platform -%}
+	{%- when 'none'-%}
+	{%- when 'swym-relay' -%}
+			{%- if wishlist_content -%}
+				{%- render 'swym-product-view', product: product -%}
+				<a class="wishlist-btn" data-swaction="addToWishlist" data-product-id="{{product.id | json}}">
+				   {{- wishlist_content-}}
+				</a>
+			{%- else -%}
+				{%- render 'swym-product-view', product: product -%}
+				<button class="swym-button swym-add-to-wishlist-view-product product_{{product.id}}" data-swaction="addToWishlist" data-product-id="{{product.id | json}}"></button>
+			{%- endif -%}
+	{%- when 'smart-wishlist' -%}
+		{%- if wishlist_type == 'single' -%}
+			<div id="smartwishlist" data-product="{{ product.id }}" data-variant="{{ product.variants.first.id }}"></div>
+		{%- else -%}
+			<span class="smartwishlist" data-product="{{ product.id }}" data-variant="{{ product.variants.first.id }}"></span>
+        {%- endif -%}
+    {%- when 'growave' -%}
+        {% capture the_snippet_fave_icon %}{% render 'ssw-widget-faveicon' with product.id %}{% endcapture %}
+
+        {% unless the_snippet_fave_icon contains 'Liquid error' %}
+        
+             {{ the_snippet_fave_icon }}
+        
+        {% endunless %}
+	{%- else -%}
+		{%- if wishlist_content -%}
+			<div class="lh-wishlist-item lh-add-wishlist" data-handle="{{product.handle}}" data-pid="{{product.id}}">{{- wishlist_content -}}</div>
+		{%- else -%}
+			<div class="lh-wishlist-item lh-add-wishlist" data-handle="{{product.handle}}" data-pid="{{product.id}}"><span class="lh-wishlist-item-info lh-wishlist-icon"></span></div>
+		{%- endif -%}
+{%- endcase -%}

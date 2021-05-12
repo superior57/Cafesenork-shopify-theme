@@ -1,0 +1,26 @@
+<!--Content in content_for_header -->
+{% comment %}
+This snippet auto generate by LayoutHub. Please DO NOT modify it 
+{%- endcomment -%}
+<!--LayoutHub-Embed-->
+{%- assign tmpl = template | split: '.' | first  -%}
+{%- if tmpl contains 'page' and  page != blank  and page.metafields.layouthub and page.metafields.layouthub.featured_image  -%}
+	<meta property="og:image" content="{{page.metafields.layouthub.featured_image}}" />
+	<meta property="og:image:alt" content="{{page_title}}" />
+{%- endif -%}
+{%- unless request.path contains 'apps/layouthub' -%}
+	{%- if shop.metafields.layouthub  -%}
+		{%- if shop.metafields.layouthub.fonts -%}
+			{{- shop.metafields.layouthub.fonts -}}
+		{%- endif -%}
+		<link rel="stylesheet" type="text/css" href="data:text/css;base64,{{shop.metafields.layouthub.theme}}" media="all">
+		{%- if shop.metafields.layouthub.anti_copy -%}
+			{{ shop.metafields.layouthub.anti_copy }}
+		{%- endif -%}
+    {%- endif -%}
+    {%- if shop.metafields.layouthub.scripts -%}
+        {% assign jquery_string = '<!--LAYOUTHUB_JQUERY-->' %}
+            {{- shop.metafields.layouthub.scripts | replace: jquery_string, ''  -}}
+    {%- endif -%}
+{%- endunless -%}
+<!--/LayoutHub-Embed-->

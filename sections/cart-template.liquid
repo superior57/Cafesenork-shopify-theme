@@ -1,0 +1,270 @@
+{% comment %}
+** Cart page - default view **
+- Template section
+{% endcomment %}
+
+<a name="pagecontent" id="pagecontent"></a>
+
+<div class="section clearfix">
+  <div class="sixteen columns">
+    <h1>{{ 'cart.general.title' | t }}</h1>
+    <div class="feature_divider"></div>
+  </div>
+</div>
+
+{% if cart.item_count == 0 %}
+  <div class="sixteen columns">
+    <div class="section clearfix">
+      <div class="six columns offset-by-five">
+        <p class="quote">{{ 'cart.general.continue_browsing_html' | t }}</p>
+
+        <a href="{% if cart.items.first.product.collections != blank %}{{ cart.items.first.product.collections.last.url }}{% else %}/collections/all{% endif %}" class="action_button continue-button add_to_cart">{{ 'cart.general.continue_shopping_link_html' | t }}</a>
+      </div>
+      <br class="clear" />
+    </div>
+  </div>
+{% else %}
+
+  {% include 'banana-stand-cart-top-container' %}
+
+  <form action="/cart" method="post" id="cart_form">
+    <div class="section clearfix">
+      <div class="ten columns">
+        {% assign total_saving = 0 %}
+        {% for item in cart.items %}
+          {% if item.variant.compare_at_price > item.variant.price %}
+            {% assign saving = item.variant.compare_at_price | minus: item.variant.price | times: item.quantity %}
+            {% assign total_saving = saving | plus: total_saving %}
+          {% endif %}
+
+          <div class="section clearfix">
+            <div class="three columns alpha">
+              <a href="{{ item.url }}" title="{{ item.title | escape }}" class="cart_page_image">
+                <img  src="{{ item | img_url: '100x' }}"
+                      alt="{{ item.title | escape }}"
+                      class="lazyload {{ settings.image_loading_style }}"
+                      style="max-width: {{- item.image.width -}}px"
+                      data-sizes="auto"
+                      data-src="{{ item | img_url: '900x' }}"
+                      data-srcset=" {{ item | img_url: '300x' }} 300w,
+                                    {{ item | img_url: '600x' }} 600w,
+                                    {{ item | img_url: '900x' }} 900w"
+                       />
+              </a>
+            </div>
+
+            <div class="seven columns omega cart_content_info">
+              <h3>
+                <a href="{{ item.url }}">{{ item.product.title }}</a>
+              </h3>
+
+              {% unless item.product.has_only_default_variant or item.variant.title contains "Title" %}
+                <p class="meta">
+                  {% for option in item.product.options %}
+                    <span class="label">{{ option }}:</span> <span>{{ item.variant.options[forloop.index0] }}</span><br />
+                  {% endfor %}
+                </p>
+              {% endunless %}
+
+              {% if item.properties %}
+                <p>
+                  {% for p in item.properties %}
+                    {% unless p.last == blank %}
+                      {% if p.last contains '/uploads/' %}
+                        <div>
+                          {{ p.first }}: <a class="lightbox" href="{{ p.last }}">{{ 'cart.general.uploaded_file' | t }}</a>
+                        </div>
+                      {% else %}
+                        <div>
+                          {{ p.first }}: {{ p.last }}
+                        </div>
+                      {% endif %}
+                    {% endunless %}
+                  {% endfor %}
+                </p>
+              {% endif %}
+
+              <p class="modal_price">
+                {% if item.price > 0 %}
+                  <span class="money">{{ item.price | money }}</span>
+                {% else %}
+                  {{ settings.free_price_text }}
+                {% endif %}
+
+                {% if item.price < item.variant.compare_at_price %}
+                  <span class="money was_price">{{ item.variant.compare_at_price | money }}</span>
+                {% endif %}
+              </p>
+
+              <div class="product-quantity-box left">
+                <span class="ss-icon product-minus js-change-quantity" data-func="minus"><span class="icon-minus"></span></span>
+                <input type="number" min="0" size="2" class="quantity" name="updates[]" id="updates_{{ item.id }}" value="{{ item.quantity }}" data-line-id="{{ forloop.index }}" />
+                <span class="ss-icon product-plus js-change-quantity" data-func="plus"><span class="icon-plus"></span></span>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <div class="five columns offset-by-one">
+        <div class="section clearfix">
+          <div class="subtotal">
+            
+            {% render 'tarificador-cart-shipping-calculator' %}
+            
+            {% render 'haciendola-cart-boleta-factura' %}
+            
+            <p class="cart_subtotal js-cart_subtotal">
+              <span class="right">
+                <span class="money"><span id="bk-cart-subtotal-price"><span class="dealio-cart-total-orig-price"><span id='revy-cart-subtotal-price'>{{ cart.total_price | money }}</span></span>
+<span class="dealio-cart-total-price"></span></span></span>
+              </span>
+              <span><span id="bk-cart-subtotal-label"><span id='revy-cart-subtotal-label'>{{ 'cart.general.subtotal' | t }}</span></span></span>
+            </p>
+
+            {% if section.settings.display_savings %}
+              <p class="cart_savings sale">
+                {% if total_saving > 0 %}
+                  <span class="right">
+                    <span class="money">{{ total_saving | money }}</span>
+                  </span>
+                  <span>{{ 'layout.general.savings' | t }}</span>
+                {% endif %}
+              </p>
+            {% endif %}
+<style type="text/css">.pirate-shipping{width:100%;max-width:1170px;display:block;padding:20px 10px;margin:0 auto 5px; border-radius: 25px; background-color:#803cff}.tadadaaam{animation-duration:1s;animation-fill-mode:both;animation-timing-function:ease-in;animation-name:tadadaaam}.holdr{display:table;width:100%}.holdr .left-30,.holdr .right-70{display:table-cell;vertical-align:middle}.holdr .left-30{width:20%;text-align:center}.holdr .left-30 img{max-width:64px}.holdr .right-70{width:80%}.pirate-shipping span{color:#fff;font-size:24px;line-height:34px;font-weight:500;width:100%}span#yesitsfree{display:table-cell;text-align:center;margin:0 auto}.holdr .right-70 a{background-color:#fff;display:table-cell;padding:3px 6px;font-weight:600;color:#000;font-size:15px;text-decoration:none}.holdr .right-70 a:hover{background-color:#eee;transition:all .3s ease}@keyframes tadadaaam{0%{transform:scale(1)}10%,20%{transform:scale(.9) rotate(-3deg)}30%,50%,70%,90%{transform:scale(1.1) rotate(3deg)}40%,60%,80%{transform:scale(1.1) rotate(-3deg)}100%{transform:scale(1) rotate(0)}}</style>
+
+            {% if settings.show_multiple_currencies %}
+              <p>
+                <small>
+                  {{ 'cart.general.orders_processed_in_currency_html' | t: currency: shop.currency }}
+                </small>
+              </p>
+            {% endif %}
+
+            {% if section.settings.display_special_instructions %}
+              <label for="note">{{ 'cart.general.note' | t: shop_name: shop.name }}:</label>
+              <textarea id="note" name="note" rows="2">{{ cart.note }}</textarea>
+            {% endif %}
+
+            {% if section.settings.display_tos_checkbox %}
+              <p>
+                <input type="checkbox" class="tos_agree" id="cart_agree" required />
+                  <label class="tos_label" for="cart_agree">
+                    {{ 'cart.general.agree_to_terms_html' | t }}
+                  </label>
+                {% if settings.tos_page != blank %}
+                  <a href="{{ pages[settings.tos_page].url }}" target="_blank" class="tos_icon">{{ 'cart.general.view_terms' | t }}</a>
+                {% endif %}
+              </p>
+            {% endif %}
+
+            {% if section.settings.cart_message != blank %}
+              <div>
+                {{ section.settings.cart_message }}
+              </div>
+            {% endif %}
+            
+            
+			
+            
+            {% comment %}{% endcomment %}
+            {% assign isSrCompost = false %}
+            {% for item in cart.items %}
+            	{% if item.product.handle contains 'retiro-de-capsulas-con-el-senor-compost' %}
+            		{% assign isSrCompost = true %}
+            	{% endif %}
+            {% endfor %}
+            <div>
+              <div class="four columns">
+              	<label>
+                  {% if isSrCompost %}
+            	    <input type="checkbox" id="srCompost2" value="srCompost" checked disabled>
+                  {% else %}
+                  	<input type="checkbox" id="srCompost2" value="srCompost">
+            	  {% endif %}
+                  AÑADIR SERVICIO DE COMPOSTAJE
+                </label>
+                <img src="{{ 'boton_compost.png' | asset_url }}">
+              </div>
+              
+              <div class="four columns" style="text-align: center">
+                (Valido para Vitacura, Las Condes, Ñuñoa y Providencia)
+              </div>
+            </div>
+            
+            
+            <p>
+              <input type="submit" class="action_button add_to_cart" id="checkout" name="checkout" value="{{ 'cart.general.checkout' | t }}" />
+            </p>
+
+            {% if content_for_additional_checkout_buttons and settings.cart_action != 'ajax' %}
+              <div class="additional-checkout-buttons">
+                {{ content_for_additional_checkout_buttons }}
+              </div>
+            {% endif %}
+
+            {% if cart.item_count > 0 %}
+              <div class="featured-links">
+                <a href="/collections/all" class="secondary_button">{{ 'cart.general.continue_shopping_link_html' | t }}</a>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+<script>
+  $(document).ready(function() {
+    $('#srCompost2').change(function() {
+      console.log("change");
+      if(this.checked) {
+        jQuery.post('/cart/add.js', {
+          items: [
+            {
+              quantity: 1,
+              //el id a pasar es la variante del producto
+              id: 31770514522181, //4489766535237,
+            }
+          ]
+        })
+      }
+    });
+  });
+</script>
+
+  {% include 'cart-shipping-calculator' %}
+{% endif %}
+
+{% schema %}
+
+{
+  "name": "Cart page",
+  "class": "cart-section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "display_special_instructions",
+      "label": "Show \"note\" text box"
+    },
+    {
+      "type": "checkbox",
+      "id": "display_tos_checkbox",
+      "label": "Show \"agree to terms\" checkbox"
+    },
+    {
+      "type": "checkbox",
+      "id": "display_savings",
+      "label": "Show total savings",
+      "default": true
+    },
+    {
+      "type": "richtext",
+      "id": "cart_message",
+      "label": "Cart message"
+    }
+  ]
+}
+
+{% endschema %}

@@ -1,0 +1,955 @@
+{% comment %}
+    @rotcl
+{% endcomment %}
+
+<div id="app">
+  <div class="su">
+    <b-card no-body v-if="completing">
+      <b-tabs v-model="steps" small card>
+        <b-tab title="Suscription">
+           {% form 'contact' %}
+            {% if form.posted_successfully? %}
+            <p class="quote">{{ 'contact.form.post_success' | t }}</p>
+            {% endif %}
+
+            {% if form.errors %}
+            <p class="quote">{{ 'general.forms.post_error' | t }}</p>
+
+            {% assign message = 'contact.form.message' | t %}
+            <ul class="center">
+              {% for field in form.errors %}
+              {% if field == 'form' %}
+              <li>
+                {{ form.errors.messages[field] }}
+              </li>
+              {% else %}
+              <li>
+                {% assign field_name = field | replace: 'body', message %}
+                {{ 'general.forms.post_field_error_html' | t: field: field_name, error: form.errors.messages[field] }}
+              </li>
+              {% endif %}
+              {% endfor %}
+            </ul>
+            {% endif %}
+          <b-container>
+            <b-row>
+              <br />
+              <h4 ref="step1">
+                Tipo de suscripción:
+              </h4>
+            </b-row>
+            <b-row>
+              <b-col class="col-xs-6 col-sm-6 col-md-4">
+                <img
+                  src="https://cdn.shopify.com/s/files/1/2466/7899/files/capsulas_53f16884-1b53-4a3e-84bc-3f4ee9461a42.png?v=1578630536"
+                  width="100%">
+                <b-button block class="custom_button" @click="select(1)">Capsulas</b-button>
+              </b-col>
+              <b-col class="col-xs-6 col-sm-6 col-md-4">
+                <img
+                  src="https://cdn.shopify.com/s/files/1/2466/7899/files/grano_57b02e67-ae81-41f8-b636-aa16f8b40a2a.png?v=1578630520"
+                  width="100%">
+                <b-button block class="custom_button" @click="select(2)">Grano</b-button>
+              </b-col>
+              <b-col class="col-xs-6 col-sm-6 col-md-4">
+                <img src="https://cdn.shopify.com/s/files/1/2466/7899/files/sorpresa.gif?v=1581992666" width="100%">
+                <b-button block class="custom_button" @click="select(5)">A la medida</b-button>
+              </b-col>
+            </b-row>
+            <b-row v-if="sel != '' && sel != 5">
+              <h4 ref="step2">
+                Detalle:
+              </h4>
+            </b-row>
+            <b-row id="sel1" v-if="sel == 1">
+              <b-col class="col-xs-6 col-sm-6 col-md-4">
+                <img src="https://cdn.shopify.com/s/files/1/2466/7899/files/suscripciones_40c.jpg?v=1582762777"
+                  width="100%">
+                <b-button block class="custom_button" @click="cap(40)">40 Capsulas</b-button>
+              </b-col>
+              <b-col class="col-xs-6 col-sm-6 col-md-4">
+                <img src="https://cdn.shopify.com/s/files/1/2466/7899/files/suscripciones_70c.jpg?v=1582762778"
+                  width="100%">
+                <b-button block class="custom_button" @click="cap(70)">70 Capsulas</b-button>
+              </b-col>
+              <b-col class="col-xs-6 col-sm-6 col-md-4">
+                <img
+                  src="https://cdn.shopify.com/s/files/1/2466/7899/files/suscripciones_100c_40a8cdc7-30b5-40a0-ae73-9ee190c6706a.jpg?v=1582847792"
+                  width="100%">
+                <b-button block class="custom_button" @click="cap(100)">100 Capsulas</b-button>
+              </b-col>
+              <b-col class="col-xs-6 col-sm-6 col-md-4">
+                <img src="https://cdn.shopify.com/s/files/1/2466/7899/files/suscripciones_150c.jpg?v=1582762778"
+                  width="100%">
+                <b-button block class="custom_button" @click="cap(150)">150 Capsulas</b-button>
+              </b-col>
+              <b-col class="col-xs-6 col-sm-6 col-md-4">
+                <img src="https://cdn.shopify.com/s/files/1/2466/7899/files/suscripciones_200c.jpg?v=1582762779"
+                  width="100%">
+                <b-button block class="custom_button" @click="cap(200)">200 Capsulas</b-button>
+              </b-col>
+            </b-row>
+            <b-row id="sel2" v-if="sel == 2">
+              <b-col class="col-xs-6 col-sm-6 col-md-4">
+                <img src="https://cdn.shopify.com/s/files/1/2466/7899/files/suscripciones_2g.jpg?v=1582762776"
+                  width="100%">
+                <b-button block class="custom_button" @click="gra(2)">2 Bolsas de grano entero</b-button>
+              </b-col>
+              <b-col class="col-xs-6 col-sm-6 col-md-4">
+                <img src="https://cdn.shopify.com/s/files/1/2466/7899/files/suscripciones_3g.jpg?v=1582762776"
+                  width="100%">
+                <b-button block class="custom_button" @click="gra(3)">3 Bolsas de grano entero</b-button>
+              </b-col>
+              <b-col class="col-xs-6 col-sm-6 col-md-4">
+                <img src="https://cdn.shopify.com/s/files/1/2466/7899/files/Suscripcion_de_cafe_en_grano.png?v=1597435920"
+                  width="100%">
+                <b-button block class="custom_button" @click="gra(5)">5 Bolsas de grano entero</b-button>
+              </b-col>
+            </b-row>
+            <b-row v-if="sel == 2">
+              <b-col class="col-xs-6 col-sm-6 col-md-4">
+                <img src="https://cdn.shopify.com/s/files/1/2466/7899/files/suscripciones_2m.jpg?v=1582762776"
+                  width="100%">
+                <b-button block class="custom_button" @click="mol(2)">2 Bolsas de grano molido</b-button>
+              </b-col>
+              <b-col class="col-xs-6 col-sm-6 col-md-4">
+                <img src="https://cdn.shopify.com/s/files/1/2466/7899/files/suscripciones_3m.jpg?v=1582762777"
+                  width="100%">
+                <b-button block class="custom_button" @click="mol(3)">3 Bolsas de grano molido</b-button>
+              </b-col>
+              <b-col class="col-xs-6 col-sm-6 col-md-4">
+                <img src="https://cdn.shopify.com/s/files/1/2466/7899/files/Suscripcion_de_cafe_molido.png?v=1597436109"
+                  width="100%">
+                <b-button block class="custom_button" @click="mol(5)">5 Bolsas de grano molido</b-button>
+              </b-col>
+            </b-row>
+            <b-row v-if="sel == 4">
+              <b-col class="col-xs-12 col-md-12">
+              	<br />
+                <h4 ref="step1">
+                  Ingresa tus preferencias y armaremos una suscripción a tu medida
+                </h4>
+              </b-col>
+              <b-col class="col-xs-12 col-sm-12 col-md-4">
+                <b-form-group label="¿Cuántas bolsas?" label-for="input-3">
+                  <b-form-select @change="changeCantidad()" id="input-can" v-model="form.medida.cantidad" name="cantidad" :options="medida.cantidad" required>
+                  </b-form-select>
+                </b-form-group>
+              </b-col>
+              <b-col class="col-xs-12 col-sm-12 col-md-4">
+                <b-form-group label="¿Qué tipo prefieres?" label-for="input-3">
+                  <b-form-select @change="changeTipo()" id="input-tip" v-model="form.medida.tipo" name="tipo" :options="medida.tipo" required>
+                  </b-form-select>
+                </b-form-group>
+              </b-col>
+              <b-col class="col-xs-12 col-sm-12 col-md-4">
+                <b-form-group label="¿Cada cuánto tiempo quieres recibirlo?" label-for="input-3">
+                  <b-form-select @change="changePeriodo()" id="input-per" v-model="form.medida.periodo" name="periodo" :options="medida.periodo" required>
+                  </b-form-select>
+                </b-form-group>
+              </b-col>
+              <!--
+                <b-col class="col-xs-12 col-sm-12 col-md-4">
+                  <b-button block class="custom_button" @click="sor('Mixto')">Mixto</b-button>
+                </b-col> -->
+            </b-row>
+            <b-row id="sel5" v-if="sel == 5">
+              <b-col class="col-xs-12 col-md-12">
+              	<br />
+                <h4 ref="step5">
+                  Dejanos tus datos y te contactaremos para hacer tu suscripción a la medida
+                </h4>
+              </b-col>
+                  <div class="ten columns offset-by-three page clearfix">
+                       <br class="clear" />
+                       <div class="five columns alpha">
+                        {% assign name_attr = 'contact.form.name' | handle %}
+                        <label for="contactFormName">{{ 'contact.form.name' | t }} <span class="red">*</span></label>
+                        <input type="text" id="contactFormName" name="contact[{{ name_attr }}]" placeholder="{{ 'contact.form.name' | t }}" autocapitalize="words" value="{% if form[name_attr] %}{{ form[name_attr] }}{% elsif customer %}{{ customer.name }}{% endif %}" required="required">
+                       </div>
+                       <div class="five columns omega">
+                        <label for="contactFormEmail">{{ 'contact.form.email' | t }} <span class="red">*</span></label>
+                        <input type="email" id="contactFormEmail" name="contact[email]" placeholder="{{ 'contact.form.email' | t }}" autocorrect="off" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}" required="required">
+                       </div>
+                       {% comment %}
+                        {% assign name_attr = 'contact.form.phone' | t | handle %}
+                        <label for="contactFormPhone" class="hidden-label">{{ 'contact.form.phone' | t }}</label>
+                        <input type="tel" id="contactFormPhone" name="contact[{{ name_attr }}]" placeholder="{{ 'contact.form.phone' | t }}" pattern="[0-9\-]*" value="{% if form[name_attr] %}{{ form[name_attr] }}{% elsif customer %}{{ customer.phone }}{% endif %}">
+                        {% endcomment %}
+
+                      <label for="contactFormMessage">{{ 'contact.form.message' | t }} <span class="red">*</span></label>
+                      <textarea rows="5" id="contactFormMessage" name="contact[body]" placeholder="{{ 'contact.form.message' | t }}" required="required">{% if form.body %}{{ form.body }}{% endif %}</textarea>
+                      <input type="submit" class="mx-2 custom_button" value="{{ 'contact.form.send' | t }}" />
+
+                </div>
+            </b-row>
+            <b-row v-if="isPeriodo && isTipo && isCantidad && sel == 4">
+            	<b-col class="col-xs-12 col-sm-12 col-md-4 offset-md-4">
+                  <b-button block class="custom_button" @click="sor('A la medida')">Confirmar</b-button>
+                </b-col>
+            </b-row>
+          </b-container>
+          <div class="text-center" v-if="sel != 5">
+            <b-row v-if="!confirm">
+              <br />
+              <h4 ref="step3">
+                Confirmar:
+              </h4>
+              <b-input class="falseha" readonly style="border:transparent!important" :value="resume"></b-input>
+            </b-row><br>
+            <b-row>
+              <b-col>
+                <b-button class="mx-2 custom_button-out" @click="restart()">Empezar nuevamente</b-button>
+              </b-col>
+              <b-col>
+                <b-button class="mx-2 custom_button" :disabled="confirm" @click="nextStep()">Confirmar selección
+                </b-button>
+              </b-col>
+            </b-row>
+          </div>
+          {% endform %}
+        </b-tab>
+        <b-tab title="Formulario Sorpresa" v-if="sel == 4">
+          <b-form class="surprise-form" @submit.prevent="sorpresa">
+            <b-input style="display: none" v-model="form.suscripcion" name="suscripcion"></b-input>
+            <b-input style="display: none" name="detalle" v-model="form.medida"></b-input>
+            <b-form-group label="Nombre:" label-for="input-nombre">
+              <b-form-input id="input-nombre" v-model="form.nombre" name="nombre" required placeholder="Nombre">
+              </b-form-input>
+            </b-form-group>
+            <b-form-group label="Dirección:" label-for="input-direccion">
+              <b-form-input id="input-direccion" v-model="form.direccion" name="direccion" required
+                placeholder="Dirección"></b-form-input>
+            </b-form-group>
+
+            <b-form-group label="Correo electrónico:" label-for="input-mail">
+              <b-form-input id="input-mail" v-model="form.email" name="email" type="email" required
+                placeholder="Correo electrónico"></b-form-input>
+            </b-form-group>
+
+            <b-form-group label="Teléfono:" label-for="input-fono">
+              <b-form-input id="input-fono" v-model="form.telefono" name="telefono" type="tel" required
+                placeholder="Teléfono"></b-form-input>
+            </b-form-group>
+
+            <b-form-group label="Regiones:" label-for="input-3">
+              <b-form-select id="input-3" v-model="form.region" name="region" :options="regiones" required>
+              </b-form-select>
+            </b-form-group>
+
+            <b-form-group label="Ciudad:" label-for="input-ciudad">
+              <b-form-input id="input-ciudad" v-model="form.ciudad" name="ciudad" required placeholder="Ciudad">
+              </b-form-input>
+            </b-form-group>
+
+            <b-form-group label="Documento:" label-for="input-doc">
+              <b-form-select id="input-doc" v-model="form.documento" name="documento" :options="documento" required>
+              </b-form-select>
+            </b-form-group>
+
+            <b-form-group label="Notas:" label-for="input-notas">
+              <b-form-textarea id="input-notas" v-model="form.notas" name="notas" placeholder="Notas adicionales">
+              </b-form-textarea>
+            </b-form-group>
+            <div class="text-center">
+              <b-row>
+                <b-col>
+                  <b-button class="mx-2 custom_button-out" @click="restart()">Empezar nuevamente</b-button>
+                </b-col>
+                <b-col>
+                  <b-button :disabled="!canPress" class="mx-2 custom_button" type="submit" :disabled="confirm">Suscribir
+                  </b-button>
+                </b-col>
+              </b-row>
+            </div>
+          </b-form>
+        </b-tab>
+        <b-tab title="Detalle" v-else>
+          <b-container>
+            <b-row>
+              <br />
+              <h4>
+                Selección de bolsas de la suscripción:
+              </h4>
+              <b-input class="falseha" readonly style="border:transparent!important" :value="detail"></b-input>
+            </b-row>
+          </b-container>
+          <b-container>
+            <div class="fd">
+              <b-row>
+                <br />
+                <h4>
+                  Resumen del pedido:
+                </h4>
+              </b-row>
+            </div>
+            <div class="fd">
+              <b-row>
+                <b-col class="col-xs-2 col-sm-2 col-md-1" v-for="(i, index) in size" :key="i + index">
+                  <div v-if="selected[index] == null">
+                    <img class="blk" width="80%"
+                      src="https://cdn.shopify.com/s/files/1/2466/7899/files/blank.png?v=1581466947" />
+                  </div>
+                  <div v-if="selected[index] != null">
+                    <img width="80%" v-b-tooltip.hover :title="selected[index].nombre" :src="selected[index].image" />
+                    <a style="cursor: pointer" @click="remove(index)">Eliminar</a>
+                  </div>
+                </b-col>
+              </b-row>
+            </div>
+            <b-row v-if="sel == 1">
+              <b-col class="col-xs-6 col-sm-6 col-md-4" v-for="(el, index) in capsulas" :key="el">
+                <div class="d-flex flex-row rounded">
+                  <div class="w-25">
+                    <img width="80" :src="el.image" class="img-thumbnail" />
+                  </div>
+                  <div class="w-75">
+                    <h5 class="subtitle" v-text="el.nombre"></h5>
+                    <b-row>
+                      <b-col class="d-none">
+                        <b-button class="mx-2 custom_button" @click="open(el.product)">Ver producto</b-button>
+                      </b-col>
+                      <b-col>
+                        <b-button :disabled="selected.length == size" class="mx-2 custom_button" @click="add(el)">
+                          Agregar</b-button>
+                      </b-col>
+                    </b-row>
+                  </div>
+                </div>
+              </b-col>
+            </b-row>
+            <b-row v-if="sel == 2 || sel == 3">
+              <b-col class="col-xs-6 col-sm-6 col-md-4" v-for="(el, index) in bolsas" :key="el.nombre">
+                <div class="d-flex flex-row rounded">
+                  <div class="w-25">
+                    <img width="80" :src="el.image" class="img-thumbnail" />
+                  </div>
+                  <div class="w-75">
+                    <h5 class="subtitle" v-text="el.nombre"></h5>
+                    <b-row>
+                      <b-col>
+                        <b-button class="mx-2 custom_button" @click="open(el.product)">Ver producto</b-button>
+                      </b-col>
+                      <b-col>
+                        <b-button :disabled="selected.length == size" class="mx-2 custom_button" @click="add(el)">
+                          Agregar</b-button>
+                      </b-col>
+                    </b-row>
+                  </div>
+                </div>
+              </b-col>
+            </b-row>
+            <div class="fm">
+              <b-row>
+                <br />
+                <h4>
+                  Resumen del pedido:
+                </h4>
+              </b-row>
+            </div>
+            <div class="fm">
+              <b-row>
+                <b-col class="col-xs-2 col-sm-2 col-md-2" v-for="(i, index) in size" :key="i + index">
+                  <div v-if="selected[index] == null">
+                    <img class="blk" width="80%"
+                      src="https://cdn.shopify.com/s/files/1/2466/7899/files/blank.png?v=1581466947" />
+                  </div>
+                  <div v-if="selected[index] != null">
+                    <img width="80%" :src="selected[index].image" />
+                    <p v-text="selected[index].nombre"></p>
+                    <a style="cursor: pointer" @click="remove(index)">Eliminar</a>
+                  </div>
+                </b-col>
+              </b-row>
+            </div>
+
+          </b-container>
+          <div class="text-center">
+            <b-row>
+              <b-col>
+                <b-button class="mx-2 custom_button-out" @click="restart()">Empezar nuevamente</b-button>
+              </b-col>
+              <b-col>
+                <b-button :disabled="selected.length != size" class="mx-2 custom_button" type="submit"
+                  :disabled="confirm" @click="validate">Continuar</b-button>
+              </b-col>
+            </b-row>
+          </div>
+        </b-tab>
+        <b-tab title="Formulario">
+          <b-form class="surprise-form" @submit.prevent="sendemail">
+            <b-input style="display: none" v-model="form.suscripcion" name="suscripcion"></b-input>
+            <b-form-group label="Nombre:" label-for="input-nombre">
+              <b-form-input id="input-nombre" v-model="form.nombre" name="nombre" required placeholder="Nombre">
+              </b-form-input>
+            </b-form-group>
+            <b-form-group label="Dirección:" label-for="input-direccion">
+              <b-form-input id="input-direccion" v-model="form.direccion" name="direccion" required
+                placeholder="Dirección"></b-form-input>
+            </b-form-group>
+
+            <b-form-group label="Correo electrónico:" label-for="input-mail">
+              <b-form-input id="input-mail" v-model="form.email" name="email" type="email" required
+                placeholder="Correo electrónico"></b-form-input>
+            </b-form-group>
+
+            <b-form-group label="Teléfono:" label-for="input-fono">
+              <b-form-input id="input-fono" v-model="form.telefono" name="telefono" type="tel" required
+                placeholder="Teléfono"></b-form-input>
+            </b-form-group>
+
+            <b-form-group label="Regiones:" label-for="input-region">
+              <b-form-select id="input-region" v-model="form.region" name="region" :options="regiones" required>
+              </b-form-select>
+            </b-form-group>
+
+            <b-form-group label="Ciudad:" label-for="input-ciudad">
+              <b-form-input id="input-ciudad" v-model="form.ciudad" name="ciudad" required placeholder="Ciudad">
+              </b-form-input>
+            </b-form-group>
+
+            <b-form-group label="Documento:" label-for="input-doc">
+              <b-form-select id="input-doc" v-model="form.documento" name="documento" :options="documento" required>
+              </b-form-select>
+            </b-form-group>
+
+            <b-form-group label="Notas:" label-for="input-notas">
+              <b-form-textarea id="input-notas" v-model="form.notas" name="notas" placeholder="Notas adicionales">
+              </b-form-textarea>
+            </b-form-group>
+            <div class="text-center">
+              <b-row>
+                <b-col>
+                  <b-button class="mx-2 custom_button-out" @click="restart">Empezar nuevamente</b-button>
+                </b-col>
+                <b-col>
+                  <b-form class="normal-form" @submit.prevent="sendemail">
+                    <b-input style="display: none" name="suscripcion" v-model="form.suscripcion"></b-input>
+                    <b-input style="display: none" name="nombre" v-model="form.nombre"></b-input>
+                    <b-input style="display: none" name="direccion" v-model="form.direccion"></b-input>
+                    <b-input style="display: none" name="email" v-model="form.email"></b-input>
+                    <b-input style="display: none" name="telefono" v-model="form.telefono"></b-input>
+                    <b-input style="display: none" name="region" v-model="form.region"></b-input>
+                    <b-input style="display: none" name="ciudad" v-model="form.ciudad"></b-input>
+                    <b-input style="display: none" name="documento" v-model="form.documento"></b-input>
+                    <b-input style="display: none" name="notas" v-model="form.notas"></b-input>
+                    <b-input style="display: none" name="detalle" v-model="selectedNames"></b-input>
+                    <b-input style="display: none" name="url" v-model="form.url"></b-input>
+                    <b-button :disabled="!canPress" class="mx-2 custom_button" type="submit" :disabled="confirm">
+                      Suscribir</b-button>
+                  </b-form>
+                </b-col>
+              </b-row>
+            </div>
+          </b-form>
+        </b-tab>
+        <b-tab>
+          <b-row>
+            <br />
+            <h4>
+              Tu solicitud está realizada, nos contactaremos a la brevedad contigo para coordinar los últimos detalles
+            </h4>
+            <h4>¡Muchas gracias!</h4>
+          </b-row>
+        </b-tab>
+      </b-tabs>
+    </b-card>
+    <b-card v-else>
+      <b-container>
+        <b-row>
+          <br />
+          <h4>
+            Tu solicitud está realizada, nos contactaremos a la brevedad contigo para coordinar los últimos detalles
+          </h4>
+          <h4>¡Muchas gracias!</h4>
+        </b-row>
+      </b-container>
+    </b-card>
+  </div>
+</div>
+
+<script>
+new Vue({
+  el: "#app",
+  computed: {
+    size() {
+      if (this.sel == 1) {
+        return this.amount / 10;
+      } else {
+        return this.amount;
+      }
+    },
+    selectedNames() {
+      if (this.selected.length == this.size) {
+        this.form.detalle = this.selected.map(i => i.nombre);
+        return this.selected.map(i => i.nombre).join(" / ");
+      } else {
+        return 0;
+      }
+    },
+    resume() {
+      if (this.sel == 4) {
+        return this.form.medida.cantidad + ' / ' + this.form.medida.tipo + ' / ' + this.form.medida.periodo;
+      } else {
+      	return this.detail + ' (Valor aprox ' + this.valor + ')';
+      }
+    },
+    valor() {
+      if (this.sel == 4) {
+        return "$30.000";
+      } else if (this.sel == 2 || this.sel == 3) {
+        if (this.form.region == "RM - Región Metropolitana") {
+          switch (this.amount) {
+            case 2:
+              return "$15.990";
+            case 3:
+              return "$21.990";
+            case 5:
+              return "$36.990";
+            default:
+              return 1;
+          }
+        } else {
+          switch (this.amount) {
+            case 2:
+              return "$17.990";
+            case 3:
+              return "$23.990";
+            case 5:
+              return "$38.990";
+            default:
+              return 1;
+          }
+        }
+      } else if (this.sel == 1) {
+        if (this.form.region == "RM - Región Metropolitana") {
+          switch (this.amount) {
+            case 40:
+              return "$17.290";
+            case 70:
+              return "$27.370";
+            case 100:
+              return "$35.990";
+            case 150:
+              return "$49.990";
+            case 200:
+              return "$61.990";
+            default:
+              return 1;
+          }
+        } else {
+          switch (this.amount) {
+            case 40:
+              return "$19.990";
+            case 70:
+              return "29.990";
+            case 100:
+              return "$37.990";
+            case 150:
+              return "$51.990";
+            case 200:
+              return "$63.990";
+            default:
+              return 1;
+          }
+        }
+      } else {
+        return 0;
+      }
+    },
+    qvo() {
+      if (this.sel == 4) {
+        return "https://portal.qvo.cl/cafe-senor-k/subscribe/suscripcion-sorpresa";
+      } else if (this.sel == 2 || this.sel == 3) {
+        if (this.form.region == "RM - Región Metropolitana") {
+          switch (this.amount) {
+            case 2:
+              return "https://portal.qvo.cl/cafe-senor-k/subscribe/plan-2-bolsas-santiago";
+            case 3:
+              return "https://portal.qvo.cl/cafe-senor-k/subscribe/plan-3-bolsas-santiago";
+            case 5:
+              return "https://portal.qvo.cl/cafe-senor-k/subscribe/plan-5-bolsas-santiago";
+            default:
+              return 1;
+          }
+        } else {
+          switch (this.amount) {
+            case 2:
+              return "https://portal.qvo.cl/cafe-senor-k/subscribe/plan-2-bolsas-regiones";
+            case 3:
+              return "https://portal.qvo.cl/cafe-senor-k/subscribe/plan-3-bolsas-regiones";
+            case 5:
+              return "https://portal.qvo.cl/cafe-senor-k/subscribe/plan-5-bolsas-regiones";
+            default:
+              return 1;
+          }
+        }
+      } else if (this.sel == 1) {
+        if (this.form.region == "RM - Región Metropolitana") {
+          switch (this.amount) {
+            case 40:
+              return "https://portal.qvo.cl/cafe-senor-k/subscribe/pack-40-capsulas-santiago";
+            case 70:
+              return "https://portal.qvo.cl/cafe-senor-k/subscribe/pack-70-capsulas-santiago";
+            case 100:
+              return "https://portal.qvo.cl/cafe-senor-k/subscribe/pack-100-capsulas-santiago";
+            case 150:
+              return "https://portal.qvo.cl/cafe-senor-k/subscribe/pack-150-capsulas-santiago";
+            case 200:
+              return "https://portal.qvo.cl/cafe-senor-k/subscribe/pack-200-capsulas-santiago";
+            default:
+              return 1;
+          }
+        } else {
+          switch (this.amount) {
+            case 40:
+              return "https://portal.qvo.cl/cafe-senor-k/subscribe/pack-40-capsulas-regiones";
+            case 70:
+              return "https://portal.qvo.cl/cafe-senor-k/subscribe/pack-70-capsulas-regiones";
+            case 100:
+              return "https://portal.qvo.cl/cafe-senor-k/subscribe/pack-100-capsulas-regiones";
+            case 150:
+              return "https://portal.qvo.cl/cafe-senor-k/subscribe/pack-150-capsulas-regiones";
+            case 200:
+              return "https://portal.qvo.cl/cafe-senor-k/subscribe/pack-200-capsulas-regiones";
+            default:
+              return 1;
+          }
+        }
+      } else {
+        return 0;
+      }
+    }
+  },
+  data() {
+    return {
+      link: "",
+      sel: "",
+      selection: "",
+      type: "",
+      completing: true,
+      detail: "",
+      canPress: true,
+      confirm: true,
+      steps: 0,
+      amount: 0,
+      selected: [],
+      form: {
+        nombre: "",
+        direccion: "",
+        email: "",
+        telefono: "",
+        region: "RM - Región Metropolitana",
+        ciudad: "",
+        notas: "",
+        documento: "Boleta",
+        suscripcion: "",
+        detalle: "",
+        url: "",
+        medida: {},
+      },
+      isTipo: false,
+      isCantidad: false,
+      isPeriodo: false,
+      medida: {
+        tipo: ['Capsulas', 'Grano molido', 'Grano entero', 'Grano entero + molido', 'Grano entero + capsulas', 'Grano molido + capsulas', 'Mixto'],
+        cantidad: ['2 Bolsas', '3 Bolsas', '5 Bolsas', '7 Bolsas', '10 Bolsas', '15 Bolsas', '20 Bolsas'],
+        periodo: ['1 vez al mes', '2 veces al mes', '3 veces al mes'],
+      },
+      regiones: [
+        "RM - Región Metropolitana",
+        "I - Tarapacá",
+        "II - Antofagasta",
+        "III - Atacama",
+        "IV - Coquimbo",
+        "V - Valparaíso",
+        "VI - Libertador General Bernardo OHiggins",
+        "VII - Maule",
+        "VIII - Concepción",
+        "IX - Araucanía",
+        "X - Los Lagos",
+        "XI - Aysén del General Carlos Ibañez del Campo",
+        "XII - Magallanes y de la Antártica Chilena",
+        "XIV - Los Ríos",
+        "XV - Arica y Parinacota",
+        "XVI - Ñuble"
+      ],
+      documento: ["Boleta", "Factura"],
+      bolsas: [
+        {
+          nombre: "Colombia - Laderas del Tapia",
+          product:
+            "https://cafesenork.com/products/laderas-del-tapias-1?suscription",
+          image:
+            "https://cdn.shopify.com/s/files/1/2466/7899/files/laderas_6e915f08-2a34-41b7-a033-d74f5c78fee5.png?v=1579293895"
+        },
+        {
+          nombre: "Colombia - Inga Aponte",
+          product: "https://cafesenork.com/products/inga-aponte-1?suscription",
+          image:
+            "https://cdn.shopify.com/s/files/1/2466/7899/files/inga_aponte_cdfb7200-5c59-4427-96b8-f670cecc559a.png?v=1579293895"
+        },
+        // {
+        //   nombre: "Kenia - Embu Edición Limitada",
+        //   product: "https://cafesenork.com/products/kenia-embu-ed-limitada-de-juan-mario-carvajal-bou?suscription",
+        //   image:
+        //     ""
+        // },
+        {
+          nombre: "Colombia - Sausalito",
+          product: "https://cafesenork.com/products/sausalito-1?suscription",
+          image:
+            "https://cdn.shopify.com/s/files/1/2466/7899/files/sausalito_9ccaf647-140b-4b14-b838-c264740e9838.png?v=1579293900"
+        },
+        {
+          nombre: "Blend - Santa Rosa",
+          product: "https://cafesenork.com/products/blend-sta-rosa?suscription",
+          image:
+            "https://cdn.shopify.com/s/files/1/2466/7899/files/blend.png?v=1579293901"
+        },
+        // {
+        //   nombre: "Perú Chacra D´Dago - Biodinámico & Orgánico",
+        //   product: "https://cafesenork.com/products/peru-chacra-d-dago-biodinamico-organico-250g-kilo?suscription",
+        //   image:
+        //     ""
+        // },
+        // {
+        //   nombre: "Puro Chile - Café Grano/Molido",
+        //   product: "https://cafesenork.com/products/puro-chile-cafe-grano-molido?suscription",
+        //   image:
+        //     ""
+        // },
+        {
+          nombre: "Colombia - Finca Samaria",
+          product:
+            "https://cafesenork.com/products/colombia-samaria?suscription",
+          image:
+            "https://cdn.shopify.com/s/files/1/2466/7899/files/samaria_bd78835c-d94a-48a7-bd0d-b13142bd49b4.png?v=1579293899"
+        },
+        {
+          nombre: "Colombia - Huila Orgánico",
+          product:
+            "https://cafesenork.com/products/peru-huila-organico?suscription",
+          image:
+            "https://cdn.shopify.com/s/files/1/2466/7899/files/huila.png?v=1579293901"
+        },
+        // {
+        //   nombre: "Etiopía - Biftu Gudina",
+        //   product: "https://cafesenork.com/products/etiopia-biftu-gudina?suscription",
+        //   image:
+        //     ""
+        // },
+        {
+          nombre: "Colombia - Decaf",
+          product: "https://cafesenork.com/products/colombia-decaf?suscription",
+          image:
+            "https://cdn.shopify.com/s/files/1/2466/7899/files/decaf.png?v=1579293898"
+        },
+        {
+          nombre: "El Salvador - Finca San Antonio",
+          product:
+            "https://cafesenork.com/products/el-salvador-finca-san-antonio?suscription",
+          image:
+            "https://cdn.shopify.com/s/files/1/2466/7899/files/salvador.png?v=1579293901"
+        }
+      ],
+      capsulas: [
+        {
+          nombre: "Blend - Manizales",
+          product: "https://cafesenork.com/products/manizales?suscription",
+          image:
+            "https://cdn.shopify.com/s/files/1/2466/7899/files/blend_manizales.png?v=1578979856"
+        },
+        {
+          nombre: "Perú La chacra d´ Dago",
+          product:
+            "https://cafesenork.com/products/peru-la-chacra-d-dago-organico-biodinamico?suscription",
+          image:
+            "https://cdn.shopify.com/s/files/1/2466/7899/files/chacra_411ce844-efce-429a-b939-acb42db51855.png?v=1578979866"
+        },
+        {
+          nombre: "Colombia - Laderas del Tapias",
+          product:
+            "https://cafesenork.com/products/laderas-del-tapias?suscription",
+          image:
+            "https://cdn.shopify.com/s/files/1/2466/7899/files/laderas_e8037175-a1eb-47a8-9ce3-8127865a3103.png?v=1578979866"
+        },
+        {
+          nombre: "Colombia - Inga Aponte",
+          product: "https://cafesenork.com/products/inga-aponte?suscription",
+          image:
+            "https://cdn.shopify.com/s/files/1/2466/7899/files/inga_aponte.png?v=1578979869"
+        },
+        {
+          nombre: "Kera - La | Edición Limitada",
+          product: "https://cafesenork.com/products/kerala?suscription",
+          image:
+            "https://cdn.shopify.com/s/files/1/2466/7899/files/kera_la.png?v=1578979873"
+        },
+        {
+          nombre: "KENYA SL28 | Edición Limitada",
+          product:
+            "https://cafesenork.com/products/capsulas-de-cafe-kenya-sl28?suscription",
+          image:
+            "https://cdn.shopify.com/s/files/1/2466/7899/files/kenya_ec7e458c-8a75-41f7-8168-873c02998611.png?v=1578979874"
+        },
+        {
+          nombre: "Blend - Belen de Umbría",
+          product:
+            "https://cafesenork.com/products/belen-de-humbria?suscription",
+          image:
+            "https://cdn.shopify.com/s/files/1/2466/7899/files/blend_belen.png?v=1578979874"
+        },
+        {
+          nombre: "Colombia - Sausalito",
+          product: "https://cafesenork.com/products/sausalito?suscription",
+          image:
+            "https://cdn.shopify.com/s/files/1/2466/7899/files/sausalito_b1e78795-fffd-4158-a4e0-28a9d0c27e4f.png?v=1578979876"
+        },
+        {
+          nombre: "Colombia - Natural Decaf",
+          product: "https://cafesenork.com/products/natural-decaf?suscription",
+          image:
+            "https://cdn.shopify.com/s/files/1/2466/7899/files/natural_decaf.png?v=1578979880"
+        },
+        {
+          nombre: "Blend - Santa Rosa",
+          product: "https://cafesenork.com/products/santa-rosa?suscription",
+          image:
+            "https://cdn.shopify.com/s/files/1/2466/7899/files/blend_santa_rosa.png?v=1578979881"
+        }
+      ]
+    };
+  },
+  methods: {
+    select(type) {
+      this.sel = type;
+      if (type == 1) {
+        this.detail = "Capsulas";
+        this.confirm = true;
+      }
+      if (type == 2) {
+        this.detail = "Grano";
+        this.confirm = true;
+      }
+      if (type == 3) {
+        this.detail = "Molido";
+        this.confirm = true;
+      }
+      if (type == 4) {
+        this.detail = "A medida";
+        this.confirm = true;
+      }
+    },
+    cap(el) {
+      this.amount = el;
+      this.selection = 1
+      this.detail = el + " Capsulas";
+      this.form.suscripcion = el + " Capsulas";
+      this.confirm = false;
+    },
+    gra(el) {
+      this.amount = el;
+      this.selection = 2
+      this.detail = el + " Bolsas de grano";
+      this.form.suscripcion = el + " Bolsas de grano entero";
+      this.confirm = false;
+    },
+    mol(el) {
+      this.amount = el;
+      this.selection = 3
+      this.detail = el + " Bolsas de molido";
+      this.form.suscripcion = el + " Bolsas de grano molido";
+      this.confirm = false;
+    },
+    sor(el) {
+      this.selection = 4
+      this.detail = "Sorpresa";
+      this.form.suscripcion = "A medida";
+      this.confirm = false;
+    },
+    nextStep() {
+      this.steps++;
+    },
+    validate(e) {
+      this.steps++;
+      this.link = this.qvo
+      this.form.url = this.qvo
+    },
+    sorpresa(e) {
+      var data = this.form;
+      Pageclip.send('w4mg3afMO3pEiYSSMmXCkAe1yy9UL1j9', 'Suscripciones', data, function(error, response) {
+        if (error) {
+          console.log(error);
+          alert("Hubo un error en la solicitud, intente nuevamente");
+        } else {
+          alert("Suscripción reservada, te contactaremos a la brevedad");
+          location.href = "https://cafesenork.com/";
+        }
+      })
+      this.steps++;
+    },
+    sendemail(e) {
+      this.form.url = this.qvo
+      var data = this.form;
+      Pageclip.send('w4mg3afMO3pEiYSSMmXCkAe1yy9UL1j9', 'Suscripciones', data, function(error, response) {
+        if (error) {
+          console.log(error);
+          alert("Hubo un error en la solicitud, intente nuevamente");
+        } else {
+          alert("Suscripción reservada, dirigiendo al pago");
+		  location.href = data.url;
+        }
+      })
+    },
+    suscribe() {},
+    open(el) {
+      window.open(el, "_blank");
+    },
+    add(el) {
+      this.selected.push(el);
+    },
+    remove(el) {
+      this.selected.splice(el, 1);
+    },
+    restart() {
+      location.reload();
+    },
+    changeTipo() {
+     this.isTipo = true; 
+    },
+    changeCantidad() {
+     this.isCantidad = true; 
+    },
+    changePeriodo() {
+     this.isPeriodo = true; 
+    }
+  }
+});
+</script>
+
+<style>
+  .vbtn {
+    padding: 0 10px !important;
+  }
+  .fw {
+    max-width: 100%
+  }
+</style>
+{% schema %}
+{
+  "name": "Suscripciones V2",
+  "class": "blnk",
+  "settings": [
+	{	
+		"type": "header",
+		"content": "Static"
+	}
+  ],
+  "presets": [{
+    "name": "Suscripciones",
+    "category": "Custom"
+  }]
+
+}
+{% endschema %}

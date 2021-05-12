@@ -1,0 +1,209 @@
+<div class="remodal additional-info" data-remodal-id="despachos" data-remodal-options="hashTracking: false">
+    <a data-remodal-action="close" class="remodal-close"></a>
+    <div class="is-full">
+        <p class="additional-title">
+            Despachos
+        </p>
+    </div>
+    <div class="is-full">
+        <select id="additional-select" onchange="getInfo()">
+            <option value="0"> Selecciona tu Región </option>
+            <option value="10"> Región Metropolitana </option>
+            <option value="1"> Arica / Iquique </option>
+            <option value="2"> Antofagasta </option>
+            <option value="3"> Copiapó / La Serena / Coquimbo / Ovalle </option>
+            <option value="4"> Valparaíso / Viña del Mar / San Antonio </option>
+            <option value="5"> Rancagua / San Fernando / Curicó / Talca </option>
+            <option value="6"> Chillán / Concepción / Los Ángeles </option>
+            <option value="7"> Temuco / Valdivia / Osorno </option>
+            <option value="8"> Puerto Montt </option>
+            <option value="9"> Coyhaique / Punta Arenas </option>
+        </select>
+    </div>
+    <div class="is-full mat-2 lefted">
+        <span id="additional-default" class="additional-text">
+            Selecciona tu Región
+        </span>
+        <span id="additional-notdefault-rm" class="additional-text" style="display: none;">
+            <p class="mb-10">Despacho entre 24 y 48 hrs</p>
+            <!-- DESPACHO RM UNITARIO -->
+            <p class="mb-5">El despacho es <b>{{ section.settings.rm }}</b></p>
+            <!-- DESPACHO RM MAYOR -->
+            <p class="mb-5">Si compras sobre {{ section.settings.vmrm }} <b>el despacho es gratis</b></p>
+        </span>
+        <span id="additional-notdefault" class="additional-text" style="display: none;">
+            <p class="mb-10">Despacho entre 48 y 72 hrs</p>
+            <p class="mb-5">El despacho es <span id="additional-money" class="bold"></span></p>
+            <!-- DESPACHO REGIONES MAYOR -->
+            <p class="mb-5">Si compras sobre {{ section.settings.vmor }} <b>el despacho es gratis</b></p>
+        </span>
+    </div>
+</div>
+
+<script>
+    function getInfo() {
+        el = document.getElementById("additional-select").value;
+        if (el == 0) {
+            $("#additional-notdefault").hide();
+            $("#additional-notdefault-rm").hide();
+            $("#additional-default").show();
+        }
+        if (el == 10) {
+            $("#additional-notdefault").hide();
+            $("#additional-notdefault-rm").show();
+            $("#additional-default").hide();
+        }
+        if (el == 1) {
+            // DESPACHO Arica / Iquique
+            $("#additional-money").text('{{ section.settings.ai }}');
+            $("#additional-notdefault").show();
+            $("#additional-notdefault-rm").hide();
+            $("#additional-default").hide();
+        }
+        if (el == 2) {
+            // DESPACHO Antofagasta
+            $("#additional-money").text('{{ section.settings.a }}');
+            $("#additional-notdefault").show();
+            $("#additional-notdefault-rm").hide();
+            $("#additional-default").hide();
+        }
+        if (el == 3) {
+            // DESPACHO Copiapó / La Serena / Coquimbo / Ovalle
+            $("#additional-money").text("{{ section.settings.clco }}");
+            $("#additional-notdefault").show();
+            $("#additional-notdefault-rm").hide();
+            $("#additional-default").hide();
+        }
+        if (el == 4) {
+            // DESPACHO Valparaíso / Viña del Mar / San Antonio
+            $("#additional-money").text("{{ section.settings.vvs }}");
+            $("#additional-notdefault").show();
+            $("#additional-notdefault-rm").hide();
+            $("#additional-default").hide();
+        }
+        if (el == 5) {
+            // DESPACHO Rancagua / San Fernando / Curicó / Talca
+            $("#additional-money").text("{{ section.settings.rsct }}");
+            $("#additional-notdefault").show();
+            $("#additional-notdefault-rm").hide();
+            $("#additional-default").hide();
+        }
+        if (el == 6) {
+            // DESPACHO Chillán / Concepción / Los Ángeles
+            $("#additional-money").text("{{ section.settings.ccl }}");
+            $("#additional-notdefault").show();
+            $("#additional-notdefault-rm").hide();
+            $("#additional-default").hide();
+        }
+        if (el == 7) {
+            // DESPACHO Temuco / Valdivia / Osorno
+            $("#additional-money").text("{{ section.settings.tvo }}");
+            $("#additional-notdefault").show();
+            $("#additional-notdefault-rm").hide();
+            $("#additional-default").hide();
+        }
+        if (el == 8) {
+            // DESPACHO Puerto Montt
+            $("#additional-money").text("{{ section.settings.p }}");
+            $("#additional-notdefault").show();
+            $("#additional-notdefault-rm").hide();
+            $("#additional-default").hide();
+        }
+        if (el == 9) {
+            // DESPACHO Coyhaique / Punta Arenas
+            $("#additional-money").text("{{ section.settings.cp }}");
+            $("#additional-notdefault").show();
+            $("#additional-notdefault-rm").hide();
+            $("#additional-default").hide();
+        }
+
+    }
+</script>
+
+{% schema %}
+  {
+    "name": "Despachos",
+    "settings": [
+	  {
+       "type": "header",
+       "content": "Valores despachos mínimos para despacho gratis"
+      },
+	  {
+      "id": "vmrm",
+      "type": "text",
+      "label": "Valor mínimo RM",
+      "default": "$30.000"
+      },
+	  {
+      "id": "vmor",
+      "type": "text",
+      "label": "Valor mínimo Otras regiones",
+      "default": "$30.000"
+      },
+	  {
+       "type": "header",
+       "content": "Valores despacho por regiones"
+      },
+      {
+      "id": "rm",
+      "type": "text",
+      "label": "RM",
+      "default": "$3.890"
+      },
+	  {
+      "id": "ai",
+      "type": "text",
+      "label": "Arica / Iquique",
+      "default": "$10.562"
+      },
+	  {
+      "id": "a",
+      "type": "text",
+      "label": "Antofagasta",
+      "default": "$8.900"
+      },
+	  {
+      "id": "clco",
+      "type": "text",
+      "label": "Copiapó / La Serena / Coquimbo / Ovalle",
+      "default": "$5.600"
+      },
+	  {
+      "id": "vvs",
+      "type": "text",
+      "label": "Valparaíso / Viña del Mar / San Antonio",
+      "default": "$4.100"
+      },
+	  {
+      "id": "rsct",
+      "type": "text",
+      "label": "Rancagua / San Fernando / Curicó / Talca",
+      "default": "$4.100"
+      },
+	  {
+      "id": "ccl",
+      "type": "text",
+      "label": "Chillán / Concepción / Los Ángeles",
+      "default": "$4.500"
+      },
+	  {
+      "id": "tvo",
+      "type": "text",
+      "label": "Temuco / Valdivia / Osorno",
+      "default": "$5.000"
+      },
+	  {
+      "id": "p",
+      "type": "text",
+      "label": "Puerto Montt",
+      "default": "$5.900"
+      },
+	  {
+      "id": "cp",
+      "type": "text",
+      "label": "Coyhaique / Punta Arenas",
+      "default": "$11.057"
+      }
+    ]
+  }
+{% endschema %}

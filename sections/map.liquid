@@ -1,0 +1,61 @@
+{% if section.settings.map_stretch %}
+  <div class="embed-container maps"><iframe width="100%" height="{{ section.settings.map_height }}" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?f=q&amp;source=embed&amp;hl=en&amp;geocode=&amp;q={% if section.settings.contact_address != blank %}{{ section.settings.contact_address | replace: ' ', '+' }}{% else %}{{ shop.address.street }}{% endif %}&amp;z={{ section.settings.zoom_level }}&amp;output=embed"></iframe></div>
+{% else %}
+  <div class="container"><div class="embed-container maps"><iframe width="100%" height="{{ section.settings.map_height }}" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?f=q&amp;source=embed&amp;hl=en&amp;geocode=&amp;q={% if section.settings.contact_address != blank %}{{ section.settings.contact_address | replace: ' ', '+' }}{% else %}{{ shop.address.street }}{% endif %}&amp;z={{ section.settings.zoom_level }}&amp;output=embed"></iframe></div></div>
+{% endif %}
+
+<style>
+  @media only screen and (max-width: 767px) {
+    .maps iframe{
+      height: {{ section.settings.map_height | divided_by: 1.5 | round }}px;
+    }
+  }
+</style>
+
+{% schema %}
+
+{
+  "name": "Map",
+  "class": "map-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "contact_address",
+      "label": "Street address",
+      "info": "The full address that will be placed on the map."
+    },
+    {
+      "type": "range",
+      "id": "zoom_level",
+      "label": "Map zoom level",
+      "min": 1,
+      "max": 20,
+      "step": 1,
+      "default": 12
+    },
+    {
+      "type": "checkbox",
+      "id": "map_stretch",
+      "label": "Stretch to fill page",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "map_height",
+      "min": 250,
+      "max": 500,
+      "step": 50,
+      "unit": "px",
+      "label": "Height",
+      "default": 300
+    }
+  ],
+  "presets": [
+    {
+      "name": "Map",
+      "category": "Content"
+    }
+  ]
+}
+
+{% endschema %}

@@ -1,0 +1,65 @@
+{{ "scm-product-label.css" | asset_url | stylesheet_tag }}
+
+{% if template contains 'product' %}
+<script>
+if ((typeof SECOMAPP) == 'undefined') {
+    var SECOMAPP = {};
+}
+if ((typeof SECOMAPP.pl) == 'undefined') {
+    SECOMAPP.pl = {};
+}
+{% if settings.scm_pl_piregex %}
+    SECOMAPP.pl.piRegex='{{ settings.scm_pl_piregex }}';
+{% endif %}
+{% if settings.scm_pl_lppath %}
+    SECOMAPP.pl.lpPath='{{ settings.scm_pl_lppath }}';
+{% endif %}
+SECOMAPP.page = 'product';
+SECOMAPP.pl.product = {
+    id: {{ product.id }},
+    published_at: "{{ product.published_at }}",
+    price: {{ product.price }}, {% if product.compare_at_price%}
+    compare_at_price: {{ product.compare_at_price }}, {% endif %} {% if product.tags %}
+    tags: {{ product.tags | json }}, {% endif %}
+    variants: [ {% for variant in product.variants %} {
+        id: {{ variant.id }},
+        price: {{ variant.price }} {% if variant.compare_at_price%},
+        compare_at_price: {{ variant.compare_at_price }} {% endif %} {% if variant.inventory_quantity%},
+        inventory_quantity: {{ variant.inventory_quantity }} {% endif %} {% if variant.inventory_management and variant.inventory_management != blank%},
+        inventory_management: '{{ variant.inventory_management }}' {% endif %} {% if variant.weight%},
+        weight: {{ variant.weight }} {% endif %} {% if variant.sku and variant.sku != blank%},
+        sku: '{{ variant.sku | replace: '"', '' }}' {% endif %} } {% unless forloop.last %},{% endunless %}
+        {% endfor %}
+    ],
+    collections: [ {% for collection in product.collections %} {{ collection.id }}, {% endfor %} ]
+};
+</script>
+{% endif %}
+{% if template contains 'collection' or template contains 'index' or template contains 'search' %}
+<script>
+if ((typeof SECOMAPP) == 'undefined') {
+    var SECOMAPP = {};
+}
+if ((typeof SECOMAPP.pl) == 'undefined') {
+    SECOMAPP.pl = {};
+}
+{% if settings.scm_pl_pisregex %}
+    SECOMAPP.pl.pisRegex='{{ settings.scm_pl_pisregex }}';
+{% endif %}
+{% if settings.scm_pl_pi2sregex %}
+    SECOMAPP.pl.pi2sRegex='{{ settings.scm_pl_pi2sregex }}';
+{% endif %}
+
+{% if settings.scm_pl_lpspath %}
+    SECOMAPP.pl.lpsPath='{{ settings.scm_pl_lpspath }}';
+{% endif %}
+SECOMAPP.page = 'collection';
+</script>
+{% endif %}
+{% if template contains 'index' or template contains 'product' or template contains 'collection' or template contains 'search'%}
+    {% if template contains 'index' %}
+        <script src="{{ 'scm-product-label.js' | asset_url }}" async></script>
+    {% else %}
+         {{ "scm-product-label.js" | asset_url | script_tag }}
+    {% endif %}
+{% endif %}

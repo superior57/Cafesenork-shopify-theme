@@ -1,0 +1,5 @@
+<!-- DO NOT EDIT THIS SNIPPET - it's generated automatically and may be overwritten at any time -->
+{% if product-description-slider-top %}{% assign desc = product-description-slider-top %}{% else %}{% assign desc = product.description %}{% endif %}
+{% capture td %}{% include "product-description-slider" with desc %}{% endcapture %}
+{% assign td_pure_text = td | split: '<div class="easyslider-container' | first %}
+{{ td_pure_text }}

@@ -1,0 +1,123 @@
+{{ 'whatshare_common.css' | asset_url | stylesheet_tag }}
+
+{% if product %}
+{% capture whatshare_query %}
+{{ settings.whatshare_message }} {{ product.title | strip_html }}, {{ product.price | money_without_currency | strip_html }} {{ shop.currency }}:
+{% endcapture %}
+{% capture share_url %}{{ shop.url | append: product.url }}{% endcapture %}
+{% else %}
+{% capture whatshare_query %}
+{{ settings.whatshare_message }} {{ shop.name }}:
+{% endcapture %}
+{% capture share_url %}{{ shop.url }}{% endcapture %}
+{% endif %}
+
+{% assign allowShare = true %}
+{% if article %}
+    {% assign allowShare = false %}
+{% endif %}
+
+{% assign shouldSharePage = false %}
+
+{{ 'whatshare_common.js' | asset_url | script_tag }}
+
+<script type="text/javascript">
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        ajaxWhatShare.post = function (url, data, callback, sync) {
+            ajaxWhatShare.send(url, callback, 'POST', JSON.stringify(data), sync)
+        };
+
+        document.getElementsByClassName("whatshare-mobile")[0].onclick = sendStats;
+        document.getElementsByClassName("whatshare-desktop")[0].onclick = sendStats;
+
+        shortenUrl("{{ share_url }}");
+
+        function shortenUrl(longUrl) {
+
+            ajaxWhatShare.post("https://whatshare.kabukiapps.com/url/shorten", { LongUrl: longUrl }, function (response) {
+
+                var shortenedUrlFromResponse = JSON.parse(response).shortenedUrl;
+                if (shortenedUrlFromResponse && shortenedUrlFromResponse != longUrl) {
+
+                    setShortenedUrl(shortenedUrlFromResponse);
+                }
+            }, true);
+        };
+
+        function setShortenedUrl(shortUrl) {
+
+            var longUrl = "{{ share_url | strip | url_param_escape }}";
+
+            var shareLinkMobile = document.getElementsByClassName("whatshare-mobile")[0];
+            var shareLinkDesktop = document.getElementsByClassName("whatshare-desktop")[0];
+
+            shareLinkMobile.href = shareLinkMobile.href.replace(longUrl, shortUrl);            
+            shareLinkDesktop.href = shareLinkDesktop.href.replace(longUrl, shortUrl);
+        };
+
+        function sendStats() {
+
+            var storeDomain = "{{ shop.permanent_domain }}";
+            var url = window.location.href;
+            var storeEntityToSend = null;
+            var user = null;
+
+            {% if product %}
+            storeEntityToSend = {
+                name: "{{ product.title }}",
+                shopifyId: "{{ product.id }}"
+            };
+            {% else %}
+
+            {% assign pageTitle = page_title %}
+            {% if blog %}
+            {% assign pageTitle = blog.handle %}
+            {% endif %}
+
+            {% if collection %}
+            {% assign pageTitle = collection.handle %}
+            {% endif %}
+
+            {% if page %}
+            {% assign pageTitle = page.handle %}
+            {% endif %}
+
+            storeEntityToSend = {
+                name: "{{ pageTitle }}",
+                url: url
+            };
+
+            {% assign shouldSharePage = true %}
+            {% endif %}
+
+            {% if customer %}
+            user = {
+                firstName: "{{ customer.first_name }}",
+                lastName: "{{ customer.last_name }}",
+                email: "{{ customer.email }}",
+                acceptsMarketing: "{{ customer.accepts_marketing }}"
+            };
+            {% endif %}
+
+            {% if allowShare and shouldSharePage == false %}
+            ajaxWhatShare.post("https://whatshare.kabukiapps.com/shares/product", { StoreDomain: storeDomain, Product: storeEntityToSend, User: user }, function () { }, true);
+            {% elsif allowShare and shouldSharePage %}
+            ajaxWhatShare.post("https://whatshare.kabukiapps.com/shares/page", { StoreDomain: storeDomain, Page: storeEntityToSend, User: user }, function () { }, true);
+            {% endif %}
+        };
+    });
+</script>
+
+{% if allowShare %}
+<a class="whatshare-mobile" href="whatsapp://send?text={{ whatshare_query | append: share_url | strip | url_param_escape }}">
+    <img src="{{ 'whatsapp_ico.png' | asset_url }}" />
+    <span>{{ settings.whatshare_text_content }}</span>
+</a>
+
+<a class="whatshare-desktop" href="https://web.whatsapp.com/send?text={{ whatshare_query | append: share_url | strip | url_param_escape }}" target="_blank">
+    <img src="{{ 'whatsapp_ico.png' | asset_url }}" />
+    <span>{{ settings.whatshare_text_content }}</span>
+</a>
+{% endif %}

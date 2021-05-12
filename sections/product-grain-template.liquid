@@ -1,0 +1,1142 @@
+{% comment %}
+** Product grain - custom view **
+- Product template
+{% endcomment %}
+
+<a name="pagecontent" id="pagecontent"></a>
+
+<div class="container main content">
+  <div class="sixteen columns mt-n">
+    {% if collection %}
+    	<a href="{{ collection.url }}" class="dark--text" title="{{ collection.title | escape }}" itemprop="item">
+          <h6 class="clickable dark--text"><i class="fa fa-arrow-left left-icon"></i> Volver a {{ collection.title }}
+          </h6></a>
+    {% endif %}
+  </div>
+  <div class="sixteen columns desktop">
+    {% if collection.previous_product or collection.next_product or section.settings.product_breadcrumb %}
+      <div class="clearfix breadcrumb-collection">
+        {% if collection.previous_product or collection.next_product %}
+          <div class="nav_arrows breadcrumb_text">
+            {% if collection.previous_product %}
+              <a href="{{ collection.previous_product }}" title="{{ 'products.general.previous_product_html' | t }}" class="breadcrumb_link"><span class="icon-left-arrow"> {{ 'products.general.previous_product_html' | t }}</span></a>
+            {% endif %}
+            {% if collection.previous_product and collection.next_product %}<span class="breadcrumb-divider"> | </span>{% endif %}
+
+            {% if collection.next_product %}
+              <a href="{{collection.next_product}}" title="{{ 'products.general.next_product_html' | t }}" class="breadcrumb_link">{{ 'products.general.next_product_html' | t }} <span class="icon-right-arrow"></span></a>
+            {% endif %}
+          </div>
+        {% endif %}
+
+        {% if section.settings.product_breadcrumb %}
+          <div class="breadcrumb_text" itemscope itemtype="http://schema.org/BreadcrumbList">
+            <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem"><a href="{{ shop.url }}" title="{{ shop.name | escape }}" itemprop="item" class="breadcrumb_link"><span itemprop="name">{{ 'general.breadcrumbs.home' | t }}</span></a></span>
+            <span class="breadcrumb-divider">/</span>
+            <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+              {% if collection %}
+                <a href="{{ collection.url }}" title="{{ collection.title | escape }}" itemprop="item" class="breadcrumb_link"><span itemprop="name">{{ collection.title }}</span></a>
+              {% else %}
+                <a href="/collections/all" title="{{ collections.all.title }}" class="breadcrumb_link"><span>{{ collections.all.title }}</span></a>
+              {% endif %}
+            </span>
+            <span class="breadcrumb-divider">/</span>
+            {{ product.title }}
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+
+  {% comment %}Check to see if sidebar should be enabled{% endcomment %}
+  {% if section.blocks.size > 0 %}
+    {% assign sidebar = true %}
+  {% else %}
+    {% assign sidebar = false %}
+  {% endif %}
+
+  <div class="product clearfix">
+    {% if sidebar %}
+      {% include 'sidebar' %}
+      <div class="twelve columns">
+    {% else %}
+      <div class="sixteen columns">
+    {% endif %}
+
+    <div  class="product-{{ product.id }}"
+          data-free-text="{{ settings.free_price_text }}"
+          >
+      <div class="section product_section clearfix js-product_section {% if section.settings.product_images_position == 'right' %}align_right--images{% endif %}" itemscope itemtype="http://schema.org/Product" data-rv-handle="{{ product.handle }}">
+{% if product.metafields.loox.num_reviews %}
+	<div itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+		<meta itemprop="ratingValue" content="{{ product.metafields.loox.avg_rating }}"/>
+		<meta itemprop="reviewCount" content="{{ product.metafields.loox.num_reviews }}"/>
+	</div>
+{% endif %}
+
+        <div class="{% if sidebar %}seven{% else %}eight{% endif %} columns {% if section.settings.product_images_position == 'left' %}alpha{% else %}omega{% endif %}">
+          {% include 'product-images' %}
+        </div>
+
+        <div class="{% if sidebar %}five{% else %}eight{% endif %} columns {% if section.settings.product_images_position == 'left' %}omega{% else %}alpha{% endif %}">
+
+          {% assign collection_handles = product.collections | map: 'handle' %}
+          {% assign variant = product.selected_or_first_available_variant %}
+
+          {% if product.available %}
+            {% if settings.sale_banner_enabled and product.compare_at_price_max > product.price %}
+              <div class="sale_banner_product">{{ 'collections.general.sale' | t }}</div>
+            {% endif %}
+          {% endif %}
+          
+          {% if collection_handles contains 'new' %}
+            <div class="new_banner_product">{{ 'collections.general.new' | t }}</div>
+          {% endif %}
+          {% if collection_handles contains 'pre-order' %}
+            <div class="preorder_banner_product">{{ 'collections.general.pre_order' | t }}</div>
+          {% endif %}
+
+           {% if section.settings.display_vendor %}
+            <p class="vendor">
+              <span itemprop="brand" class="vendor">{{ product.vendor | link_to_vendor }}</span>
+            </p> 
+          {% endif %}
+
+          {% if variant.sku != blank and section.settings.display_sku %}
+            <p class="sku">
+              <span itemprop="sku">{{ variant.sku }}</span>
+            </p>
+          {% endif %}
+          
+          
+          {% if product.tags contains 'ingaaponte' %}
+          	{% assign color_text = "#a2bac1" %}
+            <h1 style="font-size: 30px; font-weight: bold; line-height: 1.5; color: {{ color_text }}; letter-spacing: 0px;">Colombia - Inga Aponte</h1>
+          {% endif %}
+          {% if product.tags contains 'kerala' %}
+          	{% assign color_text = "#833277" %}
+            <h1 style="font-size: 30px; font-weight: bold; line-height: 1.5; color: {{ color_text }}; letter-spacing: 0px;">India - Kera-La</h1>
+          {% endif %}
+          {% if product.tags contains 'naturaldecaf' %}
+          	{% assign color_text = "#7e550f" %}
+            <h1 style="font-size: 30px; font-weight: bold; line-height: 1.5; color: {{ color_text }}; letter-spacing: 0px;">Colombia - Natural Decaf</h1>
+          {% endif %}
+          {% if product.tags contains 'belenumbria' %}
+          	{% assign color_text = "#1da564" %}
+            <h1 style="font-size: 30px; font-weight: bold; line-height: 1.5; color: {{ color_text }}; letter-spacing: 0px;">Colombia - Belén de Umbría</h1>
+          {% endif %}
+          {% if product.tags contains 'laderastapia' %}
+            {% assign color_text = "#ff8000" %}
+            <h1 style="font-size: 30px; font-weight: bold; line-height: 1.5; color: {{ color_text }}; letter-spacing: 0px;">Colombia - Laderas del Tapias</h1>
+          {% endif %}
+          {% if product.tags contains 'manizales' %}
+          	{% assign color_text = "#22d1e9" %}
+            <h1 style="font-size: 30px; font-weight: bold; line-height: 1.5; color: {{ color_text }}; letter-spacing: 0px;">Colombia - Manizales</h1>
+          {% endif %}
+          {% if product.tags contains 'sausalito' %}
+          	{% assign color_text = "#ffff00" %}
+            <h1 style="font-size: 30px; font-weight: bold; line-height: 1.5; color: {{ color_text }}; letter-spacing: 0px;">Colombia - Sausalito</h1>
+          {% endif %}
+          {% if product.tags contains 'santarosa' %}
+          	{% assign color_text = "#F3374C" %}
+            <h1 style="font-size: 30px; font-weight: bold; line-height: 1.5; color: {{ color_text }}; letter-spacing: 0px;">Colombia - Santa Rosa</h1>
+          {% endif %}
+          {% if product.tags contains 'San Antonio' %}
+          	{% assign color_text = "#0d81c1" %}
+            <h1 style="font-size: 30px; font-weight: bold; line-height: 1.5; color: {{ color_text }}; letter-spacing: 0px;">El Salvador - Finca San Antonio</h1>
+          {% endif %}
+          {% if product.tags contains 'Guatemala' %}
+          	{% assign color_text = "#2ad2c5" %}
+            <h1 style="font-size: 30px; font-weight: bold; line-height: 1.5; color: {{ color_text }}; letter-spacing: 0px;">Guatemala - Bremen Orgánico</h1>
+          {% endif %}
+          {% if product.tags contains 'Chile' %}
+          	{% assign color_text = "#ff2a00" %}
+            <h1 style="font-size: 30px; font-weight: bold; line-height: 1.5; color: {{ color_text }}; letter-spacing: 0px;">Chile - El Café de Chile</h1>
+            {% assign color_text = "#2b00ff" %}
+          {% endif %}
+          {% if product.tags contains 'Perú' %}
+          	{% assign color_text = "#779b49" %}
+            <h1 style="font-size: 30px; font-weight: bold; line-height: 1.5; color: {{ color_text }}; letter-spacing: 0px;">Perú - La Chacra D Dago Biodinamico</h1>
+          {% endif %}
+          {% if product.tags contains 'indonesia' %}
+          	{% assign color_text = "#e61f23" %}
+            <h1 style="font-size: 30px; font-weight: bold; line-height: 1.5; color: {{ color_text }}; letter-spacing: 0px;">Indonesia - Bies Awan</h1>
+          {% endif %}
+          {% if product.tags contains 'burundi' %}
+          	{% assign color_text = "#6bae2a" %}
+            <h1 style="font-size: 30px; font-weight: bold; line-height: 1.5; color: {{ color_text }}; letter-spacing: 0px;">Burundi - Nemeba</h1>
+          {% endif %}
+          {% if product.tags contains 'México' %}
+          	{% assign color_text = "#ff7176" %}
+            <h1 style="font-size: 30px; font-weight: bold; line-height: 1.5; color: {{ color_text }}; letter-spacing: 0px;">Mexico - Sierra Mixteca</h1>
+          {% endif %}
+          {% if product.tags contains 'pangoa' %}
+          	{% assign color_text = "#779b49" %}
+            <h1 style="font-size: 30px; font-weight: bold; line-height: 1.5; color: {{ color_text }}; letter-spacing: 0px;">Perú - La Chacra D Dago Biodinamico</h1>
+          {% endif %}
+          {% if product.tags contains 'brasil_garca' %}
+          	{% assign color_text = "#cfda29" %}
+            <h1 style="font-size: 30px; font-weight: bold; line-height: 1.5; color: {{ color_text }}; letter-spacing: 0px;">Brasil - Garça</h1>
+          {% endif %}
+          {% if product.tags contains 'Etiopía' %}
+          	{% assign color_text = "#bdaf24" %}
+            <h1 style="font-size: 30px; font-weight: bold; line-height: 1.5; color: {{ color_text }}; letter-spacing: 0px;">Etiopía - Sidamo</h1>
+          {% endif %}
+          {% if product.tags contains 'minas_gerais' %}
+          	{% assign color_text = "#00c08a" %}
+            <h1 style="font-size: 30px; font-weight: bold; line-height: 1.5; color: {{ color_text }}; letter-spacing: 0px;">Brasil - Minas gerais</h1>
+          {% endif %}
+          {% if product.tags contains 'maria_honey' %}
+          	{% assign color_text = "#ebac79" %}
+            <h1 style="font-size: 30px; font-weight: bold; line-height: 1.5; color: {{ color_text }}; letter-spacing: 0px;">Nicaragua - Sta. María Honey</h1>
+          {% endif %}
+          {% if product.tags contains 'maria_natural' %}
+          	{% assign color_text = "#efdfa7" %}
+            <h1 style="font-size: 30px; font-weight: bold; line-height: 1.5; color: {{ color_text }}; letter-spacing: 0px;">Nicaragua - Sta. María Natural</h1>
+          {% endif %}
+          {% if product.tags contains 'morenitas' %}
+          	{% assign color_text = "#e17263" %}
+            <h1 style="font-size: 30px; font-weight: bold; line-height: 1.5; color: {{ color_text }}; letter-spacing: 0px;">Nicaragua - Las Morenitas</h1>
+          {% endif %}
+          	<h2 style="margin-top: -25px; letter-spacing: 0px; color: {{ color_text }}">GRANO / MOLIDO</h2>
+          
+		    <span class="stamped-product-reviews-badge stamped-main-badge" data-id="{{product.id}}" data-product-title="{{product.title}}" data-product-type="{{product.type}}" style="display: block;"></span>
+          {% if settings.enable_shopify_product_badges and settings.enable_shopify_review_comments %}
+            <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+          {% endif %}
+          <div class="yotpo bottomLine"
+            data-appkey="zoKKmxP8NOZcDXNYGT2nCYZPAgwIwi0LKJOHgqxJ"
+            data-domain="{{shop.permanent_domain | escape }}"
+            data-product-id="{{ product.id }}"
+            data-product-models="{{ product.id }}"
+            data-name="{{ product.title | escape }}"
+            data-url="{{ shop.url }}{{ product.url }}"
+            data-image-url="{{ product.featured_image | product_img_url: 'large' |replace: '?', '%3F' | replace: '&','%26'}}"
+            data-description="{{ product.description | escape }}"
+            data-bread-crumbs="{% for tag in product.tags %}{{ tag | escape }};{% endfor %}">
+          </div>
+          <div class="feature_divider"></div>
+
+          {% assign product_tags = product.tags | join: ' ' %}
+          {% if product_tags contains 'meta-size-chart-' %}
+            {% for tag in product.tags %}
+              {% if tag contains 'meta-size-chart-' %}
+                <a href="#size-chart{{product.id}}" class="size_chart" data-remodal-target="size-chart{{product.id}}" data-no-instant>{{ 'products.product.size_chart' | t }} <span class="icon-right-arrow"></span></a>
+                {% include 'popup-size-chart', product_id: product.id %}
+              {% endif %}
+            {% endfor %}
+          {% elsif settings.size_chart != blank %}
+            <a href="#size-chart" class="size_chart" data-remodal-target="size-chart" data-no-instant>{{ 'products.product.size_chart' | t }} <span class="icon-right-arrow"></span></a>
+          {% endif %}
+          
+		  {% if product.tags contains 'suscripciones' %}
+            <button href="#size-chart" class="size_chart" data-remodal-target="size-chart" data-no-instant>Suscribir</button>
+          {% endif %}
+          {% if product.tags contains 'sorpresa' %}
+            <button href="#size-chart" class="size_chart" data-remodal-target="size-chart" data-no-instant>Suscribir</button>
+          {% endif %}
+         
+          {% if product.tags contains 'cafeteras' %}
+            <button href="#size-chart" class="size_chart" data-remodal-target="size-chart" data-no-instant>Comodato</button>
+          {% endif %}
+
+          {% if collection_handles contains 'coming-soon' %}
+            <p class="modal_price">{{ 'collections.general.coming_soon' | t }}</p>
+          {% else %}
+            <p class="modal_price" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+              <meta itemprop="priceCurrency" content="{{ shop.currency }}" />
+              <meta itemprop="seller" content="{{ shop.name | escape }}" />
+              <link itemprop="availability" href="http://schema.org/{% if variant.available %}InStock{% else %}OutOfStock{% endif %}">
+              <meta itemprop="itemCondition" content="New" />
+
+              <span class="sold_out">{% if variant.available == false %}{{ 'products.product.sold_out' | t }}{% endif %}</span>
+              <span itemprop="price" content="{{ variant.price | money_without_currency | remove: "," }}" class="{% if variant.compare_at_price > variant.price %}sale{% endif %}">
+                <span class="current_price {% if product.available == false %}hidden{% endif %}">
+                  {% if variant.price > 0 %}
+                    <span class="money">{{ variant.price | money }}</span>
+                  {% else %}
+                    {{ settings.free_price_text }}
+                  {% endif %}
+                </span>
+              </span>
+              <span class="was_price">
+                {% if variant.price < variant.compare_at_price and variant.available %}
+                  <span class="money">{{ variant.compare_at_price | money }}</span>
+                {% endif %}
+              </span>
+
+              {% if section.settings.display_savings %}
+                <span class="sale savings">
+                  {% if variant.price < variant.compare_at_price and variant.available %}
+                    {{ 'products.product.savings' | t }}  {{ variant.compare_at_price | minus: variant.price | times: 100 | divided_by: variant.compare_at_price }}% (<span class="money">{{ variant.compare_at_price | minus: variant.price | money }}</span>)
+                  {% endif %}
+                </span>
+              {% endif %}
+            </p>
+
+            {% comment %}
+            {% include 'product-notify-me' %}
+            {% endcomment %}
+          {% endif %}
+          
+          {% if section.settings.product_description_position == "top" %}
+            {% if product.description != blank %}
+             <div class="description" itemprop="description">
+			{% include 'product-description-slider' %}
+            {% comment %}   <div class="smart-tabs-wrapper">{% include 'bs-tabs' %}</div>{% endcomment %}
+             </div>
+           {% endif %}
+          {% endif %}
+
+          {% unless collection_handles contains 'coming-soon' %}
+            {% include 'product-form' with 'product' %}
+            {% if section.settings.show_despachos %}
+            <div class="mw-400">
+              <div class="is-half bb-primary centered clickable">
+                <div href="#despachos" class="additional" data-remodal-target="despachos" data-no-instant>
+                  <img class="block" width="80px" src="https://cdn.shopify.com/s/files/1/2466/7899/files/envio_cafe_icono.png?v=1587786425">
+                  <span class="block">Despachos a todo Chile</span>
+                </div>
+              </div>
+              <div class="is-half bb-primary centered clickable d-none">
+                <div href="#retiros" class="additional" data-remodal-target="retiros" data-no-instant>
+                  <img class="block" width="80px" src="https://cdn.shopify.com/s/files/1/2466/7899/files/iconos1.png?v=1588213930">
+                  <span class="block">Capsulas</span>
+                </div>
+              </div>
+            </div>
+            {% endif %}
+          {% endunless %}
+			
+          	<img class="img-title" src="{{ 'iconos_grano.png' | asset_url }}" style="height: 80% !important; width: 80% !important;">
+          {% if section.settings.product_description_position == "bottom" %}
+            {% if product.description != blank %}
+             <div class="description bottom" style="margin-top: 20px;" itemprop="description">
+              {% include 'product-description-slider' %}
+            {% comment %}   <div class="smart-tabs-wrapper">{% include 'bs-tabs' %}</div>{% endcomment %}
+             </div>
+            {% endif %}
+          {% endif %}
+          
+          <div id="goback" class="d-none">
+            <button class="action_button add_to_cart" href="#" onclick="javascript:window.history.back(-1);return false;">Volver a la página anterior</button>
+          </div>
+          
+		  <div id="fbt"></div>
+          
+          {% if settings.enable_shopify_review_comments and settings.review_position == "next_to_gallery" %}
+            <div id="shopify-product-reviews" data-id="{{product.id}}">{{ product.metafields.spr.reviews }}</div>
+          {% endif %}
+
+          {% if section.settings.display_collections or section.settings.display_tags or section.settings.display_type %}
+            <div class="product_links">
+              {% if section.settings.display_collections %}
+                <p>
+                  <span class="label">{{ 'products.product.collections' | t }}:</span>
+                  <span>
+                   {% for col in product.collections %}
+                     <a href="{{ col.url }}" title="{{ col.title }}">{{ col.title }}</a>{% unless forloop.last %},{% endunless %}
+                   {% endfor %}
+                  </span>
+                </p>
+              {% endif %}
+
+              {% if section.settings.display_type %}
+                <p>
+                  <span class="label">{{ 'products.product.product_types' | t }}:</span>
+                  <span>{{ product.type | link_to_type }}</span>
+                </p>
+              {% endif %}
+
+              {% if section.settings.display_tags %}
+                <p>
+                 {% for tag in product.tags %}
+                   {% if forloop.first %}
+                     <span class="label">{{ 'products.product.tags' | t }}:</span>
+                   {% endif %}
+
+                   {% unless tag contains 'meta-' %}
+                     <span>
+                       <a href="/collections/{% if collection %}{{ collection.handle }}{% else %}all{% endif %}/{{ tag | handle }}" title="{{ 'products.product.products_tagged' | t: tag: tag }}">{{ tag }}</a>{% unless forloop.last %},{% endunless %}
+                       </span>
+                   {% endunless %}
+                 {% endfor %}
+                </p>
+              {% endif %}
+            </div>
+          {% endif %}
+
+          <div class="meta">
+            {% if section.settings.display_social_buttons %}
+              {% include "social-buttons" with "product" %}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      {% if product.description contains "<!-- split -->"  %}
+        <br class="clear" />
+        <div class="section clearfix">
+          <div class="description">
+            {% capture desctabs %}{{ product.description | split: '<!-- split -->' | last  }}{% endcapture %}{% include 'product-description-tabs' with desctabs %}
+          </div>
+        </div>
+      
+      {% endif %}
+<div id="cbb-frequently-bought-box"></div>
+      {% if settings.enable_shopify_review_comments and settings.review_position == "below_gallery" %}
+        <div class="shopify-reviews">
+          <div id="shopify-product-reviews" data-id="{{product.id}}">{{ product.metafields.spr.reviews }}</div>
+        </div>
+      {% endif %}
+    </div>
+
+    {% if sidebar %}
+
+            {% if section.settings.display_related_products %}
+              {% include 'related-products' %}
+            {% endif %}
+            {% if section.settings.display_recently_viewed %}
+              {% include 'recently-viewed' %}
+            {% endif %}
+
+          </div>
+        </div>
+      </div>
+
+    {% else %}
+
+          </div>
+        </div>
+      </div>
+
+      {% comment %}
+		Aqui el contenido nuevo estatico.
+      {% endcomment %}
+      <div class="container" style="margin-top: 25px; margin-bottom: 25px;">
+        <div class="six columns">
+          
+		  {% if product.tags contains 'laderastapia' %}
+          	  <img class="img-title" src="{{ 'titulo_laderas_del_tapias.png' | asset_url }}" style="height:100px !important">
+              <p class="text" style="text-align: justify">
+                  El Balcón de la montaña es un finca cafetera ubicada en neira Colombia, específicamente en la región del tapias. La finca es dirigida por el Señor Mauricio Duque quien ha dedicado su vida al café. Laderas del tapias hace referencia al río Tapias que nace a 3500 metros de altura recorriendo todos los campos de café dando lugar a una región muy verde. Los campos de café de Laderas del Tapias nacen aproximadamente hace 40 años siendo los primeros de café de especialidad del país.<br>
+              </p>
+              <p class="text" style="text-align: center; margin-right: 45px;"><img src="https://cdn.shopify.com/s/files/1/2466/7899/files/cafe_ffaa2903-d069-4845-aa32-950b27dd2934_480x480.png?v=1587008825" alt=""></p>
+          {% endif %}
+          {% if product.tags contains 'ingaaponte' %}
+              <img class="img-title" src="{{ 'titulo_inga_aponte.png' | asset_url }}" style="height:100px !important">
+              <p class="text" style="text-align: justify">
+                  Café de especialidad colombiano de variedad caturra, proveniente de la reserva indigena Inga Aponte, es una región volcánica, sus plantaciones cafeteras se ubican a la falda del volcán Galeras, el cual constantemente nutre las tierras con su ceniza volcánica la que le otorga una acidez especial al grano de café. La reserva está localizada a 4 horas de Pasto, la capital del departamento de Nariño, en la frontera con Ecuador. Los Ingas como se hacen llamar, son descendientes de los Incas, establecidos desde el siglo 18. Los ingas están son una de las comunidades indígenas más prosperas en Colombia y están muy orgullosos de su cultura.<br>
+              </p>
+          {% endif %}
+          {% if product.tags contains 'sausalito' %}
+              <img class="img-title" src="{{ 'titulo_sausalito.png' | asset_url }}" style="height:100px !important">
+              <p class="text" style="text-align: justify">
+                  El Sr. Hernando García es quien dirige la finca Sausalito junto a su familia. Está localizada a una altura entre 1.800-1.950 msnm en la ciudad de Manizales. Sausalito cuenta con 12 hectáreas en total de las cuales 7 son cultivos de café. Las condiciones climáticas que presenta la Finca Sausalito hacen un excelente café con notas frutales y a chocolate, las cuales han hecho merecedora la finca en dos ocasiones de la taza de la excelencia de Manizales.<br>
+              </p>
+          {% endif %}
+          {% if product.tags contains 'santarosa' %}
+              <img class="img-title" src="{{ 'titulo_blend_santa_rosa.png' | asset_url }}" style="height:100px !important">
+              <p class="text" style="text-align: justify">
+                  Santa Rosa de Cabal es un municipio Colombiano ubicado en el departamento de Risaralda en pleno eje cafetero. Destaca por su larga tradición cafetera, clima templado único para el cultivos de cafés de alta gama.Gracias al fruto del trabajo colaborativo entre caficultores nace este café, donde nos unimos a las asociaciones regionales para a agrupar a las mejores fincas.Café perfecto para tu prensa francesa o moka italiana. Este BLEND destaca por su fresco olor y sabores vivos, no te lo puedes perder, un café especial.
+              </p>
+          {% endif %}
+          {% if product.tags contains 'kerala' %}
+              <img class="img-title" src="{{ 'titulo_india_kera-la.png' | asset_url }}" style="height:100px !important">
+              <p class="text" style="text-align: justify">
+                  Desde la India de la región de Kera-la llega esta único origen de variedad robusta, una de las pocas del mundo en ser consideras de especialidad. Un café único de gran personalidad, cuerpo, crema y notas maderosas. Kera-la es sabor y energía, un ritual único para cada mañana, tu día sera otro.<br>
+              </p>
+          {% endif %}
+          {% if product.tags contains 'manizales' %}
+              <img class="img-title" src="{{ 'titulo_blend_manizales.png' | asset_url }}" style="height:100px !important">
+              <p class="text" style="text-align: justify">
+                  Manizales es la capital del departamento de Caldas corazón del eje cafetero Colombiano, su extensión, zonas rurales y montañas hacen del café de esta región único. Su clima y suelos son ideales para el cultivo de café, posee suelos fertilez propios de regiones volcánicas entregándoles una acidez brillante única a sus granos. En nuestra búsqueda por los mejores granos de Manizales pudimos conocer la gran tradición cafetera de esta región y seleccionar los granos que componen este gran blend, que reúne el mejor café de esta localidad cafetera. Este café es fruto del cultivo sostenible y de la gran pasión cafetera del caficultor Colombiano!.<br>
+              </p>
+          {% endif %}
+          {% if product.tags contains 'naturaldecaf' %}
+              <img class="img-title" src="{{ 'titulo_natural_decaf.png' | asset_url }}" style="height:100px !important">
+              <p class="text" style="text-align: justify">
+                  Nuestro natural decaf es producido mediante un proceso que utiliza como disolvente de la cafeína un ingrediente derivado de la caña de azúcar de manera de obtener un grano lo mas limpio y natural posible.<br>
+              </p>
+              <p class="text" style="text-align: center; margin-right: 45px;"><img src="https://cdn.shopify.com/s/files/1/2466/7899/files/cafe_ffaa2903-d069-4845-aa32-950b27dd2934_480x480.png?v=1587008825" alt=""></p>
+          {% endif %}
+          {% if product.tags contains 'belenumbria' %}
+              <img class="img-title" src="{{ 'titulo_blend_belen_de_umbria.png' | asset_url }}" style="height:100px !important">
+              <p class="text" style="text-align: justify">
+                  Belén de Umbría pertenece a el departamento de Risaralda en Colombia, ubicado al oeste de la Cordillera y es uno de los 14 municipios de esta región. Su economía está basada en la agricultura y el café es su principal fuente de ingresos. El pueblo Belumbrense es pequeño pero tiene suelos bastante fértiles y un clima óptimo para la actividad cafetera, donde se dan cafés únicos.. cultivados por largas tradiciones familiares... En esta región hemos agrupado a las principales fincas de mayor tradición para crear un Blend único, un café verdadero, que te hará sentir el único sabor de un café especial Colombiano.<br>
+              </p>
+          {% endif %}
+          {% if product.tags contains 'San Antonio' %}
+              <img class="img-title" src="{{ 'titulo_san_antonio.png' | asset_url }}" style="height:100px !important">
+              <p class="text" style="text-align: justify">
+                  La finca San Antonio está ubicada en la cima del Volcán de San Salvador a una altura de 1,650 a 1,780 msnm, este es un lugar privilegiado para el cultivo del café en la región de Centro América.La finca tiene una extensión de 70 hectáreas donde se cultivan las mejores variedades de café en el mundo como el Bourbon, Pacamara y Pacas.La cosecha se recolecta cada año entre los meses de enero a marzo, la corta de café se realiza manualmente por nuestro equipo de trabajadores quienes tienes la experiencia y destreza suficiente para reconocer cuando la cereza de café se encuentra en su punto exacto de madurez. Al final del día la cosecha se traslada al beneficio Vivagua ubicado a 20 kilómetros de la Finca donde se procesa por uno de nuestros tres métodos: Lavado, Honey o Natural. En todo el proceso hasta el envasado se trabaja con un 100% de trazabilidad, por lo que garantizamos que el café que se está entregando, es de la finca y cosecha que se informa en el envase.<br>
+              </p>
+          {% endif %}
+          {% if product.tags contains 'Guatemala' %}
+              <img class="img-title" src="{{ 'titulo_guatemala_bremen.png' | asset_url }}" style="height:100px !important">
+              <p class="text" style="text-align: justify">
+                  La finca orgánica Bremen se ubica en la zona montañosa del departamento de Baja Verapaz, Guatemala, a una altitud promedio de 1100 m.s.n.m. Administrada por Edwin Wolmers, la finca tiene una amplia y completamente trazable producción de variedades de café: Bourbon, Typica, Catuai, Moragoype, Caturra, Sarchimor, Obata, Anacafe 14 y Catimor.Estos lotes crecen en medio de un área rodeada por árboles frutales, bosques endémicos y formaciones geológicas. La preservación de esta biodiversidad impulsó a la familia Wolmers a migrar hacia una producción orgánica desde 2013. Esta transición, si bien ha reducido el rendimiento, ha provocado una considerable mejora en el bienestar de la finca: suelo, agua, trabajadores y producción. El fruto de este arduo trabajo permite contar con un café orgánico, fermentado en tanques y secado a una humedad de 10-12% al sol y por secado mecánico. Prueba el fruto de la tierra centroamericana que Señor K trae a tu taza.<br>
+              </p>
+              <p class="text" style="text-align: center; margin-right: 45px;"><img src="https://cdn.shopify.com/s/files/1/2466/7899/files/Usda_organic_160x160.jpg?v=1591314364" alt="Café organico" style="float: none; display: block; margin-left: auto; margin-right: auto;"></p>
+          {% endif %}
+          {% if product.tags contains 'Chile' %}
+              <img class="img-title" src="{{ 'titulo_puro_chile.png' | asset_url }}" style="height:100px !important">
+              <p class="text" style="text-align: justify">
+                  UN PAÍS DE EMPRENDEDORES NECESITA ENERGÍA, SOMOS EL PRESENTE Y FUTURO NO PERDAMOS LA MOTIVACIÓN Y SIGAMOS CONSTRUYENDO!POR NUESTRO LADO QUEREMOS APORTAR CON UN CAFÉ CARGADO DE INSPIRACIÓN. CREAMOS UN BLEND CON CAFÉS ESPECIALES, TRES PERFILES DE TUESTE BAJO MEDIO Y ALTO QUE BUSCA CAPTAR LA INTENSIDAD DE CADA CHILENO Y UNIRLA!<br>
+              </p>
+              <p class="text"><img src="https://cdn.shopify.com/s/files/1/2466/7899/files/cafe_ffaa2903-d069-4845-aa32-950b27dd2934_480x480.png?v=1587008825" alt=""></p>
+          {% endif %}
+          {% if product.tags contains 'Perú' %}
+              <img class="img-title" src="{{ 'titulo_chacra_ddago.png' | asset_url }}" style="height:100px !important">
+              <p class="text" style="text-align: justify">
+                  Café de especialidad proveniente de Villa Rica Perú, cultivado por Dagoberto Marín, pionero en técnicas de biodinámica la cual consiste en utilizar como único medio de abono para los cafetales el compost, el cual se genera en base al calendario lunar. La Chacra D' Dago hoy es un modelo a nivel mundial por las practicas ecológicas y biodinámicas que aplican las cuales entregan un café natural, limpio como los alimentos deben ser. Estuvimos en Marzo de este año donde conocimos el riguroso y mágico proceso de Dagoberto el cual trajimos a Chile para tostar y tu mismo puedas conectarte con la caficultura biodinámica..<br>
+              </p>
+              <p class="text" style="text-align: center; margin-right: 45px;"><img src="https://cdn.shopify.com/s/files/1/2466/7899/files/biodinamico_ddf38ab4-a52c-4dfd-ab5b-216fa5169d20_480x480.png?v=1587005330" alt=""></p>
+          {% endif %}
+          {% if product.tags contains 'indonesia' %}
+              <img class="img-title" src="{{ 'titulo_indonesia_bies_awan.png' | asset_url }}" style="height:100px !important">
+              <p class="text" style="text-align: justify">
+                  Desde el majestuoso archipiélago de Indonesia, llega un nuevo lote especial de la aldea Bies ubicado en la isla de Sumatra. Se trata del lote "Awan", donde caficultores del pueblo de Takengon y el Lago Tawar trabajan para traer un café de gran calidad (85+). En esta zona trabajan dos colectores muy renombrados: Mr. Gimin y Mr. Sugeng, quienes brindan capacitación, asesoran a los caficultores y estandarizan los procesos de selección, fermentación, lavado, despulpado y secado. Los cultivos de café en Sumatra se encuentran a una altitud de entre 1300 y 1700 m.s.n.m., en medio de un clima de mucha humedad debido a las tormentas y tifones que ocurren en este archipiélago. Esta es una variable que los caficultores tienen que sortear al momento del trillado y el secado. El café, con una humedad del 50% es llevado a la Cooperativa PT. IKA en Takengón, donde es secado hasta alcanzar un 30% y con ese nivel es trillado. Este proceso de trillado húmedo se denomina "giling basah". Este meticuloso proceso y dedicación de los caficultores isleños tiene un gran efecto en taza: exquisitas notas a caramelo, cedrón, manzana roja y mango y un cuerpo muy sedoso, ¡que te encantarán!<br>
+              </p>
+          {% endif %}
+          {% if product.tags contains 'burundi' %}
+              <img class="img-title" src="{{ 'titulo_burundi_nemba.png' | asset_url }}" style="height:100px !important">
+              <p class="text" style="text-align: justify">
+                  El café de Burundi, es el café del corazón de África, así se lo conoce por la forma del país. Desde esta nación, Señor K seleccionó un café lavado de Nemba en la provincia de Kayanza, caracterizada por sus suelos volcánicos ricos en nutrientes y con buena altitud para lograr complejos sabores y aromas en el café. Esta es una región conocida por una gran reivindicación de sus caficultores, quienes demostraron que juntos y con mucho esfuerzo, se puede conseguir un gran producto de calidad. En 1991 nace la estación de lavado para esta región, la cual recolecta la producción de más de 2600 caficultores locales de 15 colinas vecinas. El trabajo conjunto y disciplinado ha llevado a esta a provincia a producir uno de los mejores cafés del país con reconocimiento a nivel mundial. Kayanza esta a la vanguardia de la producción cafetera en Burundi.<br>
+              </p>
+          {% endif %}
+          {% if product.tags contains 'México' %}
+              <img class="img-title" src="{{ 'titulo_sierra_mixteca.png' | asset_url }}" style="height:100px !important">
+              <p class="text" style="text-align: justify">
+                  Sierra Mixteca es una zona montañosa ubicada en el norte de Oaxaca. La civilización mixteca fue una de las culturas más brillantes de Mesoamérica y muchas de sus tradiciones aún se pueden ver en la sociedad actual. En las tierras altas de la región de Sierra Mixteca, hay cientos de pequeños productores de café, descendientes de la Mixteca y con tamaños de granja de no más de 2-3 hectáreas. Estos agricultores están dedicados y comprometidos a producir café para ganarse la vida, pero muchos de ellos también producen otras cosas como miel y frutas para diversificar su oferta. En México la mayor parte de las plantaciones se encuentran en los estados de Veracruz, Oaxaca, Chiapas, Puebla, Tabasco, Tamaulipas, Querétaro e Hidalgo. Estos cafetales por lo general se establecen como cultivo de sombra.<br>
+              </p>
+          {% endif %}
+          {% if product.tags contains 'brasil_garca' %}
+              <img class="img-title" src="{{ 'titulo_brasil_garca.png' | asset_url }}" style="height:100px !important">
+              <p class="text" style="text-align: justify">
+                  Café de especialidad Brasilero de la&nbsp;línea Signature de Capricornio Coffees, que son cafés escogidos directamente por los encargados de Capricornio, Luiz, José Antonio y Edgar. Café de gran calidad producidos por expertos cafeteros. Este Signature Blend de Capricornio comprende 2 fincas de la región Marilia y Garca del estado de Sao Paulo, al norte del Trópico de Capricornio.<br>
+              </p>
+          {% endif %}
+          {% if product.tags contains 'Etiopía' %}
+              <img class="img-title" src="{{ 'titulo_etiopia_sidamo.png' | asset_url }}" style="height:100px !important">
+              <p class="text" style="text-align: justify">
+                  Etiopía, origen botánico de los cafés arábicas, es un país que mantiene en alto su tradición cafetera. La exuberante y megadiversa región de Sidamo, principalmente rural y muy poblada, es la zona más productiva de Etiopía en cuanto a café. Los granos de esta región se cultivan a una altitud de entre 1600 y 2000 msnm. Gracias a la amplia gama de variedades heredadas ancestralmente, la diversidad de microclimas y de tipos de suelo, Señor K trae a tu mesa un café de sabores muy complejos en los que predominan las notas especiadas y los aromas florales.<br>
+              </p>
+          {% endif %}
+          {% if product.tags contains 'minas_gerais' %}
+              <img class="img-title" src="{{ 'titulo_minas_gerais.png' | asset_url }}" style="height:100px !important">
+              <p class="text" style="text-align: justify">
+                  <p><strong>LA HISTORIA&nbsp;</strong>Fazenda Sertão se funde con los primeros pasos del cultivo del café en Carmo de Minas. De la primera generación de caficultores de la región, José Isidro Pereira aprendió muy pronto en su vida que vivir se trata de ser responsable y alegre al mismo tiempo. José Isidro perdió a su padre a la edad de un año y fue criado por su cariñosa y dedicada madre, que lo convirtió en un hombre honorable. José Isidro creció y estudió odontología, profesión que ejerció algunos años durante su temprana edad adulta. Lo destino lo llamó de vuelta a Carmo de Minas cuando su madre murió y él fue el único heredero de un pedazo de tierra que, por supuesto, es en realidad Fazenda Sertão. Años más tarde, en 1949, José Isidro se casó con el amor de su vida, Nazaret, y encontró en ella una verdadera pareja para toda la vida, y aún más lejos.</p>
+                  <p><strong>EL CAFÉ</strong> No es ningún secreto que, en comparación con los días pasados, los cafés cultivados en Carmo de Minas y la región tienen ahora mucha más conciencia. Pero incluso en épocas anteriores, cuando el foco estaba más en el volumen de producción que en la calidad misma, algunos compradores importantes de esa época tenían una preferencia explícita por los granos Borbón Amarillo cultivados en la región.</p><br>
+              </p>
+          {% endif %}
+          {% if product.tags contains 'maria_honey' %}
+              <img class="img-title" src="{{ 'titulo_maria_honey.png' | asset_url }}" style="height:100px !important">
+              <p class="text" style="text-align: justify">
+                  <br>
+              </p>
+          {% endif %}
+          {% if product.tags contains 'maria_natural' %}
+              <img class="img-title" src="{{ 'titulo_maria_natural.png' | asset_url }}" style="height:100px !important">
+              <p class="text" style="text-align: justify">
+                  <br>
+              </p>
+          {% endif %}
+          {% if product.tags contains 'morenitas' %}
+              <img class="img-title" src="{{ 'titulo_morenitas.png' | asset_url }}" style="height:100px !important">
+              <p class="text" style="text-align: justify">
+                  <br>
+              </p>
+          {% endif %}
+          
+        </div>
+        <div class="one column">&nbsp;</div>
+        <div class="nine columns">
+          
+          {% if product.tags contains 'laderastapia' %}
+          	<iframe width="711" height="450" src="https://www.youtube.com/embed/E7sTkIMTL4M" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          {% elsif product.tags contains 'sausalito' %}
+            <iframe width="711" height="450" src="https://www.youtube.com/embed/mLp9ld38yME" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          {% elsif product.tags contains 'Perú' %}
+            <iframe width="711" height="450" src="https://www.youtube.com/embed/fuM04nVAoyM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          {% else %}
+            <iframe width="711" height="450" src="https://www.youtube.com/embed/jjEL3iHEc7Q" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          {% endif %}
+          
+        </div>
+      </div>
+      
+      <div style="background-image: url('{{ 'fondo_grano.png' | asset_url }}'); width: 100%; min-height: 650px; background-repeat: no-repeat; background-position: center; background-size: cover;">
+        <div class="container" style="padding-top: 50px; color:#FFF">
+          <p class="text" style="text-align: center;"><img src="{{ 'icono-04.png' | asset_url }}" alt="" style="width:100%; max-width:500px"></p>
+          <div class="four columns" style="text-align: center; font-size: 18px; margin-bottom: 30px">
+            <p class="text" style="text-align: center;"><img src="{{ 'icono-01.png' | asset_url }}" alt="" width="100px"></p>
+            <h1 style="text-align: center; color: #FFF; font-size: 34px; letter-spacing: 0px;">SUSTENTABLE</h1>
+            <p>Te garantizamos una cadena cafetera sustentable de la finca a la taza</p>
+          </div>
+          <div class="two columns" style="text-align: center">&nbsp;</div>
+          
+          <div class="four columns" style="text-align: center; font-size: 18px; margin-bottom: 30px">
+            <p class="text" style="text-align: center;"><img src="{{ 'icono-02.png' | asset_url }}" alt="" width="100px"></p>
+            <h1 style="text-align: center; color: #FFF; font-size: 34px; letter-spacing: 0px;">SIEMPRE FRESCO</h1>
+            <p>Tostamos semana a semana para que tu café esté siempre fresco</p>
+          </div>
+          <div class="two columns" style="text-align: center">&nbsp;</div>
+          <div class="four columns" style="text-align: center; font-size: 18px; margin-bottom: 30px">
+            <p class="text" style="text-align: center;"><img src="{{ 'icono-03.png' | asset_url }}" alt="" width="100px"></p>
+            <h1 style="text-align: center; color: #FFF; font-size: 34px; letter-spacing: 0px;">DE ORIGEN</h1>
+            <p>Importamos granos directo de las fincas para conectarte con familias cafeteras</p>
+          </div>
+          
+        </div>
+      </div>
+
+	  
+      <div class="container" style="margin-top:60px; margin-bottom: 60px">
+        <div class="three columns">
+          &nbsp;
+        </div>
+        <div id="lote_cafe" class="thirteen columns" style="background-image: url('{{ 'lote_cafe.png' | asset_url }}'); background-repeat:no-repeat; background-position: center; background-size: cover; padding-top: 60px; padding-bottom:60px;">
+          &nbsp;
+        </div>
+        {% comment %}
+        Esta seccion es totalmente mejorable mediante css, pero no conosco la libreria que usaron.
+        Hacerlo de este modo fue lo mas simple.
+        {% endcomment %}
+        <div id="visible-xs" style="position: absolute; margin-top: 60px;">
+          <div class="eleven columns">
+            <img src="{{ 'tostado_chile2.png' | asset_url }}" style="margin-top: 20px; width: 100%;">
+          </div>
+          <div class="clearfix"></div>
+          <div class="three columns">&nbsp;</div>
+          <div class="thirteen columns" style="color:#fff; margin-top: -10px; padding-top: 10px; padding-bottom: 60px;">
+            <h1 style="color: #fff;font-size: 32px;line-height: 1em; padding: 15px 10px 0px 10px;">PEQUEÑOS LOTES DE CAFÉ HECHOS A MANO</h1>
+            <p style="padding: 0px 10px; font-weight: bold">Tostamos día a día para garantizarte la máxima frescura de tu café, cada tueste es único, tomamos en cuenta las características físicas y de origen del café, para así resaltar su sabor y el gran trabajo de caficultores de todo el mundo.</p>
+          </div>
+        </div>
+        
+        <div id="visible-sm" style="position: absolute; margin-top: 60px;">
+          <div class="sexteen columns">
+            <img src="{{ 'video_grano.gif' | asset_url }}" style="float:left; width:50%">
+            <img src="{{ 'tostado_chile2.png' | asset_url }}" style="width:48%">
+          </div>
+          <div class="clearfix"></div>
+          <div class="three columns">&nbsp;</div>
+          <div class="thirteen columns" style="color:#fff; margin-top: -10px; padding-top: 10px; padding-bottom: 60px;">
+            <h1 style="color: #fff;font-size: 32px;line-height: 1em; padding: 15px 10px 0px 10px;">PEQUEÑOS LOTES DE CAFÉ HECHOS A MANO</h1>
+            <p style="padding: 0px 10px; font-weight: bold">Tostamos día a día para garantizarte la máxima frescura de tu café, cada tueste es único, tomamos en cuenta las características físicas y de origen del café, para así resaltar su sabor y el gran trabajo de caficultores de todo el mundo.</p>
+          </div>
+        </div>
+        
+        <div id="visible-md" style="position: absolute; margin-top: 60px;">
+          <div class="sixteen columns">
+            <img src="{{ 'video_grano.gif' | asset_url }}" style="float:left; width:51%">
+            <img src="{{ 'tostado_chile2.png' | asset_url }}" style="width:49%">
+          </div>
+          <div class="clearfix"></div>
+          <div class="three columns">&nbsp;</div>
+          <div class="thirteen columns" style="color:#fff; margin-top: -10px; padding-top: 10px; padding-bottom: 60px;">
+            <h1 style="color: #fff;font-size: 32px;line-height: 1em; padding: 15px 10px 0px 10px;">PEQUEÑOS LOTES DE CAFÉ HECHOS A MANO</h1>
+            <p style="padding: 0px 10px; font-weight: bold">Tostamos día a día para garantizarte la máxima frescura de tu café, cada tueste es único, tomamos en cuenta las características físicas y de origen del café, para así resaltar su sabor y el gran trabajo de caficultores de todo el mundo.</p>
+          </div>
+        </div>
+        
+        <div id="visible-xl" style="position: absolute; margin-top: 60px;">
+          <div class="eleven columns">
+            <img src="{{ 'video_grano.gif' | asset_url }}" style="float: left; width: 51%;">
+            <img src="{{ 'tostado_chile2.png' | asset_url }}" style="width:49%">
+          </div>
+          <div class="five columns" style="color:#fff; margin-top: -10px; padding-top: 10px; padding-bottom: 60px;">
+            <h1 style="color: #fff;font-size: 32px;line-height: 1em; padding: 15px 10px 0px 10px;">PEQUEÑOS LOTES DE CAFÉ HECHOS A MANO</h1>
+            <p style="padding: 0px 10px; font-weight: bold">Tostamos día a día para garantizarte la máxima frescura de tu café, cada tueste es único, tomamos en cuenta las características físicas y de origen del café, para así resaltar su sabor y el gran trabajo de caficultores de todo el mundo.</p>
+          </div>
+        </div>
+        
+      </div>
+
+	  <div class="container" style="margin: 100px auto;">
+        <div class="six columns">
+          <img src="{{ 'coffee-kids-logo.png' | asset_url }}">
+          <p style="margin-right: 45px;text-align: justify; font-weight: bold">Gracias a tu preferencia empoderamos a las nuevas generaciones de caficultores a través de la ONG Coffee Kids la cual se encargada de apoyar a jóvenes caficultores de todo el mundo. La ONG tiene la misión de acompañar, capacitar y mejorar la competitividad de los jóvenes caficultores, Un % de tu compra va en directa ayuda de las nuevas generaciones. CONOCE MAS EN COFFEEKIDS.ORG</p>
+          <p style="margin-right: 45px;text-align: justify">
+            <a class="button" target="_blank" href="https://www.coffeekids.org/">CONOCE MÁS</a>
+            <button>DONAR</button>
+          </p>
+        </div>
+        <div class="ten columns">
+          <img src="{{ 'coffee-kids-collage.jpg' | asset_url }}" style="max-width: 700px; width: 100%;">
+        </div>
+      </div>
+	  {% comment %}
+		Aqui el contenido nuevo estatico.
+      {% endcomment %}
+
+      
+      {% if section.settings.display_recently_viewed %}
+        {% include 'recently-viewed' %}
+      {% endif %}
+
+      {% if section.settings.display_related_products %}
+        {% include 'related-products' %}
+      {% endif %}
+	  
+    {% endif %}
+
+<style>
+.vw-product-tabs.ui-tabs li.ui-state-default {
+  border-radius: 0px !important;
+  margin-right: 7px;
+  padding: 5px 0px !important;
+  border: 1px solid gray !important;
+}
+.purchase.clearfix.inline_purchase{
+  width: 0px;
+}
+.action_button.add_to_cart{
+  position: absolute;
+  max-width: 300px;
+  width: 50%;
+  margin-top: 30px;
+}
+  
+
+
+#lote_cafe {
+  height: 350px
+}
+#visible-xs{
+  display:none;
+}
+#visible-md{
+  display:none;
+}
+#visible-sm{
+  display:none;
+}
+#visible-xl{
+  display:block;
+}
+
+@media screen and (max-width: 1199px) {
+  #lote_cafe {
+    height: 500px
+  }
+  #visible-xs{
+    display:none;
+  }
+  #visible-sm{
+    display:none;
+  }
+  #visible-md{
+    display:block;
+  }
+  #visible-xl{
+    display:none;
+  }
+}
+  
+@media screen and (max-width: 960px) {
+  #lote_cafe {
+    height: 450px
+  }
+  #visible-xs{
+    display:none;
+  }
+  #visible-sm{
+    display:block;
+  }
+  #visible-md{
+    display:none;
+  }
+  #visible-xl{
+    display:none;
+  }
+}
+/* el mas chico */
+@media screen and (max-width: 799px) {
+  #lote_cafe {
+    height: 550px
+  }
+  #visible-xs{
+    display:block;
+  }
+  #visible-sm{
+    display:none;
+  }
+  #visible-md{
+    display:none;
+  }
+  #visible-xl{
+    display:none;
+  }
+}
+  
+</style>
+{% schema %}
+
+{
+  "name": "Product",
+  "class": "product-template product-grain-template",
+  "settings": [
+	{
+      "type": "checkbox",
+      "id": "show_despachos",
+      "label": "Mostrar despachos",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Product gallery"
+    },
+    {
+      "type": "checkbox",
+      "id": "gallery_arrows",
+      "label": "Show arrows on product gallery",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "activate_zoom",
+      "label": "Magnify product images on hover"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_product_lightbox",
+      "label": "Enable product gallery popup",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "activate_autoplay",
+      "label": "Enable product gallery slideshow"
+    },
+    {
+      "type": "select",
+      "id": "slideshow_animation",
+      "label": "Gallery transition",
+      "options": [
+        {
+          "value": "slide",
+          "label": "Slide"
+        },
+        {
+          "value": "fade",
+          "label": "Fade"
+        }
+      ],
+      "default": "slide"
+    },
+    {
+      "type": "radio",
+      "id": "product_images_position",
+      "label": "Gallery position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "product_thumbs",
+      "label": "Show product gallery thumbnails",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "thumbnail_position",
+      "label": "Thumbnail position",
+      "default": "bottom-thumbnails",
+      "options": [
+        {
+          "value": "left-thumbnails",
+          "label": "Left"
+        },
+        {
+          "value": "bottom-thumbnails",
+          "label": "Bottom"
+        },
+        {
+          "value": "right-thumbnails",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Product info"
+    },
+    {
+      "type": "checkbox",
+      "id": "product_breadcrumb",
+      "label": "Show breadcrumb links"
+    },
+    {
+      "type": "checkbox",
+      "id": "display_vendor",
+      "label": "Show vendor"
+    },
+    {
+      "type": "checkbox",
+      "id": "display_sku",
+      "label": "Show SKU"
+    },
+    {
+      "type": "checkbox",
+      "id": "display_savings",
+      "label": "Show price savings",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "display_collections",
+      "label": "Show collections"
+    },
+    {
+      "type": "checkbox",
+      "id": "display_type",
+      "label": "Show type"
+    },
+    {
+      "type": "checkbox",
+      "id": "display_tags",
+      "label": "Show tags"
+    },
+    {
+      "type": "checkbox",
+      "id": "display_social_buttons",
+      "label": "Show social media share icons",
+      "default": false
+    },
+    {
+      "type": "radio",
+      "id": "product_description_position",
+      "label": "Description position",
+      "options": [
+        {
+          "value": "top",
+          "label": "Above product form"
+        },
+        {
+          "value": "bottom",
+          "label": "Below product form"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Related products"
+    },
+    {
+      "type": "checkbox",
+      "id": "display_related_products",
+      "label": "Show related products ([?](https:\/\/help.outofthesandbox.com\/hc\/en-us\/articles\/115006909487-Related-Products))",
+      "default": true
+    },
+    {
+      "type": "radio",
+      "id": "related_products_style",
+      "label": "Layout",
+      "default": "grid",
+      "options": [
+        {
+          "value": "slider",
+          "label": "Slider"
+        },
+        {
+          "value": "grid",
+          "label": "Grid"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "related_products_limit",
+      "label": "Limit products",
+      "min": 2,
+      "max": 50,
+      "step": 1,
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "products_per",
+      "label": "Products per row",
+      "min": 3,
+      "max": 5,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "header",
+      "content": "Recently viewed products"
+    },
+    {
+      "type": "paragraph",
+      "content": "To test the recently viewed products, view your online store outside of the Editor and visit multiple product pages ([?](https:\/\/help.outofthesandbox.com\/hc\/en-us\/articles\/115008765228))"
+    },
+    {
+      "type": "checkbox",
+      "id": "display_recently_viewed",
+      "label": "Show recently viewed products",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "rv_title",
+      "label": "Title",
+      "default": "Recently Viewed Items"
+    },
+    {
+      "type": "radio",
+      "id": "rv_products_style",
+      "label": "Layout",
+      "default": "grid",
+      "options": [
+        {
+          "value": "slider",
+          "label": "Slider"
+        },
+        {
+          "value": "grid",
+          "label": "Grid"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "rv_max_display",
+      "label": "Products limit",
+      "min": 3,
+      "max": 12,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "rv_per",
+      "label": "Products per row",
+      "min": 3,
+      "max": 5,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "Sidebar"
+    },
+    {
+      "type": "paragraph",
+      "content": "Create a sidebar by adding content blocks."
+    },
+    {
+      "type": "checkbox",
+      "id": "toggle",
+      "label": "Toggle sidebar content"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "filter_by_collection",
+      "name": "Collection list",
+      "limit": 1
+    },
+    {
+      "type": "menu",
+      "name": "Menu",
+      "settings": [
+        {
+          "type": "link_list",
+          "id": "custom_menu_linklist",
+          "label": "Menu"
+        }
+      ]
+    },
+    {
+      "type": "page",
+      "name": "Page",
+      "settings": [
+        {
+          "type": "page",
+          "id": "content_page",
+          "label": "Page"
+        }
+      ]
+    },
+    {
+      "type": "recently_viewed",
+      "name": "Recently viewed products",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "To test the recently viewed products, view your online store outside of the Editor and visit multiple product pages ([?](https:\/\/help.outofthesandbox.com\/hc\/en-us\/articles\/115008765228))"
+        },
+        {
+          "type": "text",
+          "id": "sidebar_rv_title",
+          "label": "Title",
+          "default": "Recently Viewed"
+        },
+        {
+          "type": "range",
+          "id": "sidebar_rv_per",
+          "label": "Products limit",
+          "min": 1,
+          "max": 4,
+          "step": 1,
+          "default": 3
+        }
+      ]
+    },
+    {
+      "type": "filter_by_tag",
+      "name": "Tag list",
+      "limit": 1
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Heading"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Text area can be used for special announcements or general information.</p>"
+        }
+      ]
+    },
+    {
+      "type": "filter_by_type",
+      "name": "Type list",
+      "limit": 1
+    },
+    {
+      "type": "filter_by_vendor",
+      "name": "Vendor list",
+      "limit": 1
+    }
+  ],
+  "default": {
+    "settings": {
+
+    }
+  }
+}
+
+{% endschema %}
+
+<div id="cbb-frequently-bought-box"></div>
+
+<div id="looxReviews" data-product-id="{{product.id}}" class="loox-reviews-default">{{ product.metafields.loox.reviews }}</div>

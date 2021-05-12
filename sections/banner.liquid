@@ -1,0 +1,153 @@
+{% comment %}
+    @rotcl
+{% endcomment %}
+
+
+<header class="desktop masthead" style="background-image:url('{{ section.settings.bg_image | img_url: '2000x'}}');">
+    {% if section.settings.bg_image != nil %}
+    <div class="container">
+        <div class="row">
+            <div class="mx-auto">
+                <div class="site-heading">
+                    {% if section.settings.pretext != blank %}
+                    <div class="pretext">
+                        {{ section.settings.pretext }}
+                    </div>
+                    {% endif %} {% if section.settings.title != nil %}
+                    <h1 class="headline" style="color: {{ settings.iwto_original }}">{{ section.settings.title }}</h1>{% endif %}{% if section.settings.subtitle != nil %}<span class="subtitle" style="color: {{ settings.iwto_original }}"><p>{{ section.settings.subtitle }}</p></span>{% endif %} {% if section.settings.button1_link != blank %}
+                    <a href="{{ section.settings.button1_link }}" class="action_button first_button highlight-true">
+                          {{ section.settings.button1 }}
+                        </a> {% endif %} {% if section.settings.button2_link != blank %}
+                    <a href="{{ section.settings.button2_link }}" class="action_button second_button highlight-true">
+                          {{ section.settings.button2 }}
+                        </a> {% endif %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</header>
+<header class="mobile masthead" style="background-image:url('{{ section.settings.mb_image | img_url: '2000x'}}');">
+    {% if section.settings.bg_image != nil %}
+    <div class="container">
+        <div class="row">
+            <div class="mx-auto">
+                <div class="site-heading">
+                    {% if section.settings.pretext != blank %}
+                    <div class="pretext">
+                        {{ section.settings.pretext }}
+                    </div>
+                    {% endif %} {% if section.settings.title != nil %}
+                    <h1 class="headline" style="color: {{ settings.iwto_original }}">{{ section.settings.title }}</h1>{% endif %}{% if section.settings.subtitle != nil %}<span class="subtitle" style="color: {{ settings.iwto_original }}"><p>{{ section.settings.subtitle }}</p></span>{% endif %} {% if section.settings.button1_link != blank %}
+                    <a href="{{ section.settings.button1_link }}" class="action_button first_button highlight-true">
+                          {{ section.settings.button1 }}
+                        </a> {% endif %} {% if section.settings.button2_link != blank %}
+                    <a href="{{ section.settings.button2_link }}" class="action_button second_button highlight-true">
+                          {{ section.settings.button2 }}
+                        </a> {% endif %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</header>
+
+
+<style>
+  
+
+ header.masthead{
+     margin-bottom:0;
+     background:no-repeat 50%;
+     background-color:#6c757d;
+     background-attachment:scroll;
+     position:relative;
+     background-size:cover 
+}
+ header.masthead .overlay{
+     position:absolute;
+     top:0;
+     left:0;
+     height:100%;
+     width:100%;
+     background-color:#212529;
+     opacity:.5 
+}
+ header.masthead .page-heading,header.masthead .post-heading,header.masthead .site-heading{
+     padding:200px 0 150px;
+     color:#fff 
+}
+ @media only screen and (min-width:768px){
+     header.masthead .page-heading,header.masthead .post-heading,header.masthead .site-heading{
+         padding:200px 0 
+    }
+}
+
+
+</style>
+
+{% schema %}
+{
+  "name": "Jumbo banner",
+  "class": "act-section",
+  "settings": [
+	{
+		"type": "image_picker",
+		"id": "bg_image",
+		"label": "Imagen fondo",
+		"info": "Grande"
+	},
+	{
+		"type": "image_picker",
+		"id": "mb_image",
+		"label": "Imagen fondo Mobile",
+		"info": "Grande"
+	},
+	{
+		"type": "richtext",
+		"id": "pretext",
+		"label": "mini título",
+		"info": "Debug"
+	},
+	{
+		"type": "text",
+		"id": "title",
+		"label": "Título",
+		"info": "Debug"
+	},
+	{
+		"type": "richtext",
+		"id": "subtitle",
+		"label": "Subtitulo",
+		"info": "Debug"
+	},
+	{
+      "type": "text",
+      "id": "button1",
+      "label": "Texto botón 1"
+    },
+    {
+      "type": "url",
+      "id": "button1_link",
+      "label": "Link botón 1"
+    },
+	{
+      "type": "text",
+      "id": "button2",
+      "label": "Texto botón 2"
+    },
+    {
+      "type": "url",
+      "id": "button2_link",
+      "label": "Link botón 2"
+    }
+  ],
+  "presets": [{
+    "name": "Jumbo banner",
+    "category": "Custom"
+  }]
+
+}
+{% endschema %}

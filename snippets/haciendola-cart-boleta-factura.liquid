@@ -1,0 +1,130 @@
+<div class="hcbf-wrapper">
+	<div class="hcbf-col-full">
+		<p style="font-weight: bold;" ;>Indícanos si necesitas boleta o factura.</p>
+		<p>En caso de necesitar factura, rellena el siguiente formulario.</p>
+	</div>
+	<div class="hcbf-col-half">
+		<input
+			style="display: inline-block; vertical-align: middle;"
+			type="radio"
+			value="Boleta"
+			checked
+			name="attributes[Boleta/Factura]"
+			id="boletaRadioInput"
+		/>
+		<label style="display: inline-block; margin: 0;" for="boletaRadioInput">Boleta</label>
+	</div>
+	<div class="hcbf-col-half">
+		<input
+			style="display: inline-block; vertical-align: middle;"
+			type="radio"
+			value="Factura"
+			name="attributes[Boleta/Factura]"
+			id="facturaRadioInput"
+		/>
+		<label style="display: inline-block; margin: 0;" for="facturaRadioInput">Factura</label>
+	</div>
+	<div id="facturaInputWrapper" style="display: none; margin-top: 10px;">
+		<div class="hcbf-col-full">
+			<label style="display: inline-block; margin: 0;" for="rutInput">Rut:</label>
+			<input
+				style="display: inline-block; vertical-align: middle;"
+				type="text"
+                oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);"
+				name="attributes[Rut]"
+				id="rutInput"
+				value=""
+			/>
+		</div>
+		<div class="hcbf-col-full">
+			<label style="display: inline-block; margin: 0;" for="giroInput">Giro:</label>
+			<input
+				style="display: inline-block; vertical-align: middle;"
+				type="text"
+                oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);"
+				name="attributes[Giro]"
+				id="giroInput"
+				value=""
+			/>
+		</div>
+		<div class="hcbf-col-full">
+			<label style="display: inline-block; margin: 0;" for="razonSocialInput">Razón social:</label>
+			<input
+				style="display: inline-block; vertical-align: middle;"
+				type="text"
+                oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);"
+				name="attributes[Razón social]"
+				id="razonSocialInput"
+				value=""
+			/>
+		</div>
+		<div class="hcbf-col-full">
+			<label style="display: inline-block; margin: 0;" for="direccionInput">Dirección:</label>
+			<input
+				style="display: inline-block; vertical-align: middle;"
+				type="text"
+                oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);"
+				name="attributes[Dirección]"
+				id="direccionInput"
+				value=""
+			/>
+		</div>
+		<div class="hcbf-col-full">
+			<label style="display: inline-block; margin: 0;" for="comunaInput">Comuna:</label>
+			<input
+				style="display: inline-block; vertical-align: middle;"
+				type="text"
+                oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);"
+				name="attributes[Comuna]"
+				id="comunaInput"
+				value=""
+			/>
+		</div>
+		<div class="hcbf-col-full">
+			<label style="display: inline-block; margin: 0;" for="correoInput">Correo:</label>
+			<input
+				style="display: inline-block; vertical-align: middle;"
+				type="text"
+                oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);"
+				name="attributes[Correo]"
+				id="correoInput"
+				value=""
+			/>
+		</div>
+	</div>
+</div>
+
+<style>
+	.hcbf-wrapper {
+		display: flex;
+		flex-wrap: wrap;
+		padding-bottom: 20px;
+		margin-bottom: 35px;
+		border-bottom: 1px solid #cccccc;
+	}
+
+	.hcbf-col-half {
+		width: 50%;
+	}
+
+	.hcbf-col-full {
+		width: 100%;
+	}
+
+	@media only screen and (max-width: 500px) {
+		.hcbf-col-half {
+			width: 100%;
+		}
+	}
+
+	.hcbf-wrapper label {
+		font-weight: normal;
+	}
+</style>
+
+<script>
+	const cartFormId = 'cart_form';
+	const cartFormSubmitButtonId = 'checkout';
+	// Como todo este código es de front, es muy robable, por lo que todo el código javascript bajo esta línea DEBE SER OFUSCADO SIEMPRE ANTES DE CARGAR A LA TIENDA DE UN CLIENTE, para dificultar hacer modificaciones en caso de robo.
+	const _0x1140=['Si\x20desea\x20factura,\x20debe\x20indicar\x20comuna','addEventListener','Si\x20desea\x20factura,\x20debe\x20indicar\x20dirección','Si\x20desea\x20factura,\x20debe\x20indicar\x20rut','style','getElementById','preventDefault','Si\x20desea\x20factura,\x20debe\x20indicar\x20correo','toLowerCase','comunaInput','checked','boletaRadioInput','test','replace','length','Si\x20desea\x20factura,\x20debe\x20indicar\x20giro','border','facturaRadioInput','submitter','change','submit','display','charAt','1px\x20solid\x20red','Si\x20desea\x20factura,\x20debe\x20indicar\x20razón\x20social','El\x20rut\x20ingresado\x20no\x20es\x20válido\x20o\x20no\x20cumple\x20con\x20el\x20largo\x20mínimo.','facturaInputWrapper','focus','slice','value','block','giroInput','direccionInput','El\x20correo\x20ingresado\x20no\x20es\x20válido','stopPropagation'];(function(_0x48254c,_0x4eb22b){const _0x1140b7=function(_0x52ebb7){while(--_0x52ebb7){_0x48254c['push'](_0x48254c['shift']());}};_0x1140b7(++_0x4eb22b);}(_0x1140,0x15d));const _0x52eb=function(_0x48254c,_0x4eb22b){_0x48254c=_0x48254c-0xf0;let _0x1140b7=_0x1140[_0x48254c];return _0x1140b7;};const _0x10a954=_0x52eb,rutInput=document[_0x10a954(0xf6)]('rutInput'),giroInput=document['getElementById'](_0x10a954(0x110)),razonSocialInput=document['getElementById']('razonSocialInput'),direccionInput=document['getElementById'](_0x10a954(0x111)),correoInput=document[_0x10a954(0xf6)]('correoInput'),comunaInput=document[_0x10a954(0xf6)](_0x10a954(0xfa)),boletaRadioInput=document[_0x10a954(0xf6)](_0x10a954(0xfc)),facturaRadioInput=document[_0x10a954(0xf6)](_0x10a954(0x102)),facturaInputWrapper=document['getElementById'](_0x10a954(0x10b));boletaRadioInput['addEventListener'](_0x10a954(0x104),_0x4b1851=>{const _0xe2273e=_0x10a954;facturaInputWrapper[_0xe2273e(0xf5)][_0xe2273e(0x106)]='none';}),facturaRadioInput[_0x10a954(0xf2)](_0x10a954(0x104),_0xabd4c=>{const _0x4ea165=_0x10a954;facturaInputWrapper[_0x4ea165(0xf5)]['display']=_0x4ea165(0x10f);});const cartForm=document[_0x10a954(0xf6)](cartFormId);cartForm['addEventListener'](_0x10a954(0x105),_0xc6a1f2=>{const _0x3b5fcb=_0x10a954;if(_0xc6a1f2[_0x3b5fcb(0x103)]){if(_0xc6a1f2[_0x3b5fcb(0x103)]['id']===cartFormSubmitButtonId){if(facturaRadioInput[_0x3b5fcb(0xfb)]){let _0xa86e4c=!![];rutInput[_0x3b5fcb(0xf5)]['border']='',giroInput[_0x3b5fcb(0xf5)][_0x3b5fcb(0x101)]='',razonSocialInput['style']['border']='',direccionInput['style'][_0x3b5fcb(0x101)]='',correoInput['style'][_0x3b5fcb(0x101)]='',comunaInput[_0x3b5fcb(0xf5)][_0x3b5fcb(0x101)]='';if(rutInput[_0x3b5fcb(0x10e)]==='')alert(_0x3b5fcb(0xf4)),rutInput[_0x3b5fcb(0xf5)][_0x3b5fcb(0x101)]=_0x3b5fcb(0x108),rutInput[_0x3b5fcb(0x10c)](),_0xa86e4c=![];else{if(checkRut(rutInput)===![])alert(_0x3b5fcb(0x10a)),rutInput[_0x3b5fcb(0xf5)][_0x3b5fcb(0x101)]=_0x3b5fcb(0x108),rutInput[_0x3b5fcb(0x10c)](),_0xa86e4c=![];else{if(giroInput[_0x3b5fcb(0x10e)]==='')alert(_0x3b5fcb(0x100)),giroInput[_0x3b5fcb(0xf5)][_0x3b5fcb(0x101)]=_0x3b5fcb(0x108),giroInput[_0x3b5fcb(0x10c)](),_0xa86e4c=![];else{if(razonSocialInput[_0x3b5fcb(0x10e)]==='')alert('Si\x20desea\x20factura,\x20debe\x20indicar\x20razón\x20social'),razonSocialInput['style'][_0x3b5fcb(0x101)]=_0x3b5fcb(0x108),razonSocialInput['focus'](),_0xa86e4c=![];else{if(direccionInput[_0x3b5fcb(0x10e)]==='')alert(_0x3b5fcb(0xf3)),direccionInput['style'][_0x3b5fcb(0x101)]=_0x3b5fcb(0x108),direccionInput['focus'](),_0xa86e4c=![];else{if(comunaInput[_0x3b5fcb(0x10e)]==='')alert(_0x3b5fcb(0xf1)),comunaInput[_0x3b5fcb(0xf5)][_0x3b5fcb(0x101)]=_0x3b5fcb(0x108),comunaInput[_0x3b5fcb(0x10c)](),_0xa86e4c=![];else{if(correoInput[_0x3b5fcb(0x10e)]==='')alert(_0x3b5fcb(0xf8)),correoInput[_0x3b5fcb(0xf5)][_0x3b5fcb(0x101)]=_0x3b5fcb(0x108),correoInput[_0x3b5fcb(0x10c)](),_0xa86e4c=![];else validateEmail(correoInput[_0x3b5fcb(0x10e)])===![]&&(alert(_0x3b5fcb(0x112)),correoInput[_0x3b5fcb(0xf5)][_0x3b5fcb(0x101)]=_0x3b5fcb(0x108),correoInput['focus'](),_0xa86e4c=![]);}}}}}}return!_0xa86e4c&&(_0xc6a1f2['stopPropagation'](),_0xc6a1f2[_0x3b5fcb(0xf7)]()),_0xa86e4c;}}}else{if(facturaRadioInput[_0x3b5fcb(0xfb)]){let _0x4cc05a=!![];rutInput[_0x3b5fcb(0xf5)][_0x3b5fcb(0x101)]='',giroInput[_0x3b5fcb(0xf5)][_0x3b5fcb(0x101)]='',razonSocialInput['style'][_0x3b5fcb(0x101)]='',direccionInput['style'][_0x3b5fcb(0x101)]='',correoInput['style'][_0x3b5fcb(0x101)]='',comunaInput['style'][_0x3b5fcb(0x101)]='';if(rutInput[_0x3b5fcb(0x10e)]==='')alert(_0x3b5fcb(0xf4)),rutInput['style'][_0x3b5fcb(0x101)]=_0x3b5fcb(0x108),rutInput['focus'](),_0x4cc05a=![];else{if(checkRut(rutInput)===![])alert(_0x3b5fcb(0x10a)),rutInput[_0x3b5fcb(0xf5)][_0x3b5fcb(0x101)]=_0x3b5fcb(0x108),rutInput['focus'](),_0x4cc05a=![];else{if(giroInput[_0x3b5fcb(0x10e)]==='')alert('Si\x20desea\x20factura,\x20debe\x20indicar\x20giro'),giroInput[_0x3b5fcb(0xf5)][_0x3b5fcb(0x101)]=_0x3b5fcb(0x108),giroInput['focus'](),_0x4cc05a=![];else{if(razonSocialInput[_0x3b5fcb(0x10e)]==='')alert(_0x3b5fcb(0x109)),razonSocialInput[_0x3b5fcb(0xf5)]['border']=_0x3b5fcb(0x108),razonSocialInput[_0x3b5fcb(0x10c)](),_0x4cc05a=![];else{if(direccionInput[_0x3b5fcb(0x10e)]==='')alert(_0x3b5fcb(0xf3)),direccionInput['style'][_0x3b5fcb(0x101)]=_0x3b5fcb(0x108),direccionInput[_0x3b5fcb(0x10c)](),_0x4cc05a=![];else{if(comunaInput[_0x3b5fcb(0x10e)]==='')alert(_0x3b5fcb(0xf1)),comunaInput[_0x3b5fcb(0xf5)][_0x3b5fcb(0x101)]=_0x3b5fcb(0x108),comunaInput[_0x3b5fcb(0x10c)](),_0x4cc05a=![];else{if(correoInput[_0x3b5fcb(0x10e)]==='')alert('Si\x20desea\x20factura,\x20debe\x20indicar\x20correo'),correoInput[_0x3b5fcb(0xf5)]['border']=_0x3b5fcb(0x108),correoInput[_0x3b5fcb(0x10c)](),_0x4cc05a=![];else validateEmail(correoInput[_0x3b5fcb(0x10e)])===![]&&(alert('El\x20correo\x20ingresado\x20no\x20es\x20válido'),correoInput[_0x3b5fcb(0xf5)][_0x3b5fcb(0x101)]='1px\x20solid\x20red',correoInput['focus'](),_0x4cc05a=![]);}}}}}}return!_0x4cc05a&&(_0xc6a1f2[_0x3b5fcb(0xf0)](),_0xc6a1f2['preventDefault']()),_0x4cc05a;}}}),setTimeout(()=>{const _0xdc085c=_0x10a954;facturaRadioInput[_0xdc085c(0xfb)]&&(facturaInputWrapper[_0xdc085c(0xf5)][_0xdc085c(0x106)]='block');},0x1f4);function validateEmail(_0x648953){const _0x3433e2=_0x10a954,_0x285d38=/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;return _0x285d38[_0x3433e2(0xfd)](String(_0x648953)[_0x3433e2(0xf9)]());}function checkRut(_0x357357){const _0x306a1b=_0x10a954;var _0x2229f6=_0x357357[_0x306a1b(0x10e)]['replace']('.','');_0x2229f6=_0x2229f6[_0x306a1b(0xfe)]('-',''),cuerpo=_0x2229f6[_0x306a1b(0x10d)](0x0,-0x1),dv=_0x2229f6[_0x306a1b(0x10d)](-0x1)['toUpperCase'](),_0x357357[_0x306a1b(0x10e)]=cuerpo+'-'+dv;if(cuerpo[_0x306a1b(0xff)]<0x7)return![];suma=0x0,multiplo=0x2;for(i=0x1;i<=cuerpo[_0x306a1b(0xff)];i++){index=multiplo*_0x2229f6[_0x306a1b(0x107)](cuerpo[_0x306a1b(0xff)]-i),suma=suma+index,multiplo<0x7?multiplo=multiplo+0x1:multiplo=0x2;}dvEsperado=0xb-suma%0xb,dv=dv=='K'?0xa:dv,dv=dv==0x0?0xb:dv;if(dvEsperado!=dv)return![];}
+</script>

@@ -1,0 +1,35 @@
+{% if search.terms contains 'uac:' %}
+    {% assign canonical_url = canonical_url | replace: '+or+', '+OR+' | append: '&view=uac' %}
+
+    {% assign page_title = "I just made a COOL purchase!" %}
+    {% assign page_h1 = "The list of products that your friend has just bought" %}
+    {% assign page_description = "You can follow this link and check it out" %}
+
+    {% assign offerId = search.terms | split: 'uac:' %}
+    {% assign offerId = offerId[1] %}
+
+            {% if offerId == '8003' %}
+            {% assign page_title = "I just made a COOL purchase" %}
+            {% assign page_h1 = "The list of products that your friend has just bought" %}
+            {% assign page_description = "You can follow this link and check it out" %}
+        {% endif %}
+            {% if offerId == '8001' %}
+            {% assign page_title = "I just made a COOL purchase" %}
+            {% assign page_h1 = "The list of products that your friend has just bought" %}
+            {% assign page_description = "You can follow this link and check it out" %}
+        {% endif %}
+    
+    {% assign product_image = '' %}
+    {% if search.results_count > 0 %}
+        {% assign page_title = page_title | replace: '{product}', search.results[0].title %}
+        {% assign page_h1 = page_h1 | replace: '{product}', search.results[0].title %}
+        {% assign page_description = page_description | replace: '{product}', search.results[0].title %}
+        {% if search.results[0].featured_image %}
+            {% assign product_image = search.results[0].featured_image.src | img_url: '200x200' %}
+        {% endif %}
+    {% else %}
+        {% assign page_title = page_title | replace: '{product}', '' %}
+        {% assign page_h1 = page_h1 | replace: '{product}', '' %}
+        {% assign page_description = page_description | replace: '{product}', '' %}
+    {% endif %}
+{% endif %}

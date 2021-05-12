@@ -1,0 +1,1701 @@
+{% comment %}
+	@rotcl
+{% endcomment %}
+
+<a name="pagecontent" id="pagecontent"></a>
+
+<div class="detail-sections">
+
+{% if section.blocks.size > 0 %}
+  {% for block in section.blocks %}
+
+    {% if block.type == "image_with_text_overlay" or block.type == "featured_video" %}
+      <div {{ block.shopify_attributes }} class="under-menu">
+    {% elsif block.type == "featured_collection" %}
+      <div {{ block.shopify_attributes }} class="featured-collection-section">
+    {% else %}
+      <div {{ block.shopify_attributes }}>
+    {% endif %}
+        
+        
+      {% if block.type == 'select' %}
+        
+        <div class="container selector">
+          <div class="offset-by-five six columns alpha" style="text-align:center">
+            <h3>Buscar por comuna: </h3>
+          </div>
+          <div class="offset-by-five six columns alpha">
+             <select id="select-comuna" onChange="goto( this )">
+              <option disabled selected value>Ir a</option>
+              <option value="viña">Viña del Mar</option>
+              <option value="ohiggins">Rancagua</option>
+              <option value="colina">Colina</option>
+              <option value="lascondes">Las Condes</option>
+              <option value="maipu">Maipu</option>
+              <option value="nunoa">Ñuñoa</option>
+              <option value="providencia">Providencia</option>
+              <option value="vitacura">Vitacura</option>
+            </select> 
+          </div>
+        </div>
+      {% endif %}
+        
+	  {% if block.type == 'map-with-text' %}
+        <div class="map-with-text">
+          <div class="container">
+            <div class="six columns">
+              <div class="embed-container maps">
+                <iframe width="100%" height="{{ block.settings.map_height }}" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?f=q&amp;source=embed&amp;hl=en&amp;geocode=&amp;q={% if block.settings.contact_address != blank %}{{ block.settings.contact_address | replace: ' ', '+' }}{% else %}{{ shop.address.street }}{% endif %}&amp;z={{ block.settings.zoom_level }}&amp;output=embed"></iframe>
+              </div>
+            </div>
+            <div class="six columns">
+              <div class="info text-align--left">
+                <a {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %} class="collection_title" style="font-size: 1.2em">
+                  {{ block.settings.title }}
+                </a>
+                {% if block.settings.text != blank %}
+                  <div class="description">{{ block.settings.text }}</div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+        
+      {% if block.type == "image_with_text_overlay" %}
+
+        {% assign default = '1400x' %}
+        {% assign size1 = '480x' %}
+        {% assign size2 = '765x' %}
+        {% assign size3 = '900x' %}
+        {% assign size4 = '1000x' %}
+        {% assign size5 = '1100x' %}
+        {% assign size6 = '1300x' %}
+        {% assign size7 = '1500x' %}
+        {% assign size8 = '1700x' %}
+        {% assign size9 = '1900x' %}
+        {% assign size10 = '2000x' %}
+
+        <section id="banner-{{block.id}}" class="banner">
+          {% if block.settings.image != nil %}
+            <img  src="{{ block.settings.image | img_url: '100x', format: 'pjpg' }}"
+                  alt="{{ block.settings.image.alt | escape }}"
+                  class="lazyload {{ block.image_loading_style }}"
+                  sizes="100vw"
+                  data-src="{{ block.settings.image | img_url: default, format: 'pjpg' }}"
+                  srcset="
+                  {{ block.settings.image | img_url: default, format: 'pjpg' }} {{default | replace: 'x', 'w'}},
+                  {{ block.settings.image | img_url: size1, format: 'pjpg' }} {{size1 | replace: 'x', 'w'}},
+                  {{ block.settings.image | img_url: size2, format: 'pjpg' }} {{size2 | replace: 'x', 'w'}},
+                  {{ block.settings.image | img_url: size3, format: 'pjpg' }} {{size3 | replace: 'x', 'w'}},
+                  {{ block.settings.image | img_url: size4, format: 'pjpg' }} {{size4 | replace: 'x', 'w'}},
+                  {{ block.settings.image | img_url: size5, format: 'pjpg' }} {{size5 | replace: 'x', 'w'}},
+                  {{ block.settings.image | img_url: size6, format: 'pjpg' }} {{size6 | replace: 'x', 'w'}},
+                  {{ block.settings.image | img_url: size7, format: 'pjpg' }} {{size7 | replace: 'x', 'w'}},
+                  {{ block.settings.image | img_url: size8, format: 'pjpg' }} {{size8 | replace: 'x', 'w'}},
+                  {{ block.settings.image | img_url: size9, format: 'pjpg' }} {{size9 | replace: 'x', 'w'}},
+                  {{ block.settings.image | img_url: size10, format: 'pjpg' }} {{size10 | replace: 'x', 'w'}}"
+
+                   />
+          {% else %}
+            {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg placeholder-svg--banner' }}
+          {% endif %}
+          {% unless block.settings.button1_link != blank and block.settings.button2_link != blank %}
+            {% if block.settings.button1_link != blank %}
+              <a href="{{ block.settings.button1_link }}" class="banner-full-link">
+                {{ block.settings.title }}
+              </a>
+            {% elsif block.settings.button2_link != blank %}
+              <a href="{{ block.settings.button2_link }}" class="banner-full-link">
+                {{ block.settings.title }}
+              </a>
+            {% endif %}
+          {% endunless %}
+          {% unless block.settings.pretext == blank and block.settings.title == blank and block.settings.subtitle == blank and block.settings.button1 == blank and block.settings.button2 == blank %}
+            <div class="position-{{ block.settings.text_position }} caption js-caption">
+              <div class="caption-content caption-background-{{ block.settings.caption_background }} caption-transparency-{{ block.settings.caption_background_transparency }} align-{{ block.settings.text_align }}">
+                {% if block.settings.pretext != blank %}
+                  <div class="pretext">
+                    {{ block.settings.pretext }}
+                  </div>
+                {% endif %}
+                {% if block.settings.title != blank %}
+                  <h1 class="headline">
+                    {{ block.settings.title }}
+                  </h1>
+                {% endif %}
+                {% if block.settings.subtitle != blank %}
+                  <div class="subtitle">
+                    {{ block.settings.subtitle }}
+                  </div>
+                {% endif %}
+                {% if block.settings.button1 != blank %}
+                  <a {% if block.settings.button1_link != blank %}href="{{ block.settings.button1_link }}"{% endif %} class="action_button first_button highlight-{{ block.settings.button1_highlight }}">
+                    {{ block.settings.button1 }}
+                  </a>
+                {% endif %}
+                {% if block.settings.button2 != blank %}
+                  <a {% if block.settings.button2_link != blank %}href="{{ block.settings.button2_link }}"{% endif %} class="action_button second_button highlight-{{ block.settings.button2_highlight }}">
+                    {{ block.settings.button2 }}
+                  </a>
+                {% endif %}
+              </div>
+            </div>
+          {% endunless %}
+        </section>
+      {% endif %}
+
+      {% if block.type == "rich_text_and_image" %}
+        <div class="container">
+          <div class="sixteen columns">
+            <div class="homepage_content section {{ block.settings.text_alignment }} clearfix">
+              {% if block.settings.image %}
+                {{ block.settings.image | img_url: '1180x', scale: 2 | img_tag: block.settings.image.alt, 'lazyload transition-in' }}
+              {% endif %}
+
+              {% if block.settings.title != blank %}
+                <h2 class="title">
+                  {{ block.settings.title }}
+                </h2>
+                <div class="feature_divider"></div>
+              {% endif %}
+
+              <div class="{{ block.settings.text_size }}">
+                {% if block.settings.content != blank %}
+                  {{ block.settings.content }}
+                {% endif %}
+
+                {% if block.settings.button_label != blank %}
+                  <a href="{{ block.settings.button_link }}" class="action_button">
+                    {{ block.settings.button_label }}
+                  </a>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+
+      {% if block.type == "featured_collection" %}
+        {% if block.settings.collection == blank %}
+          {%- assign section_onboarding = true -%}
+          {% comment %}assign product length to be selected limit for onboarding{% endcomment %}
+          {% assign products_length = block.settings.products_limit | plus: 0 %}
+        {% else %}
+          {%- assign section_onboarding = false -%}
+        {% endif %}
+
+        <div class="container featured_products
+                        product-{{ block.settings.collection_style }}">
+          <div class="sixteen columns center homepage_content">
+            {% if block.settings.title != blank %}
+              <a href="{{ collections[block.settings.collection].url }}"><h2 class="title">{{ block.settings.title }}</h2></a>
+            <div class="feature_divider"></div>
+            {% endif %}
+            {% if collections[block.settings.collection].description != blank %}
+              <div class="section clearfix">
+                {{ collections[block.settings.collection].description }}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+
+        {% assign limit = block.settings.products_limit %}
+
+        {% if block.settings.collection_style == 'slider' %}
+          {% assign col = block.settings.collection %}
+          {% assign products = collections[block.settings.collection].products %}
+          {% assign per_slide = block.settings.products_per %}
+
+          <div class="container js-product-slider homepage-product-slider full-width {% if per_slide == 2 or per_slide == 4 or per_slide == 6 %}even-num-slides{% endif %}">
+            {% if section_onboarding == false %}
+              {% if col and collections[col].all_products_count > 0 %}
+                {% include 'product-slider', per_slide: block.settings.products_per, featured_collection: col  %}
+              {% endif %}
+            {% else %}
+              <div class="slider-gallery products-slider products-length-{{ products_length }}"
+                    data-products-per-slide="{{ per_slide }}"
+                    data-products-limit="{{ limit }}"
+                    data-products-available="{{ products_length }}">
+                {% for i in (1..limit) %}
+                  {% assign per_slide_num = block.settings.products_per | plus: 0 %}
+                  <div class="gallery-cell thumbnail
+                  {% if products_length > per_slide_num %}visible-{{ per_slide }}{% else %}visible-{{ products_length }}{% endif %}
+                  " itemprop="itemListElement" itemscope itemtype="http://schema.org/Product">
+                    <div class="product-wrap">
+                      <div class="relative product_image">
+                        <a href="#" itemprop="url">
+                          <object class="placeholder-image">
+                            {% capture num %}{% cycle "1", "2", "3", "4", "5", "6" %}{% endcapture %}
+                            {{ 'product-' | append: num | placeholder_svg_tag: 'placeholder-svg placeholder-svg--product' }}
+                          </object>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+        {% else %}
+          {% if section_onboarding == false %}
+            {% assign limit = block.settings.products_limit | plus: 1 %}
+            {% assign collection = collections[block.settings.collection] %}
+            {% assign products = collections[block.settings.collection].products %}
+            {% assign products_per_row = block.settings.products_per %}
+            <div class="container">
+              <div class="sixteen columns">
+                {% include 'product-loop' %}
+              </div>
+            </div>
+          {% else %}
+            {% assign products_per_row = block.settings.products_per %}
+            <div class="container">
+              <div class="sixteen columns">
+                {% capture new_row %}
+                    <br class="clear product_clear" />
+                {% endcapture %}
+
+                <div itemtype="http://schema.org/ItemList" class="product-list collection-matrix clearfix">
+                  {% for i in (1..limit) %}
+                    {% comment %}{% assign collection_group = products | map: 'id' %}{% endcomment %}
+                    {% assign collection_group_thumb = collection_group | append : 'thumb' %}
+                    {% assign collection_group_mobile = collection_group | append : 'mobile' %}
+                      <div class="
+                      {% if products_per_row == 2 %}
+                        eight columns {% cycle collection_group_thumb: 'alpha', 'omega' %}
+                      {% elsif products_per_row == 3 %}
+                        one-third column {% cycle collection_group_thumb: 'alpha', '', 'omega' %}
+                      {% elsif products_per_row == 4 %}
+                        four columns {% cycle collection_group_thumb: 'alpha', '', '', 'omega' %}
+                      {% elsif products_per_row == 5 %}
+                        one-fifth column {% cycle collection_group_thumb: 'alpha', '', '', '', 'omega' %}
+                      {% elsif products_per_row == 6 %}
+                        one-sixth column {% cycle collection_group_thumb: 'alpha', '', '', '', '', 'omega' %}
+                      {% else %}
+                        one-seventh column {% cycle collection_group_thumb: 'alpha', '', '', '', '', '', 'omega' %}
+                      {% endif %} thumbnail {% cycle collection_group_mobile: 'even', 'odd' %}" itemprop="itemListElement" itemscope itemtype="http://schema.org/Product">
+
+                      <div class="product-wrap">
+                        <div class="relative product_image swap-{{ settings.collection_secondary_image }}">
+                          <a href="#" itemprop="url">
+                            {% capture num %}{% cycle "1", "2", "3", "4", "5", "6" %}{% endcapture %}
+                            {{ 'product-' | append: num | placeholder_svg_tag: 'placeholder-svg placeholder-svg--product' }}
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+
+                    {% if products_per_row == 2 %}
+                      {% cycle collection_group: '', new_row %}
+                    {% elsif products_per_row == 3 %}
+                      {% cycle collection_group: '', '', new_row %}
+                    {% elsif products_per_row == 4 %}
+                      {% cycle collection_group: '', '', '', new_row %}
+                    {% elsif products_per_row == 5 %}
+                      {% cycle collection_group: '', '', '', '', new_row %}
+                    {% elsif products_per_row == 6 %}
+                      {% cycle collection_group: '', '', '', '', '', new_row %}
+                    {% elsif products_per_row == 7 %}
+                      {% cycle collection_group: '', '', '', '', '', '', new_row %}
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          {% endif %}
+        {% endif %}
+      {% endif %}
+
+      {% if block.type == "page" %}
+        <div class="homepage_content featured_content clearfix">
+          <div class="container">
+            <div class="sixteen columns">
+              <div class="section clearfix">
+                {% if block.settings.content_page != blank %}
+                  {% include 'page-multi-column', content: pages[block.settings.content_page].content %}
+                {% else %}
+                  <p class="center onboard-text">
+                    {{ 'homepage.onboarding.no_content' | t }}
+                  </p>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+
+      {% if block.type == "blog_posts" %}
+        <div class="container">
+          <div class="section clearfix homepage_content">
+            {% if block.settings.title != blank %}
+              <div class="sixteen columns">
+                <h2 class="title center blog">
+                  <a href="{{ blogs[block.settings.blog_widget_select].url }}">{{ block.settings.title | escape }}</a>
+                </h2>
+                <div class="feature_divider"></div>
+              </div>
+            {% endif %}
+            {% if block.settings.blog_widget_select != blank %}
+              {% for article in blogs[block.settings.blog_widget_select].articles limit: block.settings.home_page_articles %}
+                <div class="{% if block.settings.home_page_articles == 2 %}eight columns{% elsif block.settings.home_page_articles == 3 %}one-third column{% else %}four columns{% endif %} article">
+                  {% if article.image %}
+                    <a href="{{ article.url }}">
+                      <img  src="{{ article.image | img_url: '100x' }}"
+                            class="lazyload {{ settings.image_loading_style }}"
+                            alt="{% if article.image.alt != blank %}{{ article.image.alt }}{% else %}{{ article.title | escape }}{% endif %}"
+                            data-sizes="auto"
+                            data-src="{{ article.image | img_url: '2048x' }}"
+                            data-srcset=" {{ article.image | img_url: '200x' }} 200w,
+                                          {{ article.image | img_url: '400x' }} 400w,
+                                          {{ article.image | img_url: '600x' }} 600w,
+                                          {{ article.image | img_url: '800x' }} 800w,
+                                          {{ article.image | img_url: '1000x' }} 1000w,
+                                          {{ article.image | img_url: '1400x' }} 1400w,
+                                          {{ article.image | img_url: '2048x' }} 2048w"
+                            />
+                    </a>
+                  {% endif %}
+
+                  <h3 class="sub_title">
+                    <a href="{{ article.url }}">{{ article.title }}</a>
+                  </h3>
+                  <p class="blog_meta">
+                    {% if block.settings.blog_author %}
+                      <span>{{ 'blogs.article.by_author' | t: author: article.author }}</span>
+                    {% endif %}
+
+                    {% if block.settings.blog_date %}
+                      <span>{{ article.published_at | date: format: "month_day_year" }}</span>
+                    {% endif %}
+
+                    {% if block.settings.blog_comment_count %}
+                      {% if settings.disqus_enabled %}
+                        <span>
+                          <a href="{{ article.url }}#disqus_thread" data-disqus-identifier="{{ article.id }}" class="disqus-comment-count">{{ 'blogs.counts.comments_with_count' | t: count: 0 }}</a>
+                        </span>
+                      {% elsif article.comments_enabled? and article.comments_count > 0 %}
+                        <span>
+                          <a href="{{ article.url }}#comments">{{ 'blogs.counts.comments_with_count' | t: count: article.comments_count }}</a>
+                        </span>
+                      {% endif %}
+                    {% endif %}
+                  </p>
+
+                  {% if block.settings.blog_tags %}
+                    <div class="blog_meta tags">
+                      {% for tag in article.tags %}
+                        <span><a href="{{ shop.url}}/blogs/{{ blogs[block.settings.blog_widget_select].handle }}/tagged/{{ tag | handleize }}" title="{{ blogs[block.settings.blog_widget_select].title | escape }} {{ 'blogs.general.tagged' | t }} {{ tag | escape }}">{{ tag }}</a></span>
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+
+                  {% if article.excerpt != blank %}
+                    <div class="excerpt">{{ article.excerpt }}</div>
+                  {% endif %}
+                  {% if block.settings.read_more_link %}
+                    <a href="{{ article.url }}" class="action_button continue-button">{{ 'blogs.general.continue_reading_html' | t }}</a>
+                  {% endif %}
+                </div>
+              {% endfor %}
+            {% else %}
+              {% for i in (1..block.settings.home_page_articles) %}
+                <div class="{% if block.settings.home_page_articles == 2 %}eight columns{% elsif block.settings.home_page_articles == 3 %}one-third column{% else %}four columns{% endif %} article">
+                  {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+
+                  <h3 class="sub_title">
+                    <a href="#">{{ 'homepage.onboarding.blogpost_title' | t }}</a>
+                  </h3>
+                  <p class="blog_meta">
+                    {% if block.settings.blog_author %}
+                      <span>{{ 'homepage.onboarding.blog_author' | t: author: article.author }}</span>
+                    {% endif %}
+
+                    {% if block.settings.blog_date %}
+                      <span>{{ 'now' | date: format: "month_day_year" }}</span>
+                    {% endif %}
+
+                    {% if block.settings.blog_comment_count %}
+                      {% if settings.disqus_enabled %}
+                        <span>
+                          <a href="#" data-disqus-identifier="#" class="disqus-comment-count">{{ 'blogs.counts.comments_with_count' | t: count: 0 }}</a>
+                        </span>
+                      {% else %}
+                        <span>
+                          <a href="#">{{ 'blogs.counts.comments_with_count' | t: count: 5 }}</a>
+                        </span>
+                      {% endif %}
+                    {% endif %}
+                  </p>
+
+                  {% if block.settings.blog_tags %}
+                    <div class="blog_meta tags">
+                      {% for tag in article.tags %}
+                        <span><a href="{{ shop.url}}/blogs/{{ blogs[block.settings.blog_widget_select].handle }}/tagged/{{ tag | handleize }}" title="{{ blogs[block.settings.blog_widget_select].title | escape }} {{ 'blogs.general.tagged' | t }} {{ tag | escape }}">{{ tag }}</a></span>
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+
+                  <div class="excerpt">{{ 'homepage.onboarding.blog_excerpt' | t }}</div>
+
+                  {% if block.settings.read_more_link %}
+                    <a href="{{ article.url }}" class="action_button continue-button">{{ 'blogs.general.continue_reading_html' | t }}</a>
+                  {% endif %}
+                </div>
+              {% endfor %}
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
+
+      {% if block.type == "featured_video" %}
+        {% assign default = '1400x' %}
+        {% assign size1 = '480x' %}
+        {% assign size2 = '765x' %}
+        {% assign size3 = '900x' %}
+        {% assign size4 = '1000x' %}
+        {% assign size5 = '1100x' %}
+        {% assign size6 = '1300x' %}
+        {% assign size7 = '1500x' %}
+        {% assign size8 = '1700x' %}
+        {% assign size9 = '1900x' %}
+        {% assign size10 = '2000x' %}
+        <div class="video-section">
+          <section  class="homepage-video darken-video-{{ block.settings.video_dark_overlay }}  placeholder-image--{% if block.settings.image %}true{% else %}false{% endif %}"
+                data-video-id="video-{{block.id}}"
+                data-autoplay="{{ block.settings.autoplay }}"
+                data-autoloop="{{ block.settings.autoloop }}"
+                data-display-text-over-video="{{ block.settings.display_text_over_video }}"
+                data-poster-image="{% if block.settings.image %}{{ block.settings.image | img_url: '1500x' }}{% else %}false{% endif %}"
+                data-video-src="{{ block.settings.video.id }}"
+                data-aspect-ratio="{{ block.settings.aspect_ratio }}"
+                data-provider="{{ block.settings.source }}"
+                data-video-mp4="{{ block.settings.mp4 }}"
+                data-video-ogv="{{ block.settings.ogv }}"
+          >
+            <div class="homepage-video--media">
+              {% if block.settings.image %}
+                <img  src="{{ block.settings.image | img_url: '100x', format: 'pjpg' }}"
+                      alt="{% if block.settings.image.alt != blank %}{{ block.settings.image.alt | escape }}{% else %}{{ block.settings.title | escape }}{% endif %}"
+                      class="lazyload {{ settings.image_loading_style }} homepage-video__image"
+                      data-play-video
+                      sizes="100vw"
+                      data-src="{{ block.settings.image | img_url: default, format: 'pjpg' }}"
+                      srcset="
+                      {{ block.settings.image | img_url: default, format: 'pjpg' }} {{default | replace: 'x', 'w'}},
+                      {{ block.settings.image | img_url: size1, format: 'pjpg' }} {{size1 | replace: 'x', 'w'}},
+                      {{ block.settings.image | img_url: size2, format: 'pjpg' }} {{size2 | replace: 'x', 'w'}},
+                      {{ block.settings.image | img_url: size3, format: 'pjpg' }} {{size3 | replace: 'x', 'w'}},
+                      {{ block.settings.image | img_url: size4, format: 'pjpg' }} {{size4 | replace: 'x', 'w'}},
+                      {{ block.settings.image | img_url: size5, format: 'pjpg' }} {{size5 | replace: 'x', 'w'}},
+                      {{ block.settings.image | img_url: size6, format: 'pjpg' }} {{size6 | replace: 'x', 'w'}},
+                      {{ block.settings.image | img_url: size7, format: 'pjpg' }} {{size7 | replace: 'x', 'w'}},
+                      {{ block.settings.image | img_url: size8, format: 'pjpg' }} {{size8 | replace: 'x', 'w'}},
+                      {{ block.settings.image | img_url: size9, format: 'pjpg' }} {{size9 | replace: 'x', 'w'}},
+                      {{ block.settings.image | img_url: size10, format: 'pjpg' }} {{size10 | replace: 'x', 'w'}}"
+                       />
+              {% else %}
+                <div class="homepage-video__placeholder" data-play-video>
+                  {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg placeholder-svg--video' }}
+                </div>
+              {% endif %}
+              {% unless block.settings.pretext == blank and block.settings.title == blank and block.settings.subtitle == blank and block.settings.button1_label == blank and block.settings.button2_label == blank %}
+                <div class="position-{{ block.settings.text_position }} caption js-caption text-on-video text-on-video--{{ block.settings.display_text_over_video }}">
+                  <div class="caption-content
+                              caption-background-{{block.settings.caption_background}}
+                              caption-transparency-{{ block.settings.caption_background_transparency }}
+                              align-{{block.settings.text_align}}">
+                    {% if block.settings.pretext != blank %}
+                      <div class="pretext">
+                        {{ block.settings.pretext }}
+                      </div>
+                    {% endif %}
+                    {% if block.settings.title != blank %}
+                      <h1 class="headline">
+                        {{ block.settings.title }}
+                      </h1>
+                    {% endif %}
+                    {% if block.settings.subtitle != blank %}
+                      <div class="subtitle">
+                        {{ block.settings.subtitle }}
+                      </div>
+                    {% endif %}
+                    {% if block.settings.button1_label != blank %}
+                      <a {% if block.settings.button1_link != blank %}href="{{ block.settings.button1_link }}"{% else %}data-play-video-button{% endif %} class="action_button first_button highlight-{{ block.settings.button1_highlight }} {% if block.settings.button1_link == blank %}video__play-button{% endif %}">
+                        {{ block.settings.button1_label }}
+                      </a>
+                    {% endif %}
+                    {% if block.settings.button2_label != blank %}
+                      <a {% if block.settings.button2_link != blank %}href="{{ block.settings.button2_link }}"{% else %}data-play-video{% endif %} class="action_button second_button highlight-{{ block.settings.button2_highlight }} {% if block.settings.button2_link == blank %}video__play-button{% endif %}">
+                        {{ block.settings.button2_label }}
+                      </a>
+                    {% endif %}
+                  </div>
+                </div>
+              {% endunless %}
+            </div>
+          </section>
+
+          {% unless block.settings.pretext == blank and block.settings.title == blank and block.settings.subtitle == blank and block.settings.button1_label == blank and block.settings.button2_label == blank %}
+            <section class="position-{{ block.settings.text_position }} caption js-caption text-on-video outside-homepage-video">
+              <div class="caption-content align-{{ block.settings.text_align }}">
+                {% if block.settings.pretext != blank %}
+                  <div class="pretext">
+                    {{ block.settings.pretext }}
+                  </div>
+                {% endif %}
+                {% if block.settings.title != blank %}
+                  <h1 class="headline">
+                    {{ block.settings.title }}
+                  </h1>
+                {% endif %}
+                {% if block.settings.subtitle != blank %}
+                  <div class="subtitle">
+                    {{ block.settings.subtitle }}
+                  </div>
+                {% endif %}
+                {% if block.settings.button1_label != blank and block.settings.button1_link != blank %}
+                  <a href="{{ block.settings.button1_link }}" class="action_button first_button highlight-{{ block.settings.button1_highlight }}">
+                    {{ block.settings.button1_label }}
+                  </a>
+                {% endif %}
+                {% if block.settings.button2_label != blank and block.settings.button2_link != blank %}
+                  <a href="{{ block.settings.button2_link }}" class="action_button first_button highlight-{{ block.settings.button2_highlight }}">
+                    {{ block.settings.button2_label }}
+                  </a>
+                {% endif %}
+              </div>
+            </section>
+          {% endunless %}
+        </div>
+      {% endif %}
+
+      {% if block.type == 'image_gallery' %}
+        <div class="container">
+          <div class="sixteen columns">
+           <div class="one-third column alpha thumbnail">
+              {% if block.settings.page_landing_image_1 %}
+                <a href="{{ block.settings.page_landing_image_1 | img_url: '1520x' }}" class="lightbox" rel="detail-gallery">
+                  <img src="{{ block.settings.page_landing_image_1 | img_url: '760x' }}" alt="{{ block.settings.page_landing_image_1.alt }}">
+                </a>
+              {% else %}
+                {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+              {% endif %}
+            </div>
+            <div class="one-third column thumbnail">
+              {% if block.settings.page_landing_image_2 %}
+                <a href="{{ block.settings.page_landing_image_2 | img_url: '1520x' }}" class="lightbox" rel="detail-gallery">
+                  <img src="{{ block.settings.page_landing_image_2 | img_url: '760x' }}" alt="{{ block.settings.page_landing_image_2.alt }}">
+                </a>
+              {% else %}
+                {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+              {% endif %}
+            </div>
+            <div class="one-third column omega thumbnail">
+              {% if block.settings.page_landing_image_3 %}
+                <a href="{{ block.settings.page_landing_image_3 | img_url: '1520x' }}" class="lightbox" rel="detail-gallery">
+                  <img src="{{ block.settings.page_landing_image_3 | img_url: '760x' }}" alt="{{ block.settings.page_landing_image_3.alt }}">
+                </a>
+              {% else %}
+                {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {% endif %}
+
+      {% if block.type == "contact_form" %}
+        <div class="container">
+          {% if block.settings.contact_heading != blank %}
+            <h2 class="title center">{{ block.settings.contact_heading }}</h2>
+            <div class="feature_divider"></div>
+          {% endif %}
+          {% if block.settings.contact_text_position == "left" %}
+            <div class="seven columns alpha {% if block.settings.contact_text_alignment == "center" %}center{% elsif block.settings.contact_text_alignment == "right" %}align_right{% endif %}">
+              {% if block.settings.contact_subheading != blank %}
+                <h3>{{ block.settings.contact_subheading }}</h3>
+              {% endif %}
+              {% if block.settings.contact_content != blank %}
+                {{ block.settings.contact_content }}
+              {% endif %}
+            </div>
+            <div class="eight columns offset-by-one columns omega">
+              {% form 'contact' %}
+                {% if form.posted_successfully? %}
+                  <p class="quote">{{ 'contact.form.post_success' | t }}</p>
+                {% endif %}
+
+                {% if form.errors %}
+                  <p class="quote">{{ 'general.forms.post_error' | t }}</p>
+
+                 {% assign message = 'contact.form.message' | t %}
+                  <ul class="center">
+                    {% for field in form.errors %}
+                      {% if field == 'form' %}
+                        <li>
+                          {{ form.errors.messages[field] }}
+                        </li>
+                      {% else %}
+                        <li>
+                          {% assign field_name = field | replace: 'body', message %}
+                          {{ 'general.forms.post_field_error_html' | t: field: field_name, error: form.errors.messages[field] }}
+                        </li>
+                      {% endif %}
+                    {% endfor %}
+                   </ul>
+                {% endif %}
+
+                 <div class="four columns alpha">
+                  {% assign name_attr = 'contact.form.name' | handle %}
+                  <label for="contactFormName">{{ 'contact.form.name' | t }} <span class="red">*</span></label>
+                  <input type="text" id="contactFormName" name="contact[{{ name_attr }}]" placeholder="{{ 'contact.form.name' | t }}" autocapitalize="words" value="{% if form[name_attr] %}{{ form[name_attr] }}{% elsif customer %}{{ customer.name }}{% endif %}" required="required">
+                 </div>
+                 <div class="four columns omega">
+                  <label for="contactFormEmail">{{ 'contact.form.email' | t }} <span class="red">*</span></label>
+                  <input type="email" id="contactFormEmail" name="contact[email]" placeholder="{{ 'contact.form.email' | t }}" autocorrect="off" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}" required="required">
+                 </div>
+                 {% comment %}
+                  {% assign name_attr = 'contact.form.phone' | t | handle %}
+                  <label for="contactFormPhone" class="hidden-label">{{ 'contact.form.phone' | t }}</label>
+                  <input type="tel" id="contactFormPhone" name="contact[{{ name_attr }}]" placeholder="{{ 'contact.form.phone' | t }}" pattern="[0-9\-]*" value="{% if form[name_attr] %}{{ form[name_attr] }}{% elsif customer %}{{ customer.phone }}{% endif %}">
+                  {% endcomment %}
+
+                <label for="contactFormMessage">{{ 'contact.form.message' | t }} <span class="red">*</span></label>
+                <textarea rows="5" id="contactFormMessage" name="contact[body]" placeholder="{{ 'contact.form.message' | t }}" required="required">{% if form.body %}{{ form.body }}{% endif %}</textarea>
+
+                <input type="submit" class="submit action_button" value="{{ 'contact.form.send' | t }}" />
+              {% endform %}
+            </div>
+          {% elsif block.settings.contact_text_position == "right" %}
+            <div class="eight columns alpha">
+              {% form 'contact' %}
+                {% if form.posted_successfully? %}
+                  <p class="quote">{{ 'contact.form.post_success' | t }}</p>
+                {% endif %}
+
+                {% if form.errors %}
+                  <p class="quote">{{ 'general.forms.post_error' | t }}</p>
+
+                 {% assign message = 'contact.form.message' | t %}
+                  <ul class="center">
+                    {% for field in form.errors %}
+                      {% if field == 'form' %}
+                        <li>
+                          {{ form.errors.messages[field] }}
+                        </li>
+                      {% else %}
+                        <li>
+                          {% assign field_name = field | replace: 'body', message %}
+                          {{ 'general.forms.post_field_error_html' | t: field: field_name, error: form.errors.messages[field] }}
+                        </li>
+                      {% endif %}
+                    {% endfor %}
+                   </ul>
+                {% endif %}
+
+                 <div class="four columns alpha">
+                  {% assign name_attr = 'contact.form.name' | handle %}
+                  <label for="contactFormName">{{ 'contact.form.name' | t }} <span class="red">*</span></label>
+                  <input type="text" id="contactFormName" name="contact[{{ name_attr }}]" placeholder="{{ 'contact.form.name' | t }}" autocapitalize="words" value="{% if form[name_attr] %}{{ form[name_attr] }}{% elsif customer %}{{ customer.name }}{% endif %}" required="required">
+                 </div>
+                 <div class="four columns omega">
+                  <label for="contactFormEmail">{{ 'contact.form.email' | t }} <span class="red">*</span></label>
+                  <input type="email" id="contactFormEmail" name="contact[email]" placeholder="{{ 'contact.form.email' | t }}" autocorrect="off" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}" required="required">
+                 </div>
+                 {% comment %}
+                  {% assign name_attr = 'contact.form.phone' | t | handle %}
+                  <label for="contactFormPhone" class="hidden-label">{{ 'contact.form.phone' | t }}</label>
+                  <input type="tel" id="contactFormPhone" name="contact[{{ name_attr }}]" placeholder="{{ 'contact.form.phone' | t }}" pattern="[0-9\-]*" value="{% if form[name_attr] %}{{ form[name_attr] }}{% elsif customer %}{{ customer.phone }}{% endif %}">
+                  {% endcomment %}
+
+                <label for="contactFormMessage">{{ 'contact.form.message' | t }} <span class="red">*</span></label>
+                <textarea rows="5" id="contactFormMessage" name="contact[body]" placeholder="{{ 'contact.form.message' | t }}" required="required">{% if form.body %}{{ form.body }}{% endif %}</textarea>
+
+                <input type="submit" class="submit action_button" value="{{ 'contact.form.send' | t }}" />
+              {% endform %}
+            </div>
+            <div class="seven columns offset-by-one omega {% if block.settings.contact_text_alignment == "center" %}center{% elsif block.settings.contact_text_alignment == "right" %}align_right{% endif %}">
+              {% if block.settings.contact_subheading != blank %}
+                <h3>{{ block.settings.contact_subheading }}</h3>
+              {% endif %}
+              {% if block.settings.contact_content != blank %}
+                {{ block.settings.contact_content }}
+              {% endif %}
+            </div>
+          {% else %}
+            <div class="ten columns omega offset-by-three {% if block.settings.contact_text_alignment == "center" %}center{% elsif block.settings.contact_text_alignment == "right" %}align_right{% endif %}">
+              {% if block.settings.contact_subheading != blank %}
+                <h3>{{ block.settings.contact_subheading }}</h3>
+              {% endif %}
+              {% if block.settings.contact_content != blank %}
+                {{ block.settings.contact_content }}
+              {% endif %}
+            </div>
+            <div class="ten offset-by-three columns omega">
+              {% form 'contact' %}
+                {% if form.posted_successfully? %}
+                  <p class="quote">{{ 'contact.form.post_success' | t }}</p>
+                {% endif %}
+
+                {% if form.errors %}
+                  <p class="quote">{{ 'general.forms.post_error' | t }}</p>
+
+                 {% assign message = 'contact.form.message' | t %}
+                  <ul class="center">
+                    {% for field in form.errors %}
+                      {% if field == 'form' %}
+                        <li>
+                          {{ form.errors.messages[field] }}
+                        </li>
+                      {% else %}
+                        <li>
+                          {% assign field_name = field | replace: 'body', message %}
+                          {{ 'general.forms.post_field_error_html' | t: field: field_name, error: form.errors.messages[field] }}
+                        </li>
+                      {% endif %}
+                    {% endfor %}
+                   </ul>
+                {% endif %}
+
+                 <div class="five columns alpha">
+                  {% assign name_attr = 'contact.form.name' | handle %}
+                  <label for="contactFormName">{{ 'contact.form.name' | t }} <span class="red">*</span></label>
+                  <input type="text" id="contactFormName" name="contact[{{ name_attr }}]" placeholder="{{ 'contact.form.name' | t }}" autocapitalize="words" value="{% if form[name_attr] %}{{ form[name_attr] }}{% elsif customer %}{{ customer.name }}{% endif %}" required="required">
+                 </div>
+                 <div class="five columns omega">
+                  <label for="contactFormEmail">{{ 'contact.form.email' | t }} <span class="red">*</span></label>
+                  <input type="email" id="contactFormEmail" name="contact[email]" placeholder="{{ 'contact.form.email' | t }}" autocorrect="off" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}" required="required">
+                 </div>
+                 {% comment %}
+                  {% assign name_attr = 'contact.form.phone' | t | handle %}
+                  <label for="contactFormPhone" class="hidden-label">{{ 'contact.form.phone' | t }}</label>
+                  <input type="tel" id="contactFormPhone" name="contact[{{ name_attr }}]" placeholder="{{ 'contact.form.phone' | t }}" pattern="[0-9\-]*" value="{% if form[name_attr] %}{{ form[name_attr] }}{% elsif customer %}{{ customer.phone }}{% endif %}">
+                  {% endcomment %}
+
+                <label for="contactFormMessage">{{ 'contact.form.message' | t }} <span class="red">*</span></label>
+                <textarea rows="5" id="contactFormMessage" name="contact[body]" placeholder="{{ 'contact.form.message' | t }}" required="required">{% if form.body %}{{ form.body }}{% endif %}</textarea>
+
+                <input type="submit" class="submit action_button" value="{{ 'contact.form.send' | t }}" />
+              {% endform %}
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if block.type == 'divider' %}
+        <div class="container" style="padding: 0; {% if block.settings.divider_mobile %}display: none;{% endif %}">
+          <div class="sixteen columns">
+            <hr class="page-divider {% if block.settings.divider_border %}active-divider{% endif %}" style="{% if block.settings.divider_spacing %}margin: {{ block.settings.divider_spacing }}px 0px;{% endif %}">
+          </div>
+        </div>
+      {% endif %}
+
+        
+      {% if block.type == 'link-to' %}
+        <hr class="page-divider" style="margin: 13px 0px;">
+        <div class="container" style="padding: 0">
+          <div class="sixteen columns" id="{{ block.settings.anchor }}">
+            {% if block.settings.region == 'region' %}
+              <h1>{{ block.settings.title }}</h1>
+            {% endif %}
+            {% if block.settings.region == 'comuna' %}
+              <h2 style="padding-left: 13px;">{{ block.settings.title }}</h2>
+            {% endif %}
+            
+          </div>
+        </div>
+      {% endif %}
+        
+      {% if block.type == 'map' %}
+        {% if block.settings.map_stretch %}
+          <div class="embed-container maps">
+            <iframe width="100%" height="{{ block.settings.map_height }}" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?f=q&amp;source=embed&amp;hl=en&amp;geocode=&amp;q={% if block.settings.contact_address != blank %}{{ block.settings.contact_address | replace: ' ', '+' }}{% else %}{{ shop.address.street }}{% endif %}&amp;z={{ block.settings.zoom_level }}&amp;output=embed"></iframe>
+          </div>
+        {% else %}
+          <div class="container">
+            <div class="embed-container maps">
+              <iframe width="100%" height="{{ block.settings.map_height }}" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?f=q&amp;source=embed&amp;hl=en&amp;geocode=&amp;q={% if block.settings.contact_address != blank %}{{ block.settings.contact_address | replace: ' ', '+' }}{% else %}{{ shop.address.street }}{% endif %}&amp;z={{ block.settings.zoom_level }}&amp;output=embed"></iframe>
+            </div>
+          </div>
+        {% endif %}
+      {% endif %}
+
+      {% if block.type == 'quote' %}
+        <div class="container page-quote">
+          {% if block.settings.page_quote != blank %}
+            <a {% if block.settings.quote_link != blank %}href="{{ block.settings.quote_link }}"{% else %} style="color: {{ settings.headline_color }};"{% endif %}>{{ block.settings.page_quote }}</a>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if block.type == "image_with_text" %}
+        <div class="featured_collections
+          clearfix across-1 image-align--{{ block.settings.frontpage_image_position }}">
+          <section class="featured-link--section featured-link--image section-{{ forloop.index }}">
+            <div class="featured-link--half featured-link--image">
+              <div class="featured-link--wrap">
+                <a {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %} title="{{ block.settings.title }}">
+                  {% if block.settings.image %}
+                    <img  src="{{ block.settings.image | img_url: '100x' }}"
+                          alt="{% if block.settings.image.alt != blank %}{{ block.settings.image.alt }}{% else %}{{ block.settings.title | escape }}{% endif %}"
+                          class="lazyload full-width-image {{ settings.image_loading_style }}"
+                          data-sizes="auto"
+                          data-src="{{ block.settings.image | img_url: '1400x' }}"
+                          data-srcset=" {{ block.settings.image | img_url: '2048x' }} 2048w,
+                                        {{ block.settings.image | img_url: '1600x' }} 1600w,
+                                        {{ block.settings.image | img_url: '1200x' }} 1200w,
+                                        {{ block.settings.image | img_url: '1000x' }} 1000w,
+                                        {{ block.settings.image | img_url: '800x' }} 800w,
+                                        {{ block.settings.image | img_url: '600x' }} 600w,
+                                        {{ block.settings.image | img_url: '400x' }} 400w"
+                           />
+                  {% else %}
+                    {% capture i %}{% cycle "1", "2", "3", "4", "5", "6" %}{% endcapture %}
+                    {{ 'collection-' | append: i | placeholder_svg_tag: 'placeholder-svg placeholder-svg--promotions' }}
+                  {% endif %}
+                </a>
+              </div>
+            </div>
+            <div class="featured-link--half">
+              <div class="info text-align--{{block.settings.frontpage_text_align}}">
+                <a {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %} class="collection_title">
+                  {{ block.settings.title }}
+                </a>
+                {% if block.settings.text != blank %}
+                  <div class="description">{{ block.settings.text }}</div>
+                {% endif %}
+                {% if block.settings.button_label != blank %}
+                  <a {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %} class="button">
+                    {{ block.settings.button_label }}
+                  </a>
+                {% endif %}
+              </div>
+            </div>
+          </section>
+        </div>
+      {% endif %}
+
+    </div>
+  {% endfor %}
+{% endif %}
+</div>
+
+<style>
+  div.container .featured_products {
+    padding-top: 0px;
+  }
+  @media (max-width: 480px){
+    .caption {
+      margin-bottom: 0 !important;
+    }
+  }
+</style>
+
+{% schema %}
+
+{
+  "name": "Puntos K",
+  "class": "page-details-section",
+  "settings": [
+  ],
+  "blocks": [
+    {
+      "type": "select",
+      "name": "Selector"
+    },
+    {
+      "type": "link-to",
+      "name": "Link to / región-comuna",
+      "settings": [
+        {
+          "type": "text",
+          "id": "anchor",
+          "label": "# of your link",
+          "default": "providencia"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Text of your anchor",
+          "default": "Providencia"
+        },
+        {
+          "type": "select",
+          "id": "region",
+          "label": "Región o comuna",
+          "default": "region",
+          "options": [
+            {
+              "value": "region",
+              "label": "region"
+            },
+            {
+              "value": "comuna",
+              "label": "comuna"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "map-with-text",
+      "name": "Map with text / Local",
+      "settings": [
+        {
+          "type": "text",
+          "id": "contact_address",
+          "label": "Street address",
+          "info": "The full address that will be placed on the map."
+        },
+        {
+          "type": "range",
+          "id": "zoom_level",
+          "label": "Map zoom level",
+          "min": 1,
+          "max": 20,
+          "step": 1,
+          "default": 15
+        },
+        {
+          "type": "range",
+          "id": "map_height",
+          "min": 100,
+          "max": 400,
+          "step": 10,
+          "unit": "px",
+          "label": "Height",
+          "default": 200
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Title"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Subtitle",
+          "default": "<p>Location or whatever</p>"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    },    
+    {
+      "type": "blog_posts",
+      "name": "Blog posts",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Blog posts"
+        },
+        {
+          "type": "blog",
+          "id": "blog_widget_select",
+          "label": "Blog"
+        },
+        {
+          "type": "range",
+          "id": "home_page_articles",
+          "label": "Posts",
+          "min": 2,
+          "max": 4,
+          "step": 1,
+          "default": 3
+        },
+        {
+          "type": "checkbox",
+          "id": "blog_tags",
+          "label": "Show blog post tags"
+        },
+        {
+          "type": "checkbox",
+          "id": "blog_author",
+          "label": "Show author"
+        },
+        {
+          "type": "checkbox",
+          "id": "blog_date",
+          "label": "Show date",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "blog_comment_count",
+          "label": "Show comment count",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "read_more_link",
+          "label": "Show continue reading link for blog post excerpts",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "contact_form",
+      "name": "Contact form",
+      "settings": [
+        {
+          "type": "text",
+          "id": "contact_heading",
+          "label": "Heading",
+          "default": "Get in touch"
+        },
+        {
+          "type": "text",
+          "id": "contact_subheading",
+          "label": "Subheading",
+          "default": "Leave a message"
+        },
+        {
+          "type": "richtext",
+          "id": "contact_content",
+          "label": "Text",
+          "default": "<p>Phasellus viverra nulla ut metus varius laoreet. Etiam sollicitudin, ipsum eu pulvinar rutrum, tellus ipsum laoreet sapien, quis venenatis ante odio sit amet eros. Etiam imperdiet imperdiet orci.</p>"
+        },
+        {
+          "type": "select",
+          "id": "contact_text_position",
+          "label": "Text position",
+          "default": "left",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "contact_text_alignment",
+          "label": "Text alignment",
+          "default": "left",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "divider",
+      "name": "Divider",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Add spacing in between your sections by using a divider."
+        },
+        {
+          "type": "range",
+          "id": "divider_spacing",
+          "min": 0,
+          "max": 30,
+          "step": 5,
+          "unit": "px",
+          "label": "Spacing",
+          "default": 20
+        },
+        {
+          "type": "checkbox",
+          "id": "divider_border",
+          "label": "Show border",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "featured_collection",
+      "name": "Featured collection",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Featured collection"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "radio",
+          "id": "collection_style",
+          "label": "Collection layout",
+          "default": "grid",
+          "options": [
+            {
+              "value": "slider",
+              "label": "Slider"
+            },
+            {
+              "value": "grid",
+              "label": "Grid"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "products_per",
+          "label": "Products per row",
+          "min": 2,
+          "max": 7,
+          "step": 1,
+          "default": 3
+        },
+        {
+          "type": "range",
+          "id": "products_limit",
+          "label": "Limit products",
+          "min": 2,
+          "max": 50,
+          "step": 1,
+          "default": 48
+        }
+      ]
+    },
+    {
+      "type": "featured_video",
+      "name": "Featured video",
+      "settings": [
+        {
+          "type": "select",
+          "id": "source",
+          "label": "Video source",
+          "options": [
+            {
+              "value": "youtube",
+              "label": "YouTube"
+            },
+            {
+              "value": "vimeo",
+              "label": "Vimeo"
+            },
+            {
+              "value": "html5",
+              "label": "HTML5"
+            }
+          ],
+          "default": "youtube"
+        },
+        {
+          "type": "select",
+          "id": "aspect_ratio",
+          "label": "Aspect ratio",
+          "options": [
+            {
+              "value": "16:9",
+              "label": "16:9"
+            },
+            {
+              "value": "4:3",
+              "label": "4:3"
+            }
+          ],
+          "default": "16:9"
+        },
+        {
+          "type": "checkbox",
+          "id": "autoplay",
+          "label": "Autoplay video",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "autoloop",
+          "label": "Autoloop video",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "video_dark_overlay",
+          "label": "Darken video"
+        },
+        {
+          "type": "video_url",
+          "id": "video",
+          "label": "YouTube or Vimeo video URL",
+          "accept": ["youtube", "vimeo"],
+          "default": "https://www.youtube.com/watch?v=_9VUPq3SxOc"
+        },
+        {
+          "type": "text",
+          "id": "mp4",
+          "label": "HTML5 MP4 File URL"
+        },
+        {
+          "type": "text",
+          "id": "ogv",
+          "label": "HTML5 OGV File URL (optional)"
+        },
+        {
+          "type": "header",
+          "content": "Content"
+        },
+       {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "1600 x 900px recommended"
+        },
+        {
+          "type": "checkbox",
+          "id": "display_text_over_video",
+          "label": "Show text when video is playing",
+          "default": false
+        },
+        {
+          "type": "richtext",
+          "id": "pretext",
+          "label": "Preheading"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading"
+        },
+        {
+          "type": "richtext",
+          "id": "subtitle",
+          "label": "Subheading"
+        },
+        {
+          "type": "select",
+          "id": "text_position",
+          "label": "Text position",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "select",
+          "id": "text_align",
+          "label": "Text alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "checkbox",
+          "id": "caption_background",
+          "label": "Display solid text background"
+        },
+        {
+          "type": "checkbox",
+          "id": "caption_background_transparency",
+          "label": "Enable background transparency"
+        },
+        {
+          "type": "text",
+          "id": "button1_label",
+          "label": "First button label"
+        },
+        {
+          "type": "url",
+          "id": "button1_link",
+          "label": "First button link URL"
+        },
+        {
+          "type": "checkbox",
+          "id": "button1_highlight",
+          "label": "Highlight first button"
+        },
+        {
+          "type": "text",
+          "id": "button2_label",
+          "label": "Second button label"
+        },
+        {
+          "type": "url",
+          "id": "button2_link",
+          "label": "Second button link URL"
+        },
+        {
+          "type": "checkbox",
+          "id": "button2_highlight",
+          "label": "Highlight second button"
+        }
+      ]
+    },
+    {
+      "type": "image_gallery",
+      "name": "Image gallery",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "page_landing_image_1",
+          "label": "Image 1",
+          "info": "760 x 500px recommended"
+        },
+        {
+          "type": "image_picker",
+          "id": "page_landing_image_2",
+          "label": "Image 2",
+          "info": "760 x 500px recommended"
+        },
+        {
+          "type": "image_picker",
+          "id": "page_landing_image_3",
+          "label": "Image 3",
+          "info": "760 x 500px recommended"
+        }
+      ]
+    },
+    {
+      "type": "image_with_text",
+      "name": "Image with text",
+      "settings": [
+        {
+          "type": "select",
+          "id": "frontpage_text_align",
+          "label": "Text alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "frontpage_image_position",
+          "label": "Image position",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Your headline"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Promotion description appears here.</p>"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "View all"
+        }
+      ]
+    },
+    {
+      "type": "image_with_text_overlay",
+      "name": "Image with text overlay",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "1800 x 1000px recommended"
+        },
+        {
+          "type": "richtext",
+          "id": "pretext",
+          "label": "Preheading"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading"
+        },
+        {
+          "type": "richtext",
+          "id": "subtitle",
+          "label": "Subheading"
+        },
+        {
+          "type": "checkbox",
+          "id": "caption_background",
+          "label": "Display solid text background",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "caption_background_transparency",
+          "label": "Enable background transparency"
+        },
+        {
+          "type": "select",
+          "id": "text_position",
+          "label": "Text position",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "text_align",
+          "label": "Text alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "button1",
+          "label": "First button label"
+        },
+        {
+          "type": "url",
+          "id": "button1_link",
+          "label": "First button link URL"
+        },
+        {
+          "type": "checkbox",
+          "id": "button1_highlight",
+          "label": "Highlight first button"
+        },
+        {
+          "type": "text",
+          "id": "button2",
+          "label": "Second button label"
+        },
+        {
+          "type": "url",
+          "id": "button2_link",
+          "label": "Second button link URL"
+        },
+        {
+          "type": "checkbox",
+          "id": "button2_highlight",
+          "label": "Highlight second button"
+        }
+      ]
+    },
+    {
+      "type": "map",
+      "name": "Map",
+      "settings": [
+        {
+          "type": "text",
+          "id": "contact_address",
+          "label": "Street address",
+          "info": "The full address that will be placed on the map."
+        },
+        {
+          "type": "range",
+          "id": "zoom_level",
+          "label": "Map zoom level",
+          "min": 1,
+          "max": 20,
+          "step": 1,
+          "default": 12
+        },
+        {
+          "type": "checkbox",
+          "id": "map_stretch",
+          "label": "Stretch to fill page",
+          "default": true
+        },
+        {
+          "type": "range",
+          "id": "map_height",
+          "min": 250,
+          "max": 500,
+          "step": 50,
+          "unit": "px",
+          "label": "Height",
+          "default": 250
+        }
+      ]
+    },
+    {
+      "type": "page",
+      "name": "Page",
+      "settings": [
+        {
+          "type": "page",
+          "id": "content_page",
+          "label": "Content page"
+        }
+      ]
+    },
+    {
+      "type": "quote",
+      "name": "Quote",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "page_quote",
+          "label": "Text",
+          "default": "<p><i>40% of online shoppers abandon a site that takes more than 3 seconds to load</i></p>"
+        },
+        {
+          "type": "url",
+          "id": "quote_link",
+          "label": "Quote link"
+        }
+      ]
+    },
+    {
+      "type": "rich_text_and_image",
+      "name": "Rich text and image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Talk about your brand"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Text",
+          "default": "<p>Use this text to share information about your brand with your customers.</p><p>Describe a product, share announcements, or welcome customers to your store.</p>"
+        },
+        {
+          "type": "select",
+          "id": "text_size",
+          "label": "Text size",
+          "options": [
+            {
+              "value": "regular_text",
+              "label": "Regular"
+            },
+            {
+              "value": "featured_text",
+              "label": "Large"
+            }
+          ],
+          "default": "featured_text"
+        },
+        {
+          "type": "select",
+          "id": "text_alignment",
+          "label": "Text alignment",
+          "options": [
+            {
+              "value": "align_left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        }
+      ]
+    }
+  ]
+}
+
+{% endschema %}

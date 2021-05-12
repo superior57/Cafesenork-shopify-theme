@@ -1,0 +1,704 @@
+{% comment %}
+** Header - default view **
+- Static section
+{% endcomment %}
+
+{% comment %}Mobile navigation{% endcomment %}
+<header id="header" class="mobile mobile_nav-fixed--{{ section.settings.fixed_header }}">
+  {% if section.settings.promo_text != blank %}
+    <div class="promo_banner">
+      {{ section.settings.promo_text }}
+      <div class="promo_banner-close"></div>
+    </div>
+  {% endif %}
+  <div class="top_bar clearfix">
+    <a href="#menu" class="mobile_nav dropdown_link" data-dropdown-rel="menu">
+      <div>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <span class="menu_title">{{ 'layout.general.menu' | t }}</span>
+    </a>
+    <a href="{{ shop.url }}" title="{{ shop.name | escape }}" class="mobile_logo logo">
+      {% if section.settings.logo_mobile != nil %}
+        <img src="{{ section.settings.logo_mobile | img_url: '410x' }}" alt="{{ shop.name | escape }}" />
+      {% elsif section.settings.logo != nil %}
+        <img src="{{ section.settings.logo | img_url: '410x' }}" alt="{{ shop.name | escape }}" />
+      {% else %}
+        {{ shop.name }}
+      {% endif %}
+    </a>
+    {% if section.settings.search_enabled %}
+      <a href="/search" class="icon-search dropdown_link" title="{{ 'general.search.title' | t | escape }}" data-dropdown-rel="search"></a>
+    {% endif %}
+    {% if section.settings.show_cart %}
+      <div class="cart_container">
+        <a href="/cart" class="{% if section.settings.cart_icon == "cart" %}icon-cart{% else %}icon-bag{% endif %} mini_cart dropdown_link" title="{{ 'layout.general.cart' | t | escape }}" data-no-instant> <span class="cart_count">{{ cart.item_count }}</span></a>
+      </div>
+    {% endif %}
+  </div>
+  {% if section.settings.search_enabled %}
+    <div class="dropdown_container center" data-dropdown="search">
+      <div class="dropdown">
+        <form action="/search" class="header_search_form">
+          {% if settings.search_option != 'everything' %}
+            <input type="hidden" name="type" value="product" />
+          {% endif %}
+          <span class="icon-search search-submit"></span>
+          <input type="text" name="q" placeholder="{{ 'general.search.title' | t: shop_name: shop.name }}" autocapitalize="off" autocomplete="off" autocorrect="off" class="search-terms" />
+        </form>
+      </div>
+    </div>
+  {% endif %}
+  <div class="dropdown_container" data-dropdown="menu">
+    <div class="dropdown">
+      <ul class="menu" id="mobile_menu">
+        {% include 'mobile-menu' with section.settings.main_linklist %}
+        {% include 'mobile-menu' with section.settings.main_linklist2 %}
+        {% include 'mobile-menu' with section.settings.top_bar_menu %}
+        {% if section.settings.phone_number != blank %}
+          <li><a href="tel:+{{ section.settings.phone_number | replace: ' ', '' | replace: '+', '' | replace: '-', '' }}">{{ section.settings.phone_number }}</a></li>
+        {% endif %}
+
+        {% if shop.customer_accounts_enabled %}
+          {% if customer %}
+            <li>
+              <a href="/account" data-no-instant>{{ customer.name }}</a>
+            </li>
+            <li data-no-instant>
+              {{ 'layout.customer.log_out' | t | customer_logout_link }}
+            </li>
+          {% else %}
+            <li data-no-instant>
+              {{ 'layout.customer.log_in' | t | customer_login_link }}
+            </li>
+          {% endif %}
+        {% endif %}
+        {% if settings.show_multiple_currencies %}
+          <li>
+            {% include 'currencies-switcher' %}
+          </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</header>
+
+{% if template contains "index" %}
+  {% assign feature_image = true %}
+{% elsif template contains "collection" %}
+  {% assign feature_image = true %}
+{% elsif template contains "blog" %}
+  {% assign feature_image = true %}
+{% elsif template contains "article" %}
+  {% assign feature_image = true %}
+{% elsif template contains "contact" %}
+  {% assign feature_image = true %}
+{% elsif template contains "details" %}
+  {% assign feature_image = true %}
+{% else %}
+  {% assign feature_image = false %}
+{% endif %}
+
+{% comment %}Main navigation{% endcomment %}
+<header class="{% if feature_image %}feature_image{% endif %} {% if section.settings.logo_home != nil %}secondary_logo--true{% endif %}">
+  <div class="header {% if feature_image and settings.header_background == false %}is-absolute {% endif %}header-fixed--{{ section.settings.fixed_header }} {% if settings.header_background %}header-background--solid{% endif %}">
+    {% if section.settings.promo_text != blank %}
+      <div class="promo_banner">
+        {{ section.settings.promo_text }}
+        <div class="promo_banner-close"></div>
+      </div>
+    {% endif %}
+    <div class="top_bar clearfix">
+      {% if section.settings.social_icons_header %}
+        {% include 'social-icons' %}
+      {% endif %}
+      <ul class="menu left">
+        {% if section.settings.phone_number != blank %}
+          <li><a href="tel:+{{ section.settings.phone_number | replace: ' ', '' | replace: '+', '' | replace: '-', '' }}">{{ section.settings.phone_number }}</a></li>
+        {% endif %}
+        {% if section.settings.top_bar_menu != blank %}
+          {% for link in linklists[section.settings.top_bar_menu].links %}
+            <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+          {% endfor %}
+         {% assign free_shipping_amount = 35000 | times: 100 %}{% assign cart_total = cart.total_price %}{% assign remaining_amount = free_shipping_amount | minus: cart_total %}
+        <li><a href="/collections/all”>{% if cart_total >= free_shipping_amount %}<span style="margin-left:12.5rem;">🚚 TIENES UN ENVIO GRATUITO! {% else %}<span style="margin-left:8.5rem;">🚚 TE FALTAN {{ remaining_amount | money }} PARA UN ENVIO GRATUITO! {% endif %}</span></a></li>
+
+        {% endif %}
+      </ul>
+      {% if section.settings.show_cart %}
+        <div class="cart_container">
+          <a href="/cart" class="{% if section.settings.cart_icon == "cart" %}icon-cart{% else %}icon-bag{% endif %} mini_cart dropdown_link" data-no-instant>
+            <span class="cart_count">{{ cart.item_count }}</span>
+          </a>
+          <div class="cart_content animated fadeIn">
+            <div class="js-empty-cart__message {% if cart.item_count > 0 %}hidden{% endif %}">
+              <p class="empty_cart">{{ 'layout.general.empty_cart' | t }}</p>
+            </div>
+            <form action="/checkout" method="post" data-money-format="{{ shop.money_format }}" data-shop-currency="{{ shop.currency }}" data-shop-name="{{ shop.name | escape }}" class="js-cart_content__form {% if cart.item_count == 0 %}hidden{% endif %}">
+              <a class="cart_content__continue-shopping secondary_button">
+                {{ 'cart.general.continue_shopping_link_html' | t }}
+              </a>
+              <ul class="cart_items js-cart_items clearfix">
+                {% assign total_saving = 0 %}
+                {% for item in cart.items %}
+                  {% if item.variant.compare_at_price > item.variant.price %}
+                    {% assign saving = item.variant.compare_at_price | minus: item.variant.price | times: item.quantity %}
+                    {% assign total_saving = saving | plus: total_saving %}
+                  {% endif %}
+
+                  <li class="cart_item clearfix">
+                    <a href="{{ item.url }}">
+                      {% if item.image %}
+                        <div class="cart_image">
+                          <img src="{{ item | img_url: '320x' }}" alt="{{ item.title | escape }}" />
+                        </div>
+                      {% endif %}
+                      <strong class="right price">
+                        {% if item.price < item.variant.compare_at_price %}
+                          <span class="money was_price">{{ item.variant.compare_at_price | money }}</span>
+                        {% endif %}
+
+                        <span class="money">{{ item.price | money }}</span>
+                      </strong>
+                      <div class="item_title">
+                        {{ item.product.title }}
+                        {% unless item.product.has_only_default_variant or item.variant.title contains "Title" %}
+                          -
+                          {% for option in item.product.options %}
+                            {{ item.variant.options[forloop.index0] }} {% unless forloop.last %}/{% endunless %}
+                          {% endfor %}
+                        {% endunless %}
+                        {% if item.properties %}
+                          {% for p in item.properties %}
+                            {% if p.last != blank %}
+                              <div class="line-item">
+                                {{ p.first }}: {{ p.last }}
+                              </div>
+                            {% endif %}
+                          {% endfor %}
+                        {% endif %}
+                      </div>
+                    </a>
+                    <div class="left product-quantity-box">
+                      <span class="ss-icon product-minus js-change-quantity" data-func="minus"><span class="icon-minus"></span></span>
+                      <input type="number" min="0" size="2" class="quantity" name="updates[]" id="updates_{{ item.id }}" value="{{ item.quantity }}" data-line-id="{{ forloop.index }}" />
+                      <span class="ss-icon product-plus js-change-quantity" data-func="plus"><span class="icon-plus"></span></span>
+                    </div>
+                  </li>
+                {% endfor %}
+              </ul>
+              <hr />
+              <ul>
+                <li class="cart_subtotal js-cart_subtotal">
+                  <span class="right">
+                    <span class="money">{{ cart.total_price | money }}</span>
+                  </span>
+                  <span>{{ 'layout.general.subtotal' | t }}</span>
+                </li>
+                {% if settings.display_savings %}
+                  <li class="cart_savings sale js-cart_savings">
+                    {% if total_saving > 0 %}
+                      <span class="right">
+                        <span class="money">{{ total_saving | money }}</span>
+                      </span>
+                      <span>{{ 'layout.general.savings' | t }}</span>
+                    {% endif %}
+                  </li>
+                {% endif %}
+                <li>
+                  {% if settings.display_special_instructions and settings.go_to_checkout %}
+                    <textarea id="note" name="note" rows="2" placeholder="{{ 'layout.general.cart_note' | t }}" class="clearfix">{{ cart.note }}</textarea>
+                  {% endif %}
+
+                  {% if settings.display_tos_checkbox and settings.go_to_checkout %}
+                    <p class="tos">
+                      <input type="checkbox" class="tos_agree" id="sliding_agree" required />
+                        <label class="tos_label">
+                          {{ 'cart.general.agree_to_terms_html' | t }}
+                        </label>
+                        {% if settings.tos_page != blank %}
+                          <a href="{{ pages[settings.tos_page].url }}" target="_blank" class="tos_icon">{{ 'cart.general.view_terms' | t }}</a>
+                        {% endif %}
+                    </p>
+                  {% endif %}
+
+                  {% if settings.cart_message != blank %}
+                    <div class="cart_text">
+                      {{ settings.cart_message }}
+                    </div>
+                  {% endif %}
+					
+          		  {% comment %}{% endcomment %}
+                  {% assign isSrCompost = false %}
+                  {% for item in cart.items %}
+                      {% if item.product.handle contains 'retiro-de-capsulas-con-el-senor-compost' %}
+                          {% assign isSrCompost = true %}
+                      {% endif %}
+                  {% endfor %}
+                  <div>
+                    <div class="two columns">
+                      <label>
+                        {% if isSrCompost %}
+                          <input type="checkbox" id="srCompost" value="srCompost" checked disabled>
+                        {% else %}
+                          <input type="checkbox" id="srCompost" value="srCompost">
+                        {% endif %}
+                        AÑADIR SERVICIO DE COMPOSTAJE
+                      </label>
+                    </div>
+
+                    <div class="two columns" style="text-align:center">
+                      <img src="{{ 'boton_compost.png' | asset_url }}">
+                    </div>
+                    <div class="four columns" style="text-align: center">
+                      (Valido para Vitacura, Las Condes, Ñuñoa y Providencia)
+                    </div>
+                  </div>
+                  
+          
+                  <input type="submit" class="action_button" value="{% if settings.go_to_checkout %}{{ 'layout.general.checkout' | t }}{% else %}{{ 'layout.general.go_to_cart' | t }}{% endif %}" />
+                </li>
+              </ul>
+            </form>
+          </div>
+        </div>
+      {% endif %}
+
+      <ul class="menu right">
+        {% if settings.show_multiple_currencies %}
+          <li>
+            {% include 'currencies-switcher' %}
+          </li>
+        {% endif %}
+        {% if shop.customer_accounts_enabled %}
+          <li>
+            <a href="/account" class="icon-user" title="{{ 'layout.customer.my_account' | t }} {% if customer %}({{ customer.email }}){% endif %}"> <span>{% if customer %}{{ 'layout.customer.my_account' | t }}{% else %}{{ 'layout.customer.log_in' | t }}{% endif %}</span></a>
+          </li>
+        {% endif %}
+      </ul>
+    </div>
+
+    <div class="main_nav_wrapper">
+      <div class="main_nav clearfix menu-position--{{ section.settings.menu_position }} logo-align--{{ section.settings.logo_position }}">
+        {% capture logo %}
+          <div class="logo text-align--{{ section.settings.logo_alignment }}">
+            <a href="{{ shop.url }}" title="{{ shop.name }}">
+              {% if section.settings.logo_home != nil %}
+                <img src="{{ section.settings.logo_home | img_url: '410x' }}" class="secondary_logo" alt="{{ shop.name | escape }}" />
+              {% endif %}
+              {% if section.settings.logo != nil %}
+                <img src="{{ section.settings.logo | img_url: '410x' }}" class="primary_logo" alt="{{ shop.name | escape }}" />
+              {% else %}
+                {{ shop.name }}
+              {% endif %}
+            </a>
+          </div>
+        {% endcapture %}
+
+        {% assign vertical_menu = section.settings.vertical_menu %}
+
+        {% capture menu_left %}
+          {% if vertical_menu %}
+            {% include 'vertical-menu' with section.settings.main_linklist %}
+          {% else %}
+            {% include 'menu' with section.settings.main_linklist %}
+          {% endif %}
+        {% endcapture %}
+
+        {% capture menu_right %}
+          {% if vertical_menu %}
+            {% include 'vertical-menu' with section.settings.main_linklist2 %}
+          {% else %}
+            {% include 'menu' with section.settings.main_linklist2 %}
+          {% endif %}
+          {% if section.settings.search_enabled %}
+            <li class="search_container">
+              <form action="/search" class="search_form">
+                {% if settings.search_option != 'everything' %}
+                  <input type="hidden" name="type" value="product" />
+                {% endif %}
+                <span class="icon-search search-submit"></span>
+                <input type="text" name="q" placeholder="{{ 'general.search.title' | t: shop_name: shop.name }}" value="{% if search and search.results.first.price %}{{ search.terms }}{% endif %}" autocapitalize="off" autocomplete="off" autocorrect="off" />
+              </form>
+            </li>
+            <li class="search_link">
+              <a href="/search" class="icon-search dropdown_link" title="{{ 'general.search.title' | t | escape }}" data-dropdown-rel="search"></a>
+            </li>
+          {% endif %}
+        {% endcapture %}
+
+        {% if section.settings.logo_position == "left" or section.settings.menu_position == "block" %}
+          {{ logo }}
+          <div class="nav">
+            <ul class="menu {{ section.settings.menu_alignment }} clearfix">
+              {{ menu_left }}
+              {{ menu_right }}
+            </ul>
+          </div>
+        {% else %}
+          <div class="nav">
+            <ul class="menu {{ section.settings.menu_alignment }} clearfix">
+              {{ menu_left }}
+            </ul>
+          </div>
+          {{ logo }}
+          <div class="nav">
+            <ul class="menu {% if section.settings.menu_alignment == 'align_left' %}align_right{% elsif section.settings.menu_alignment == 'align_right' %}align_left{% else %}{{ section.settings.menu_alignment }}{% endif %} clearfix">
+              {{ menu_right }}
+            </ul>
+          </div>
+        {% endif %}
+        {% if section.settings.search_enabled %}
+          <div class="dropdown_container center" data-dropdown="search">
+            <div class="dropdown">
+              <form action="/search" class="header_search_form">
+                {% if settings.search_option != 'everything' %}
+                  <input type="hidden" name="type" value="product" />
+                {% endif %}
+                <span class="icon-search search-submit"></span>
+                <input type="text" name="q" placeholder="{{ 'general.search.title' | t: shop_name: shop.name }}" autocapitalize="off" autocomplete="off" autocorrect="off" class="search-terms" />
+              </form>
+            </div>
+          </div>
+        {% endif %}
+        {% include 'sub-menu' with section.settings.main_linklist %}
+        {% include 'sub-menu' with section.settings.main_linklist2 %}
+      </div>
+    </div>
+  </div>
+</header>
+          
+<script>
+  $(document).ready(function() {
+    $('#srCompost').change(function() {
+      console.log("change");
+      if(this.checked) {
+        jQuery.post('/cart/add.js', {
+          items: [
+            {
+              quantity: 1,
+              //el id a pasar es la variante del producto
+              id: 31770514522181, //4489766535237,
+            }
+          ]
+        })
+      }
+    });
+  });
+</script>
+          
+<style>
+  .main_nav div.logo a {
+    padding-top: {{ section.settings.logo_top_padding }}px;
+    padding-bottom: {{ section.settings.logo_top_padding }}px;
+  }
+
+  div.logo img {
+    max-width: {{ section.settings.logo_display_width }}px;
+  }
+
+  .nav {
+    {% if section.settings.menu_position == "block" %}
+      width: 100%;
+      clear: both;
+    {% elsif section.settings.logo_position == "left" %}
+      width: 84%;
+      float: left;
+    {% else %}
+      width: 42%;
+      float: left;
+    {% endif %}
+  }
+
+  {% if section.settings.menu_top_padding %}
+    .nav ul.menu {
+      padding-top: {{ section.settings.menu_top_padding }}px;
+      padding-bottom: {{ section.settings.menu_top_padding }}px;
+    }
+
+    .sticky_nav ul.menu, .sticky_nav .mini_cart {
+      padding-top: {{ section.settings.menu_top_padding | divided_by: 2 }}px;
+      padding-bottom: {{ section.settings.menu_top_padding | divided_by: 2 }}px;
+    }
+  {% endif %}
+
+  {% unless section.settings.show_cart %}
+    #header .top_bar .icon-search {
+      right: 15px;
+    }
+  {% endunless %}
+
+  {% if section.settings.fixed_header == false %}
+    @media only screen and (max-width: 798px) {
+      .header-section {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+      }
+    }
+  {% endif %}
+  @media only screen and (max-width: 797px) {
+    .promo_banner{
+      height: {{ section.settings.promo_height_m }}px !important;
+      line-height: {{ section.settings.promo_height_m }}px !important;
+    }
+    .promo_banner-show {
+      height: {{ section.settings.promo_height_m }}px !important;
+    }
+    .promo_banner p {
+      font-size: 11px;
+      padding-right: 2px;
+      padding-left: 2px;
+      display: block;
+    }
+  }
+  @media only screen and (min-width: 798px) {
+    .promo_banner {
+      height: {{ section.settings.promo_height }}px !important;
+      line-height: {{ section.settings.promo_height }}px !important;
+    }
+    .promo_banner p {
+      padding-right: 2px;
+      padding-left: 2px;
+      display: inline;
+    }
+  }
+  
+</style>
+
+{% schema %}
+
+{
+  "name": "Header",
+  "class": "header-section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "fixed_header",
+      "label": "Fixed ('sticky') header",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "search_enabled",
+      "label": "Enable search",
+      "default": true
+    },
+    {
+     "type": "header",
+     "content": "Top bar"
+    },
+    {
+      "type": "richtext",
+      "id": "promo_text",
+      "label": "Announcement message"
+    },
+	{
+      "type": "range",
+      "id": "promo_height",
+      "label": "Announcement bar height desktop",
+      "step": 10,
+      "min": 10,
+      "max": 120,
+      "default": 30,
+      "unit": "px"
+    },
+	{
+      "type": "range",
+      "id": "promo_height_m",
+      "label": "Announcement bar height mobile",
+      "step": 5,
+      "min": 10,
+      "max": 120,
+      "default": 90,
+      "unit": "px"
+    },
+    {
+      "type": "checkbox",
+      "id": "social_icons_header",
+      "label": "Show social media header icons",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cart",
+      "label": "Show cart",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "phone_number",
+      "label": "Phone number",
+      "info": "1-800-555-5555"
+    },
+    {
+      "type": "link_list",
+      "id": "top_bar_menu",
+      "label": "Top bar menu"
+    },
+    {
+      "type": "select",
+      "id": "cart_icon",
+      "label": "Cart icon",
+      "options": [
+        {
+          "value": "cart",
+          "label": "Cart"
+        },
+        {
+          "value": "bag",
+          "label": "Bag"
+        }
+      ],
+      "default": "cart"
+    },
+    {
+     "type": "header",
+     "content": "Logos"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo",
+      "info": "400 x 100px recommended"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo_home",
+      "label": "Secondary logo over content (optional)",
+      "info": "400 x 100px recommended"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo_mobile",
+      "label": "Mobile logo",
+      "info": "100 x 50px recommended"
+    },
+    {
+      "type": "range",
+      "id": "logo_display_width",
+      "label": "Logo display width",
+      "step": 5,
+      "min": 105,
+      "max": 205,
+      "default": 205,
+      "unit": "px"
+    },
+    {
+     "type": "header",
+     "content": "Menus"
+    },
+    {
+      "type": "link_list",
+      "id": "main_linklist",
+      "label": "Main menu"
+    },
+    {
+      "type": "link_list",
+      "id": "main_linklist2",
+      "label": "Secondary menu"
+    },
+    {
+      "type": "checkbox",
+      "id": "vertical_menu",
+      "label": "Enable vertical menus",
+      "default": false
+    },
+    {
+     "type": "header",
+     "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "logo_position",
+      "label": "Logo position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "logo_alignment",
+      "label": "Logo alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "menu_position",
+      "label": "Menu position",
+      "options": [
+        {
+          "value": "inline",
+          "label": "Inline with logo"
+        },
+        {
+          "value": "block",
+          "label": "Under logo"
+        }
+      ],
+      "default": "inline"
+    },
+    {
+      "type": "select",
+      "id": "menu_alignment",
+      "label": "Menu alignment",
+      "options": [
+        {
+          "value": "align_left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "align_right",
+          "label": "Right"
+        }
+      ],
+      "default": "align_left"
+    },
+    {
+      "type": "range",
+      "id": "logo_top_padding",
+      "label": "Logo top padding ([?](https:\/\/help.outofthesandbox.com\/hc\/en-us\/articles\/115006910627))",
+      "min": 0,
+      "max": 30,
+      "default": 10,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "menu_top_padding",
+      "label": "Main menu top padding ([?](https:\/\/help.outofthesandbox.com\/hc\/en-us\/articles\/115006910627))",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "unit": "px"
+    }
+  ]
+}
+
+{% endschema %}

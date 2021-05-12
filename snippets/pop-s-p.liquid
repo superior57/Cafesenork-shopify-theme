@@ -1,0 +1,91 @@
+<div style="border-radius: 10px;" class="remodal size-chart-remodal" data-remodal-id="size-chart{{product_id}}" data-remodal-options="hashTracking: false">
+<a data-remodal-action="close" class="remodal-close"></a>
+
+  <div class="size-chart-wrap">
+
+    <img src="https://cdn.shopify.com/s/files/1/2466/7899/files/logos-finales_200x.png?10429488431267004877" alt="{{ shop.name | escape }}" />
+    
+    <h1 class="product_name">{{ product.title }}</h1>
+    <span class="money">{{ product.price | money }}</span>
+    <div class="feature_divider"></div>
+
+    {% form 'contact' %}
+    	 <input type="text" id="producto" name="contact[producto]" placeholder="{{ product.title }}" value="{{ product.title }}">
+         <div style="width: 90%; display:inline-block;">
+          <label for="contactFormNombre">Nombre <span class="red">*</span></label>
+          <input type="text" id="contactNombre" name="contact[nombre]" placeholder="Nombre" autocorrect="off" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}" required="required">
+         </div>
+    	 <div style="width: 90%;display:inline-block;">
+          <label for="contactFormDireccion">Direccion <span class="red">*</span></label>
+          <input type="text" id="contactNombre" name="contact[direccion]" placeholder="Dirección" autocorrect="off" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}" required="required">
+         </div>
+         <div style="width: 90%;display:inline-block;">
+          <label for="contactFormEmail">Correo Electrónico <span class="red">*</span></label>
+          <input type="email" id="contactFormEmail" name="contact[email]" placeholder="Correo Electrónico " autocorrect="off" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}" required="required">
+         </div>
+      	 <div style="width: 90%;display:inline-block;">
+          <label for="contactFormTelefono">Teléfono <span class="red">*</span></label>
+          <input type="text" id="contactFormTelefono" name="contact[telefono]" placeholder="Teléfono" autocorrect="off" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}" required="required">
+         </div>
+    	 <div style="width: 90%;display:inline-block;">
+          <label for="contactFormCiudad">Ciudad <span class="red">*</span></label>
+          <input type="text" id="contactFormCiudad" name="contact[ciudad]" placeholder="Ciudad" autocorrect="off" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}" required="required">
+         </div>
+         <div style="width: 90%;display:inline-block;">
+          <label for="contactFormComuna">Comuna <span class="red">*</span></label>
+          <input type="text" id="contactFormComuna" name="contact[comuna]" placeholder="Comuna" autocorrect="off" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}" required="required">
+         </div>
+         <div style="width: 90%;display:inline-block;">
+          <label for="contactFormNotas">Notas</label>
+          <input type="text" id="contactFormNotas" name="contact[notas]" placeholder="Notas">
+         </div>
+    	 <div style="width: 90%;display:inline-block;">
+          <label for="contactFormDocumento">Documento</label>
+          <select id="contactFormDocumento" name="contact[documento]">
+            <option value="Boleta">Boleta</option>
+            <option value="Factura">Factura</option>         
+          </select>
+         </div> 
+  		<div id="emp">
+  		 <div style="width: 90%;display:inline-block;">
+          <label for="contactFormRutE">Rut Empresa <span class="red">*</span></label>
+          <input type="text" id="contactFormRutE" name="contact[rut-empresa]" placeholder="Rut Empresa">
+         </div>
+  		<div style="width: 90%;display:inline-block;">
+          <label for="contactFormRazonE">Razon Social <span class="red">*</span></label>
+          <input type="text" id="contactFormRazonE" name="contact[razon-social]" placeholder="Razón Social">
+         </div>
+  		 <div style="width: 90%;display:inline-block;">
+          <label for="contactFormGiroE">Giro comercial <span class="red">*</span></label>
+          <input type="text" id="contactFormGiroE" name="contact[giro]" placeholder="Giro Comercial">
+         </div>
+          </div>
+  		<input id="QVOe" type="submit" class="submit action_button add_to_cart ten" value="Enviar" />
+  		</div>
+      {% endform %}
+    
+
+
+<style>
+  #producto{
+    display:none; 
+  }
+  input[type="text"],input[type="text"]:active, input[type="text"]:focus,input[type="email"],input[type="email"]:active, input[type="email"]:focus, select{
+    border: 1px solid {{ settings.btn_color }}!important; 
+  }
+  .center{
+	margin-bottom: 0 !important;
+	padding-bottom: 0 !important;
+  }
+</style>
+<script>
+
+  
+$(document).ready(function () {
+    if(window.location.href.indexOf("?contact_posted=true") > -1 ) {
+      window.location.replace('{{ product.metafields.suscripcion.link }}');
+    }
+});
+  
+
+</script>

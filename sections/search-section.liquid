@@ -1,0 +1,94 @@
+{% comment %}
+** Search - homepage partial **
+- Draggable section
+{% endcomment %}
+
+<div class="search_section
+            {% if section.settings.image != nil %}search-bgr-true{% endif %}
+            text-align--{{section.settings.search_section_text_align}}
+          "
+      {% if section.settings.image != nil %}style="background-image: url(https:{{ section.settings.image | img_url: '1600x'}})"{% endif %}>
+  <div class="container">
+    <div class="section_form">
+      {% if section.settings.search_title != blank %}
+        <h2 class="title">{{ section.settings.search_title }}</h2>
+      {% endif %}
+      {% if section.settings.search_text != blank %}
+        <div class="search-text">{{ section.settings.search_text }}</div>
+      {% endif %}
+    <div class="search-container">
+      <form class="search" action="/search">
+        <div class="search-wrapper">
+          {% if settings.search_option != 'everything' %}
+            <input type="hidden" name="type" value="product" />
+          {% endif %}
+          <input type="text" name="q" placeholder="{{ section.settings.search_term }}" value="{{ search.terms }}" x-webkit-speech autocapitalize="off" autocomplete="off" autocorrect="off" />
+          <button type="submit" name="submit" class="search_button icon-search" value=" " style="margin-top:0" >
+            <span class"icon-search"></span>
+          </button>
+        </div>
+      </form>
+     </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+
+{
+  "name": "Search",
+  "class": "search-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "search_title",
+      "label": "Heading",
+      "default": "Search our shop"
+    },
+    {
+      "type": "richtext",
+      "id": "search_text",
+      "label": "Subheading"
+    },
+    {
+      "type": "select",
+      "id": "search_section_text_align",
+      "label": "Text alignment",
+      "options": [
+         {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+     ],
+      "default": "center"
+    },
+    {
+      "type": "text",
+      "id": "search_term",
+      "label": "Placeholder text",
+      "default": "Search..."
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background image",
+      "info":"1600 x 300px recommended"
+    }
+  ],
+  "presets": [{
+    "name": "Search",
+    "category": "Content",
+    "settings": {
+    }
+  }]
+}
+
+{% endschema %}

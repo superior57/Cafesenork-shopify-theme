@@ -1,0 +1,21 @@
+{%- comment-%}
+	Author: Layouthub
+	Email:support@layouthub.com
+	Description: The snippet help integrate Third party quickview app with Layouthub
+	Note: You SHOULD NOT modify source code in this page because It is automatically generated from LayoutHub.If your app want to integrate with Layouthub Please contact us via email: support@layouthub.com
+{%- endcomment-%}
+{%- assign quickview_platform = 'layouthub-quickview' -%}
+ 
+{%- if shop.metafields.layouthub and shop.metafields.layouthub.app_quickview -%}
+	{%- assign quickview_platform = shop.metafields.layouthub.app_quickview -%}
+{%- endif -%}
+{%- case quickview_platform -%}
+	{%- when 'none'-%}
+	{%- when 'quick-view-plus'-%}
+		<div class="lh-quick-view-wrapper quick-view-plus lh-quick-view-plus" data-qview="{{product.handle}}" data-handle="{{product.handle}}">{%- if quickview_content-%}{{-quickview_content-}}{%- endif -%}</div>
+	{%- when 'quick-view' -%}
+		{%- if quickview_content-%}{{-quickview_content-}}{%- endif -%}
+		{%- render 'sca-quick-view',  product: product -%}
+	{%- else -%}
+		<div class="lh-quick-view" data-handle="{{product.handle}}">{%- if quickview_content-%}{{-quickview_content-}}{%- endif -%}</div>
+{%- endcase -%}

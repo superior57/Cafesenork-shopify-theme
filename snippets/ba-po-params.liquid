@@ -1,0 +1,36 @@
+<script>
+{% if template contains 'product' %}
+	var BoosterPoParams = {
+		"product" : {{ product | json }},
+		"hideAddToCartButton" : false,
+		"addToCartButtonSelector" : "form[action='/cart/add'] [type=submit]",
+    "variantHash": {}
+	};
+  {% for v in product.variants %}
+    BoosterPoParams.variantHash[{{v.id}}] = {"inventory_quantity": {{v.inventory_quantity}}, "inventory_policy": "{{v.inventory_policy}}"}
+  {% endfor %}
+
+{% elsif template contains 'cart' %}
+	var BoosterPoParams = {
+    "variantHash": {},
+    "items" : [
+    {% for item in cart.items %}
+      {
+        'id': {{item.id}},
+        'product_id':{{item.product_id}},
+        'variant_id':{{item.variant_id}},
+        'quantity':{{item.quantity}},
+        'properties':{{item.properties | json}},
+        'product': { id:{{item.product_id}}, handle:'{{item.product.handle}}', title:{{item.product.title | json}},variants:[{% for variant in item.product.variants %}{id:{{variant.id}},title:{{variant.title | json}},inventory_quantity:'{{variant.inventory_quantity}}',inventory_management:'{{variant.inventory_management}}',inventory_policy:'{{variant.inventory_policy}}'}{% unless forloop.last %},{% endunless %}{% endfor %}]}
+      }{% unless forloop.last %},{% endunless %}
+    {% endfor %}]
+	};
+
+  {%- for item in cart.items -%}
+    {%- assign product = item.product -%}
+    {%- for v in product.variants %}
+      BoosterPoParams.variantHash[{{v.id}}] = {"inventory_quantity": {{v.inventory_quantity}}, "inventory_policy": "{{v.inventory_policy}}"}
+    {%- endfor -%}
+    {%- endfor -%}
+{% endif %}
+</script>

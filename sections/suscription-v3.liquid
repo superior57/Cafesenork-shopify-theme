@@ -1,0 +1,823 @@
+<div id="vapp" class="suscriptions-final">
+  <v-app>
+    <v-content>
+      <v-container>
+        <v-stepper v-model="step">
+          <v-stepper-items>
+            {% form 'contact' %}
+            {% if form.posted_successfully? %}
+            <p class="quote">{{ 'contact.form.post_success' | t }}</p>
+            {% endif %}
+
+            {% if form.errors %}
+            <p class="quote">{{ 'general.forms.post_error' | t }}</p>
+
+            {% assign message = 'contact.form.message' | t %}
+            <ul class="center">
+              {% for field in form.errors %}
+              {% if field == 'form' %}
+              <li>
+                {{ form.errors.messages[field] }}
+              </li>
+              {% else %}
+              <li>
+                {% assign field_name = field | replace: 'body', message %}
+                {{ 'general.forms.post_field_error_html' | t: field: field_name, error: form.errors.messages[field] }}
+              </li>
+              {% endif %}
+              {% endfor %}
+            </ul>
+            {% endif %}
+            <v-stepper-content step="1">
+              <v-layout wrap align-center justify-center>
+                <v-flex xs12 ma-2>
+                  <h4>
+                    Tipo de suscripción:
+                  </h4>
+                </v-flex>
+                <v-flex xs12 sm4 px-2 text-center>
+                  <div class="bb-primary" @click="toStepTwo(3)">
+                    <v-img class="clickable" src="https://cdn.shopify.com/s/files/1/2466/7899/files/capsulas_53f16884-1b53-4a3e-84bc-3f4ee9461a42.png?v=1578630536"></v-img>
+                    <h5 class="clickable choosable">Capsulas</h5>
+                  </div>
+                </v-flex>
+                <v-flex xs12 sm4 px-2 text-center>
+                  <div class="bb-primary" @click="toStepTwo(4)">
+                    <v-img class="clickable" src="https://cdn.shopify.com/s/files/1/2466/7899/files/grano_57b02e67-ae81-41f8-b636-aa16f8b40a2a.png?v=1578630520"></v-img>
+                    <h5 class="clickable choosable">Grano</h5>
+                  </div>
+                </v-flex>
+                <v-flex xs12 sm4 px-2 text-center>
+                  <div class="bb-primary" @click="toStepTwo(2)">
+                    <v-img class="clickable" src="https://cdn.shopify.com/s/files/1/2466/7899/files/sorpresa.gif?v=1581992666"></v-img>
+                    <h5 class="clickable choosable">A la medida</h5>
+                  </div>
+                </v-flex>
+              </v-layout>
+            </v-stepper-content>
+            <v-stepper-content step="2" class="v-main-1201">
+              <v-layout wrap align-center justify-start>
+                <v-flex xs12 md4 mb-3>
+                  <h6 class="clickable" @click="reset()"><i class="fa fa-arrow-left left-icon"></i> Volver a las suscripciones</h6>
+                </v-flex>
+                <v-flex xs12 ma-2>
+                  <h4>Dejanos tus datos y te contactaremos para hacer tu suscripción a la medida</h4>
+                </v-flex>
+              </v-layout>
+              <v-layout wrap align-center justify-center>
+                <v-flex xs12 md4 px-2>
+                  {% assign name_attr = 'contact.form.name' | handle %}
+                  <label for="contactFormName">{{ 'contact.form.name' | t }} <span class="red--text">*</span></label>
+                  <input type="text" id="contactFormName" name="contact[{{ name_attr }}]" placeholder="{{ 'contact.form.name' | t }}" autocapitalize="words" value="{% if form[name_attr] %}{{ form[name_attr] }}{% elsif customer %}{{ customer.name }}{% endif %}" required="required">
+                </v-flex>
+                <v-flex xs12 md4 px-2>
+                  <label for="contactFormEmail">{{ 'contact.form.email' | t }} <span class="red--text">*</span></label>
+                  <input type="email" id="contactFormEmail" name="contact[email]" placeholder="{{ 'contact.form.email' | t }}" autocorrect="off" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}" required="required">
+                </v-flex>
+              </v-layout>
+              <v-layout wrap align-center justify-center>
+                <v-flex xs12 md8 px-2>
+                  <label for="contactFormMessage">{{ 'contact.form.message' | t }} <span class="red--text">*</span></label>
+                  <textarea class="ta-border" rows="4" id="contactFormMessage" name="contact[body]" placeholder="{{ 'contact.form.message' | t }}" required="required">{% if form.body %}{{ form.body }}{% endif %}</textarea>
+                </v-flex>
+              </v-layout>
+              <v-layout wrap align-center justify-center>
+                <v-flex xs12 md4 px-2>
+                  <input type="submit" class="mx-2 custom_button" value="{{ 'contact.form.send' | t }}" />
+                </v-flex>
+              </v-layout>
+              {% endform %}
+            </v-stepper-content>
+            <v-stepper-content step="3">
+              <v-layout wrap align-center justify-start>
+                <v-flex xs12 md4 mb-3>
+                  <h6 class="clickable" @click="reset()"><i class="fa fa-arrow-left left-icon"></i> Volver a las suscripciones</h6>
+                </v-flex>
+                <v-flex xs12 ma-2>
+                  <h4>Selecciona tu suscripción favorita</h4>
+                </v-flex>
+              </v-layout>
+              <v-layout wrap align-center justify-center>
+                <v-flex xs12 sm4 px-2 text-center>
+                  <div class="bb-primary" @click="toStepThree(4, 1)">
+                    <v-img class="clickable" src="https://cdn.shopify.com/s/files/1/2466/7899/files/suscripciones_40c.jpg?v=1582762777"></v-img>
+                    <h5 class="clickable choosable">40 Capsulas</h5>
+                  </div>
+                </v-flex>
+                <v-flex xs12 sm4 px-2 text-center>
+                  <div class="bb-primary" @click="toStepThree(7, 1)">
+                    <v-img class="clickable" src="https://cdn.shopify.com/s/files/1/2466/7899/files/suscripciones_70c.jpg?v=1582762778"></v-img>
+                    <h5 class="clickable choosable">70 Capsulas</h5>
+                  </div>
+                </v-flex>
+                <v-flex xs12 sm4 px-2 text-center>
+                  <div class="bb-primary" @click="toStepThree(10, 1)">
+                    <v-img class="clickable" src="https://cdn.shopify.com/s/files/1/2466/7899/files/suscripciones_100c_40a8cdc7-30b5-40a0-ae73-9ee190c6706a.jpg?v=1582847792"></v-img>
+                    <h5 class="clickable choosable">100 Capsulas</h5>
+                  </div>
+                </v-flex>
+                <v-flex xs12 sm4 px-2 text-center>
+                  <div class="bb-primary" @click="toStepThree(15, 1)">
+                    <v-img class="clickable" src="https://cdn.shopify.com/s/files/1/2466/7899/files/suscripciones_150c.jpg?v=1582762778"></v-img>
+                    <h5 class="clickable choosable">150 Capsulas</h5>
+                  </div>
+                </v-flex>
+                <v-flex xs12 sm4 px-2 text-center>
+                  <div class="bb-primary" @click="toStepThree(20, 1)">
+                    <v-img class="clickable" src="https://cdn.shopify.com/s/files/1/2466/7899/files/suscripciones_200c.jpg?v=1582762779"></v-img>
+                    <h5 class="clickable choosable">200 Capsulas</h5>
+                  </div>
+                </v-flex>
+              </v-layout>
+            </v-stepper-content>
+            <v-stepper-content step="4">
+              <v-layout wrap align-center justify-start>
+                <v-flex xs12 md4 mb-3>
+                  <h6 class="clickable" @click="reset()"><i class="fa fa-arrow-left left-icon"></i> Volver a las suscripciones</h6>
+                </v-flex>
+                <v-flex xs12 ma-2>
+                  <h4>Selecciona tu suscripción favorita</h4>
+                </v-flex>
+              </v-layout>
+              <v-layout wrap align-center justify-center>
+                <v-flex xs12 sm4 px-2 text-center>
+                  <div class="bb-primary" @click="toStepThree(2, 2)">
+                    <v-img class="clickable" src="https://cdn.shopify.com/s/files/1/2466/7899/files/suscripciones_2g.jpg?v=1582762776"></v-img>
+                    <h5 class="clickable choosable">2 Bolsas de grano entero</h5>
+                  </div>
+                </v-flex>
+                <v-flex xs12 sm4 px-2 text-center>
+                  <div class="bb-primary" @click="toStepThree(3, 2)">
+                    <v-img class="clickable" src="https://cdn.shopify.com/s/files/1/2466/7899/files/suscripciones_3g.jpg?v=1582762776"></v-img>
+                    <h5 class="clickable choosable">3 Bolsas de grano entero</h5>
+                  </div>
+                </v-flex>
+                <v-flex xs12 sm4 px-2 text-center>
+                  <div class="bb-primary" @click="toStepThree(5, 2)">
+                    <v-img class="clickable" src="https://cdn.shopify.com/s/files/1/2466/7899/files/suscripciones_5g.jpg?v=1582762778"></v-img>
+                    <h5 class="clickable choosable">5 Bolsas de grano entero</h5>
+                  </div>
+                </v-flex>
+                <v-flex xs12 sm4 px-2 text-center>
+                  <div class="bb-primary" @click="toStepThree(2, 3)">
+                    <v-img class="clickable" src="https://cdn.shopify.com/s/files/1/2466/7899/files/suscripciones_2m.jpg?v=1582762776"></v-img>
+                    <h5 class="clickable choosable">2 Bolsas de grano molido</h5>
+                  </div>
+                </v-flex>
+                <v-flex xs12 sm4 px-2 text-center>
+                  <div class="bb-primary" @click="toStepThree(3, 3)">
+                    <v-img class="clickable" src="https://cdn.shopify.com/s/files/1/2466/7899/files/suscripciones_3m.jpg?v=1582762777"></v-img>
+                    <h5 class="clickable choosable">3 Bolsas de grano molido</h5>
+                  </div>
+                </v-flex>
+                <v-flex xs12 sm4 px-2 text-center>
+                  <div class="bb-primary" @click="toStepThree(5, 5)">
+                    <v-img class="clickable" src="https://cdn.shopify.com/s/files/1/2466/7899/files/suscripciones_5m.jpg?v=1582762777"></v-img>
+                    <h5 class="clickable choosable">5 Bolsas de grano molido</h5>
+                  </div>
+                </v-flex>
+              </v-layout>
+            </v-stepper-content>
+            <v-stepper-content step="5">
+              <v-layout wrap align-center justify-start>
+                <v-flex xs12 md4 mb-3>
+                  <h6 class="clickable" @click="reset()"><i class="fa fa-arrow-left left-icon"></i> Volver a empezar</h6>
+                </v-flex>
+                <v-flex xs12 ma-2>
+                  <h4>
+                    Escoge tu variedad en 
+                    <span v-if="type == 1">Capsulas</span>
+                    <span v-if="type == 2">Grano molido</span>
+                    <span v-if="type == 3">Grano entero</span>
+                  </h4>
+                </v-flex>
+              </v-layout>
+              <div>
+                <div class="fd mb-4">
+                  <v-layout wrap align-center justify-center>
+                    <v-flex xs2 md1 v-for="(i, index) in amount" :key="i + index">
+                      <v-img v-if="selected[index] == null" class="blk" width="80%" src="https://cdn.shopify.com/s/files/1/2466/7899/files/blank.png?v=1581466947"></v-img>
+                      <v-img v-if="selected[index] != null" width="80%" :title="selected[index].nombre" :src="selected[index].image"></v-img>
+                      <a v-if="selected[index] != null" class="clickable text-center" @click="remove(index)">Eliminar</a>
+                    </v-flex>
+                  </v-layout>
+                </div>
+                <v-layout wrap align-center justify-center v-if="type == 1 && selected.length != amount">
+                  <v-flex xs12 md6 lg3 pa-3 v-for="(el, index) in capsulas" :key="el">
+                    <v-layout wrap align-center justify-center>
+                      <v-flex xs7 px-2 class="text-center">
+                        <div class="overline mb-1" v-text="el.tipo"></div>
+                        <div class="overline font-weight-bold mb-2" v-text="el.nombre"></div>
+                        <a :disabled="selected.length == amount" @click="add(el)" class="clickable text-uppercase mb-1 mt-2 text-center bb-primary">Agregar</a>
+                      </v-flex>
+                      <v-flex xs5 px-2>
+                        <v-img width="90%" :src="el.image" class="img-thumbnail"></v-img>
+                      </v-flex>
+                    </v-layout>
+                  </v-flex>
+                </v-layout>
+                <v-layout wrap align-center justify-center v-if="(type == 2 || type == 3) && selected.length != amount">
+                  <v-flex xs12 md6 lg4 pa-2 v-for="(el, index) in granos" :key="el">
+                    <v-layout wrap align-center justify-center>
+                      <v-flex xs7 px-2 class="text-center">
+                        <div class="overline mb-1" v-text="el.tipo"></div>
+                        <div class="overline font-weight-bold mb-2" v-text="el.nombre"></div>
+                        <a :disabled="selected.length == amount" @click="add(el)" class="clickable text-uppercase mb-1 mt-2 text-center bb-primary">Agregar</a>
+                      </v-flex>
+                      <v-flex xs5 px-2>
+                        <v-img width="90%" :src="el.image" class="img-thumbnail"></v-img>
+                      </v-flex>
+                    </v-layout>
+                  </v-flex>
+                </v-layout>
+                <v-layout wrap align-center justify-center v-if="selected.length == amount">
+                  <v-flex xs12 mb-2 mt-4 text-center>
+                    <h4>Confirma tu selección o elimina productos para cambiarlos</h4>
+                  </v-flex>
+                  <v-flex xs12 md4 text-center>
+                    <a class="clickable mb-1 mt-2 text-center bb-primary text-uppercase" @click="toStepFour()">Confirmar selección</a>
+                  </v-flex>
+                </v-layout>
+                <div class="fm mt-4">
+                  <v-layout wrap align-center justify-center>
+                    <v-flex xs4 md1 ma-1 v-for="(i, index) in amount" :key="i + index">
+                      <v-img v-if="selected[index] == null" class="blk" width="80%" src="https://cdn.shopify.com/s/files/1/2466/7899/files/blank.png?v=1581466947"></v-img>
+                      <v-img v-if="selected[index] != null" width="80%" :title="selected[index].nombre" :src="selected[index].image"></v-img>
+                      <a v-if="selected[index] != null" class="clickable text-center" @click="remove(index)">Eliminar</a>
+                    </v-flex>
+                  </v-layout>
+                </div>
+              </div>
+            </v-stepper-content>
+            <v-stepper-content step="6">
+              <v-layout wrap align-center justify-start>
+                <v-flex xs12 md4 mb-2>
+                  <h6 class="clickable" @click="reset()"><i class="fa fa-arrow-left left-icon"></i> Volver a empezar</h6>
+                </v-flex>
+                <v-flex xs12 ma-2>
+                  <h4>
+                    Completa tus datos para terminar la suscripción
+                  </h4>
+                </v-flex>
+              </v-layout>
+              <form v-on:submit.prevent="$validator.validateAll(); suscribe()">
+                <v-layout id="ff" wrap align-center justify-center>
+                  <v-flex xs12 sm6 pa-2>
+                    <div class="field">
+                      <label class="label black--text">Nombre <span class="help red--text" v-show="errors.has('nombre')" v-text="errors.first('nombre')"></span></label>
+                      <div class="control">
+                        <input name="nombre" :class="errors.has('nombre') ? 'red--text' : ''" v-model="form.nombre" v-validate="'min:5|required'" class="input" type="text" placeholder="Nombre completo">
+                      </div>
+                    </div>
+                  </v-flex>
+                  <v-flex xs12 sm6 pa-2>
+                    <div class="field">
+                      <label class="label black--text">Email <span class="help red--text" v-show="errors.has('mail')" v-text="errors.first('mail')"></span></label>
+                      <div class="control">
+                        <input name="mail" :class="errors.has('mail') ? 'red--text' : ''" v-model="form.email" v-validate="'required|email'" class="input" type="text" placeholder="Correo electrónico">
+                      </div>
+                    </div>
+                  </v-flex>
+                  <v-flex xs12 sm6 pa-2>
+                    <div class="field">
+                      <label class="label black--text">Dirección <span class="help red--text" v-show="errors.has('direccion')" v-text="errors.first('direccion')"></span></label>
+                      <div class="control">
+                        <input name="direccion" :class="errors.has('direccion') ? 'red--text' : ''" v-model="form.direccion" v-validate="'min:5|required'" class="input" type="text" placeholder="Dirección de despacho">
+                      </div>
+                    </div>
+                  </v-flex>
+                  <v-flex xs12 sm6 pa-2>
+                    <div class="field">
+                      <label class="label black--text">Teléfono <span class="help red--text" v-show="errors.has('telefono')" v-text="errors.first('telefono')"></span></label>
+                      <div class="control">
+                        <input name="telefono" :class="errors.has('telefono') ? 'red--text' : ''" v-model="form.telefono" v-validate="'phone|required'" class="input" type="text" placeholder="Teléfono (sin +56)">
+                      </div>
+                    </div>
+                  </v-flex>
+                  <v-flex xs12 sm6 pa-2>
+                    <div class="field">
+                      <label class="label black--text">Región <span class="help red--text" v-show="errors.has('region')" v-text="errors.first('region')"></span></label>
+                      <div class="control">
+                        <select v-model="form.region" @change="makeUrl($event)">
+                          <option disabled value="">Seleccione una región</option>
+                          <option v-for="option in regiones" v-bind:value="option" v-text="option">
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                  </v-flex>
+                  <v-flex xs12 sm6 pa-2>
+                    <div class="field">
+                      <label class="label black--text">Comuna <span class="help red--text" v-show="errors.has('comuna')" v-text="errors.first('comuna')"></span></label>
+                      <div class="control">
+                        <input name="comuna" :class="errors.has('comuna') ? 'red--text' : ''" v-model="form.comuna" v-validate="'min:5|required'" class="input" type="text" placeholder="Comuna">
+                      </div>
+                    </div>
+                  </v-flex>
+                  <v-flex xs12 pa-2>
+                    <div class="field">
+                      <label class="label black--text">Documento <span class="help red--text" v-show="errors.has('documento')" v-text="errors.first('documento')"></span></label>
+                      <div class="control">
+                        <select v-model="form.documento">
+                          <option disabled value="">Seleccione un tipo de documento</option>
+                          <option v-for="option in documento" v-bind:value="option" v-text="option">
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                  </v-flex>
+                  <v-flex xs12 pa-2>
+                    <div class="field">
+                      <label class="label black--text">Notas adicionales</label>
+                      <div class="control">
+                        <textarea name="notas" v-model="form.notas" class="input" type="text" placeholder="Notas adicionales"></textarea>
+                      </div>
+                    </div>
+                  </v-flex>
+                  <v-flex xs12 md4 px-2>
+                    <v-btn :disabled="errors.any() || form.documento == ''" class="mx-2" block tile dark @click="$validator.validateAll(); suscribe()">Suscribir</v-btn>
+                  </v-flex>
+                </v-layout>
+              </form>
+            </v-stepper-content>
+          </v-stepper-items>
+        </v-stepper>
+      </v-container>
+      <v-snackbar
+                  v-model="stepOne"
+                  :timeout="4000"
+                  color="blue"
+                  >
+        <span v-if="step == 2" class="text-uppercase">A la medida</span>
+        <span v-if="step == 3" class="text-uppercase">Capsulas</span>
+        <span v-if="step == 4" class="text-uppercase">Grano</span>
+        <v-btn
+               text
+               @click="stepOne = false"
+               >
+          X
+        </v-btn>
+      </v-snackbar>
+      <v-snackbar
+                  v-model="stepTwo"
+                  :timeout="4000"
+                  color="blue"
+                  >
+        <span class="text-uppercase">Seleccionada variedad</span>
+        <v-btn
+               text
+               @click="stepTwo = false"
+               >
+          X
+        </v-btn>
+      </v-snackbar>
+      <v-snackbar
+                  v-model="stepThree"
+                  :timeout="4000"
+                  color="green"
+                  >
+        <span class="text-uppercase">Confirmada la selección</span>
+        <v-btn
+               text
+               @click="stepThree = false"
+               >
+          X
+        </v-btn>
+      </v-snackbar>
+      <v-snackbar
+                  v-model="added"
+                  :timeout="2000"
+                  color="green"
+                  >
+        <span class="text-uppercase">Agregado</span>
+        <v-btn
+               text
+               @click="added = false"
+               >
+          X
+        </v-btn>
+      </v-snackbar>
+      <v-snackbar
+                  v-model="deleted"
+                  :timeout="2000"
+                  color="warning"
+                  >
+        <span class="text-uppercase">Eliminado</span>
+        <v-btn
+               text
+               @click="deleted = false"
+               >
+          X
+        </v-btn>
+      </v-snackbar>
+    </v-content>
+  </v-app>
+</div>
+
+<script>
+  Vue.use(VeeValidate);
+  
+  const dictionary = {
+    en: {
+      messages: {
+        email: function () { 
+          return "Ingrese un email válido"
+        },
+        required: function () { 
+          return "El campo es requerido"
+        },
+        min: function () { 
+          return 'El campo debe tener al menos 5 caracteres'
+        },
+        max: function () { 
+          return 'El campo debe tener máximo 5 caracteres'
+        },
+        numeric: function () {
+          return 'Ingrese sólo números' 
+        }
+      }
+    }
+  };
+  VeeValidate.Validator.extend("phone", {
+    getMessage: field => `Ingrese un teléfono válido (912345678)`,
+    validate: value => value.length == 9
+  });
+  VeeValidate.Validator.updateDictionary(dictionary);
+  new Vue({
+    el: '#vapp',
+    vuetify: new Vuetify(),
+    computed: {
+      finalSelection() {
+        if (this.selected.length == this.amount) {
+          this.form.detalle = this.selected.map(i => i.tipo + ' ' + i.nombre);
+          return this.selected.map(i => i.nombre).join(" / ");
+        } else {
+          return 0;
+        }
+      },
+      finalDetail() {
+        return this.detail.amount + ' Bolsas de ' + this.detail.type;
+      },
+      finalUrl() {
+        return this.detail.url;
+      }
+    },
+    watch: {
+      selected(val) {
+        if (val.length == this.amount) {
+          this.form.detalle = val.map(i => i.tipo + ' ' + i.nombre);
+          location.hash = '#confirmar';
+        }
+      }
+    },
+    data() {
+      return {
+        detail: {
+          type: 0,
+          amount: 0,
+          url: '',
+        },
+        added: false,
+        deleted: false,
+        step: 1,
+        stepOne: false,
+        stepTwo: false,
+        stepThree: false,
+        formValid: true,
+        amount: 0,
+        type: 0,
+        selected: [],
+        form: {
+          nombre: "",
+          direccion: "",
+          email: "",
+          telefono: "",
+          region: "",
+          comuna: "",
+          notas: "",
+          documento: "",
+          url: "",
+          suscripcion: "",
+          detalle: ""
+        },
+        granos: [
+          {
+            nombre: "Laderas del Tapia",
+            tipo: "Colombia",
+            product:
+            "https://cafesenork.com/products/laderas-del-tapias-1?suscription",
+            image:
+            "https://cdn.shopify.com/s/files/1/2466/7899/files/laderas_6e915f08-2a34-41b7-a033-d74f5c78fee5.png?v=1579293895"
+          },
+          {
+            nombre: "Inga Aponte",
+            tipo: "Colombia",
+            product: "https://cafesenork.com/products/inga-aponte-1?suscription",
+            image:
+            "https://cdn.shopify.com/s/files/1/2466/7899/files/inga_aponte_cdfb7200-5c59-4427-96b8-f670cecc559a.png?v=1579293895"
+          },
+          {
+            nombre: "Sausalito",
+            tipo: "Colombia",
+            product: "https://cafesenork.com/products/sausalito-1?suscription",
+            image:
+            "https://cdn.shopify.com/s/files/1/2466/7899/files/sausalito_9ccaf647-140b-4b14-b838-c264740e9838.png?v=1579293900"
+          },
+          {
+            nombre: "Santa Rosa",
+            tipo: "Blend",
+            product: "https://cafesenork.com/products/blend-sta-rosa?suscription",
+            image:
+            "https://cdn.shopify.com/s/files/1/2466/7899/files/blend.png?v=1579293901"
+          },
+    
+        
+          {
+            nombre: "Decaf",
+            tipo: "Colombia",
+            product: "https://cafesenork.com/products/colombia-decaf?suscription",
+            image:
+            "https://cdn.shopify.com/s/files/1/2466/7899/files/decaf.png?v=1579293898"
+          },
+          {
+            nombre: "Finca San Antonio",
+            tipo: "El Salvador",
+            product:
+            "https://cafesenork.com/products/el-salvador-finca-san-antonio?suscription",
+            image:
+            "https://cdn.shopify.com/s/files/1/2466/7899/files/salvador.png?v=1579293901"
+          }
+        ],
+        capsulas: [
+          {
+            nombre: "Manizales",
+            tipo: "Blend",
+            product: "https://cafesenork.com/products/manizales?suscription",
+            image:
+            "https://cdn.shopify.com/s/files/1/2466/7899/files/blend_manizales.png?v=1578979856"
+          },
+          {
+            nombre: "La chacra d´ Dago",
+            tipo: "Perú",
+            product:
+            "https://cafesenork.com/products/peru-la-chacra-d-dago-organico-biodinamico?suscription",
+            image:
+            "https://cdn.shopify.com/s/files/1/2466/7899/files/chacra_411ce844-efce-429a-b939-acb42db51855.png?v=1578979866"
+          },
+          {
+            nombre: "Laderas del Tapias",
+            tipo: "Colombia",
+            product:
+            "https://cafesenork.com/products/laderas-del-tapias?suscription",
+            image:
+            "https://cdn.shopify.com/s/files/1/2466/7899/products/capsulas_nespresso_Mesa_de_trabajo_1_copia_9_900x.jpg?v=1579399468"
+          },
+          {
+            nombre: "Inga Aponte",
+            tipo: "Colombia",
+            product: "https://cafesenork.com/products/inga-aponte?suscription",
+            image:
+            "https://cdn.shopify.com/s/files/1/2466/7899/files/inga_aponte.png?v=1578979869"
+          },
+        
+          {
+            nombre: "Belen de Umbría",
+            tipo: "Blend",
+            product:
+            "https://cafesenork.com/products/belen-de-humbria?suscription",
+            image:
+            "https://cdn.shopify.com/s/files/1/2466/7899/files/blend_belen.png?v=1578979874"
+          },
+          {
+            nombre: "Sausalito",
+            tipo: "Colombia",
+            product: "https://cafesenork.com/products/sausalito?suscription",
+            image:
+            "https://cdn.shopify.com/s/files/1/2466/7899/files/sausalito_b1e78795-fffd-4158-a4e0-28a9d0c27e4f.png?v=1578979876"
+          },
+          {
+            nombre: "Natural Decaf",
+            tipo: "Colombia",
+            product: "https://cafesenork.com/products/natural-decaf?suscription",
+            image:
+            "https://cdn.shopify.com/s/files/1/2466/7899/files/natural_decaf.png?v=1578979880"
+          },
+          {
+            nombre: "Santa Rosa",
+            tipo: "Blend",
+            product: "https://cafesenork.com/products/santa-rosa?suscription",
+            image:
+            "https://cdn.shopify.com/s/files/1/2466/7899/files/blend_santa_rosa.png?v=1578979881"
+          }
+        ],
+        regiones: [
+          "RM - Región Metropolitana",
+          "I - Tarapacá",
+          "II - Antofagasta",
+          "III - Atacama",
+          "IV - Coquimbo",
+          "V - Valparaíso",
+          "VI - Libertador General Bernardo OHiggins",
+          "VII - Maule",
+          "VIII - Concepción",
+          "IX - Araucanía",
+          "X - Los Lagos",
+          "XI - Aysén del General Carlos Ibañez del Campo",
+          "XII - Magallanes y de la Antártica Chilena",
+          "XIV - Los Ríos",
+          "XV - Arica y Parinacota",
+          "XVI - Ñuble"
+        ],
+        documento: ["Boleta", "Factura"],
+        rules: {
+          required: [
+            v => !!v || 'Campo obligatorio'
+          ],
+          phone: [
+            v => (v && v.length == 9) || 'Debe incluir 9 dígitos'
+          ],
+          email: [
+            v => !!v || 'Campo obligatorio',
+            v => /.+@.+\..+/.test(v) || 'El correo debe ser válido',
+          ],
+        }
+      }
+    },
+    methods: {
+      toStepTwo(n) {
+        this.step = n;
+        this.stepOne = true;
+        location.hash = '#tipo';
+        this.selected = [];
+        if (n == 3) {
+          this.detail.type = 'Capsulas';
+        }
+        if (n == 4) {
+          this.detail.type = 'Grano'; 
+        }
+      },
+      toStepThree(amount, type) {
+        location.hash = '#seleccion';
+        if (type == 1) {
+          this.detail.type = 'Capsulas'; 
+        }
+        if (type == 2) {
+          this.detail.type = 'Grano entero'; 
+        }
+        if (type == 3) {
+          this.detail.type = 'Grano molido'; 
+        }
+        this.detail.amount = amount;
+        this.amount = amount;
+        this.type = type;
+        this.step = 5;
+        this.stepTwo = true;
+      },
+      toStepFour() {
+        location.hash = '#formulario';
+        this.step = 6;
+        this.stepThree = true;
+      },
+      add(el) {
+        this.selected.push(el);
+        this.added = false;
+        this.deleted = false;
+        this.added = true;
+      },
+      remove(el) {
+        this.selected.splice(el, 1);
+        this.added = false;
+        this.deleted = false;
+        this.deleted = true;
+      },
+      reset() {
+        location.hash = '#inicio';
+        this.step = 1;
+        this.detail.type = 0;
+        this.detail.amount = 0;
+        this.detail.url = '';
+      },
+      suscribe() {
+        
+        //this.form.url = this.finalUrl;
+        let data = this.form;
+        
+        let nom = this.form.nombre;
+        let email = this.form.email;
+        let direccion = this.form.direccion;
+        let telefono = this.form.telefono;
+        let region = this.form.region;
+        let comuna = this.form.comuna;
+        let documento = this.form.documento;
+        let notas = this.form.notas;
+        let detalle = this.form.detalle;
+        let url_plan = data.url;
+        
+        let datos = '&nombre='+nom+'&email='+email+'&telefono='+telefono+'&direccion='+direccion+'&region='+region+'&comuna='+comuna+'&documento='+documento+'&comentarios='+notas+'&detalle='+detalle;
+        
+        Pageclip.send('w4mg3afMO3pEiYSSMmXCkAe1yy9UL1j9', 'Suscripciones', data, function(error, response) {
+          if (error) {
+            console.log(error);
+            alert("Hubo un error en la solicitud, intente nuevamente");
+          } else {
+            alert("Suscripción reservada, dirigiendo al pago");
+            let url=url_plan+datos;
+            location.href = url;
+
+          }
+        })
+      },
+      makeUrl(event) {
+        this.form.detalle = this.selected.map(i => i.tipo + ' ' + i.nombre);
+        this.form.suscripcion = this.detail.amount + ' Bolsas de ' + this.detail.type;
+        alert(event.target.value);
+        
+        let nom = this.form.nombre;
+        let email = this.form.email;
+        let direccion = this.form.direccion;
+        let telefono = this.form.telefono;
+        let region = this.form.region;
+        let comuna = this.form.comuna;
+        let documento = this.form.documento;
+        let notas = this.form.notas;
+        let detalle = this.form.detalle;
+        
+        
+        if (event.target.value == "RM - Región Metropolitana") {
+          if (this.detail.amount == 4) {
+            //40
+            this.detail.url = 'https://app.payku.cl/suscripcion/index?idplan=807&verif=7e93264f'
+            this.form.url = 'https://app.payku.cl/suscripcion/index?idplan=807&verif=7e93264f'
+          }
+          if (this.detail.amount == 7) {
+            //70
+            this.detail.url = 'https://app.payku.cl/suscripcion/index?idplan=815&verif=7db9bf6c'
+            this.form.url = 'https://app.payku.cl/suscripcion/index?idplan=815&verif=7db9bf6c'
+          }
+          if (this.detail.amount == 10) {
+            this.detail.url = 'https://app.payku.cl/suscripcion/index?idplan=817&verif=7b572623'
+            this.form.url = 'https://app.payku.cl/suscripcion/index?idplan=817&verif=7b572623'
+          }
+          if (this.detail.amount == 15) {
+            this.detail.url = 'https://app.payku.cl/suscripcion/index?idplan=819&verif=fe294280'
+            this.form.url = 'https://app.payku.cl/suscripcion/index?idplan=819&verif=fe294280'
+          }
+          if (this.detail.amount == 20) {
+            //200 cap
+            this.detail.url = 'https://app.payku.cl/suscripcion/index?idplan=821&verif=701a3479'
+            this.form.url = 'https://app.payku.cl/suscripcion/index?idplan=821&verif=701a3479'
+          }
+          if (this.detail.amount == 2) {
+            //2 bolsas stgo
+            this.detail.url = 'https://app.payku.cl/suscripcion/index?idplan=823&verif=d33200eb'
+            this.form.url = 'https://app.payku.cl/suscripcion/index?idplan=823&verif=d33200eb'
+          }
+          if (this.detail.amount == 3) {
+            //3 bolsaas stgo
+            this.detail.url = 'https://app.payku.cl/suscripcion/index?idplan=825&verif=6f7c4fa7'
+            this.form.url = 'https://app.payku.cl/suscripcion/index?idplan=825&verif=6f7c4fa7'
+          }
+          if (this.detail.amount == 5) {
+            //5 bolsas stgo
+            this.detail.url = 'https://app.payku.cl/suscripcion/index?idplan=827&verif=2b42543b'
+            this.form.url = 'https://app.payku.cl/suscripcion/index?idplan=827&verif=2b42543b'
+          }
+        } else {
+          //regiones
+          if (this.detail.amount == 4) {
+            this.detail.url = 'https://app.payku.cl/suscripcion/index?idplan=814&verif=876e1040'
+            this.form.url = 'https://app.payku.cl/suscripcion/index?idplan=814&verif=876e1040'
+          }
+          if (this.detail.amount == 7) {
+            this.detail.url = 'https://app.payku.cl/suscripcion/index?idplan=816&verif=3c65805b'
+            this.form.url = 'https://app.payku.cl/suscripcion/index?idplan=816&verif=3c65805b'
+          }
+          if (this.detail.amount == 10) {
+            this.detail.url = 'https://app.payku.cl/suscripcion/index?idplan=818&verif=1308295a'
+            this.form.url = 'https://app.payku.cl/suscripcion/index?idplan=818&verif=1308295a'
+          }
+          if (this.detail.amount == 15) {
+            this.detail.url = 'https://app.payku.cl/suscripcion/index?idplan=820&verif=6d5a7c23'
+            this.form.url = 'https://app.payku.cl/suscripcion/index?idplan=820&verif=6d5a7c23'
+          }
+          if (this.detail.amount == 20) {
+            this.detail.url = 'https://app.payku.cl/suscripcion/index?idplan=822&verif=11fa9398'
+            this.form.url = 'https://app.payku.cl/suscripcion/index?idplan=822&verif=11fa9398'
+          }
+          if (this.detail.amount == 2) {
+            this.detail.url = 'https://app.payku.cl/suscripcion/index?idplan=824&verif=bc01c339'
+            this.form.url = 'https://app.payku.cl/suscripcion/index?idplan=824&verif=bc01c339'
+          }
+          if (this.detail.amount == 3) {
+            this.detail.url = 'https://app.payku.cl/suscripcion/index?idplan=826&verif=e7ffffd3'
+            this.form.url = 'https://app.payku.cl/suscripcion/index?idplan=826&verif=e7ffffd3'
+          }
+          if (this.detail.amount == 5) {
+            this.detail.url = 'https://app.payku.cl/suscripcion/index?idplan=828&verif=10cb299f'
+            this.form.url = 'https://app.payku.cl/suscripcion/index?idplan=828&verif=10cb299f'
+          }
+        }
+      }
+    }
+  })
+</script>

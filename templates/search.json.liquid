@@ -1,0 +1,34 @@
+
+{% layout none %}
+
+
+
+{% paginate search.results by 10 %}
+
+    {% capture output %}
+
+        {% for result in search.results limit: 10 %}
+
+            {% assign resultURL = result.url %}
+
+            {% assign thumbURL = result.images[0] | product_img_url: 'thumb' %}
+
+            {% assign compactURL = result.images[0] | product_img_url: 'compact' %}
+
+
+
+            {"price":"{{ result.price | money }}","value":"{% include 'json_cleanup' with result.title %}","label":"{% include 'json_cleanup' with result.title %}","url":"{% include 'json_cleanup' with resultURL %}","thumb":"{% include 'json_cleanup' with thumbURL %}","compact":"{% include 'json_cleanup' with compactURL %}","id":{{result.id}} }{% unless forloop.last %},{% endunless %}
+
+        {% endfor %}
+
+    {% endcapture %}
+
+{% endpaginate %}
+
+
+
+{% comment %} Enclose in square brackets and output the json object {% endcomment %}
+
+{{ output | strip_newlines | prepend: '[' | append: ']' }}
+
+
